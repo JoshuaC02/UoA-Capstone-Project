@@ -1,33 +1,25 @@
 import React from 'react';
 import markermatch from '../images/markermatch.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
   return (
-    <div className="header">
-      <nav className="navbar navbar-expand">
-        <div className="navbar-header">
-          <div className="row">
-            <div className="col-4"> 
-              <img src={markermatch} className="logo img-fluid" alt="Logo" />
-            </div>
+    <>
+      <div className="header">
+        <div className="row align-items-center">
+          <div className="col-3">
+            <img src={markermatch} className="logo img-fluid" id="logo-adjust" alt="Logo" style={{ maxWidth: '50%' }} />
+          </div>
+          <div className="col d-flex justify-content-end align-items-center"> 
+            <p id="text-adjust">Charles Olivera</p>
+            <FontAwesomeIcon icon={faUser} className="adjust-user-size" id="user-adjust"/>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+
+    </>
   );
 }
 
 export default Navbar;
-
-// --- no bootstrap
-
-// function Navbar() {
-//   return (
-//     <div className="header">
-//       <img src={markermatch} className="logo"></img>
-//     </div>
-//   );
-// }
-
-// export default Navbar
-
