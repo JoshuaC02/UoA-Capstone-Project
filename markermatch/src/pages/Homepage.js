@@ -1,9 +1,13 @@
-import markermatch from '../images/markermatch.png';
 import Navbar from '../components/Navbar';
+import NavbarComp from '../components/NavbarComp';
+
 
 function Homepage() {
     return (
-      <Navbar/> // we can simply import reusable navbar component for each page
+      <>
+        {/* <Navbar/>  */}
+        <NavbarComp/>
+      </>
     );
   }
 

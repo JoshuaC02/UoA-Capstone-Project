@@ -1,0 +1,23 @@
+/* Sidebar.css provides custom css for the side bar */
+.sidebox{
+    overflow: scroll;
+
+}
+.sidebar-btn-wrapper{
+    padding: 30px 5px;
+}
+  
+#Menu{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    color: inherit;
+}
+#CDBSidebar{
+    color: white;
+    background-color: #333;
+    
+}
+#CDBSidebarFooter{
+    text-align: center;
+}
