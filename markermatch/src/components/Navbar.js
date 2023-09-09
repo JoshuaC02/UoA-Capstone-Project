@@ -12,7 +12,7 @@ function Navbar() {
   useEffect(() => {
     const url = "http://localhost:3030/user/1";
 
-    fetch(url).then(response => response.json()).then(user=>setUser(user));
+    fetch(url).then(response => response.json()).then(user=>setUser(user)).catch(error => console.log('Error:', error));
 
   },[]); // dependency array which changes state upon change.
 
@@ -26,12 +26,13 @@ function Navbar() {
           </div>
           <div className="col d-flex justify-content-end align-items-center"> 
           {/* ternary operator means that it only renders the name once it has been loaded from the API*/}
-            {user && (
+            {user ? (
               <>
                 <p id="text-adjust">{user.name}</p>
-                <FontAwesomeIcon icon={faUser} className="adjust-user-size" id="user-adjust"/>
+                
               </>
-            )}
+            ) : (<p id="text-adjust">Login</p>) }
+            <FontAwesomeIcon icon={faUser} className="adjust-user-size" id="user-adjust"/>
           </div>
         </div>
       </div>
