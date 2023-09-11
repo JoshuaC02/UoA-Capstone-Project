@@ -17,7 +17,7 @@ import {
   
     return (
         <>
-            <div className="sidebox" style={{ height: sidebarHeight }}>
+            <div className="sidebox" style={{ height: sidebarHeight, position:'fixed', zIndex:1 }}>
                 <CDBSidebar id="CDBSidebar">
                     <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
                         <p id="Menu">Menu</p>

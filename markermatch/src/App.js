@@ -3,12 +3,13 @@ import './Styles/NavbarComp.css';
 import './Styles/Sidebar.css';
 import Homepage from './pages/Homepage';
 import Sidebar from './components/Sidebar';
+import CourseCard from './components/CourseCard'
 import React, { useState, useEffect } from 'react';
 
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-document.body.style.overflow = 'hidden'; // making sure the page is compact
+//document.body.style.overflow = 'hidden'; // making sure the page is compact
 
 function App() {
   // calculating the size of the navbar
@@ -30,5 +31,5 @@ function App() {
     </>
   );
 }
-
+// 
 export default App;
