@@ -2,8 +2,10 @@ import './Styles/App.css';
 import './Styles/NavbarComp.css';
 import './Styles/Sidebar.css';
 import Homepage from './pages/Homepage';
-import NavbarComp from './components/NavbarComp';
 import Authentication from './pages/Authentication';
+import Testpage from './pages/Testpage';
+
+import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
 import React, { useState, useEffect } from 'react';
 
@@ -27,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={[<NavbarComp/>, <Sidebar navHeight={navHeight} />, <Homepage />]} />
         <Route path="/auth" element={<Authentication />} />
+        <Route path="/test" element={<Testpage />} />
       </Routes>
     </Router>
   );
