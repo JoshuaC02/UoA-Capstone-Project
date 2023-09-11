@@ -2,12 +2,12 @@ import './Styles/App.css';
 import './Styles/NavbarComp.css';
 import './Styles/Sidebar.css';
 import Homepage from './pages/Homepage';
+import NavbarComp from './components/NavbarComp';
+import Authentication from './pages/Authentication';
 import Sidebar from './components/Sidebar';
-import CourseCard from './components/CourseCard'
 import React, { useState, useEffect } from 'react';
 
-
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 //document.body.style.overflow = 'hidden'; // making sure the page is compact
 
@@ -23,13 +23,13 @@ function App() {
     }
   }, []);
   return (
-    <>
-      <Router>
-          <Homepage/>
-          <Sidebar navHeight={navHeight} />
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={[<NavbarComp/>, <Sidebar navHeight={navHeight} />, <Homepage />]} />
+        <Route path="/auth" element={<Authentication />} />
+      </Routes>
+    </Router>
   );
 }
-// 
 export default App;
+//[<NavbarComp/>, <Sidebar navHeight={navHeight} />]

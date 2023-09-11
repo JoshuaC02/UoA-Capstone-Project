@@ -34,7 +34,7 @@ function NavbarComp() {
                         <p className="adjust sign">{user.name}</p>
                         
                       </>
-                    ) : (<p className="adjust sign">Login</p>) }
+                    ) : (<a href="/auth"><p className="adjust sign">Login</p></a>) }
                     <BiUser className="adjust-user-size"/>
                 </div>
                 <div className="user logout">

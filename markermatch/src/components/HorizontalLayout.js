@@ -1,4 +1,3 @@
-import Stack from 'react-bootstrap/Stack';
 import CourseCard from '../components/CourseCard';
 
 function HorizontalLayout() {
