@@ -1,4 +1,4 @@
-import './Styles/App.css';
+import './Styles/CourseGrid.css';
 import './Styles/NavbarComp.css';
 import './Styles/Sidebar.css';
 import Homepage from './pages/Homepage';

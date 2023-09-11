@@ -1,6 +1,6 @@
 import NavbarComp from '../components/NavbarComp';
 import Sidebar from '../components/Sidebar';
-import '../Styles/App.css';
+import '../Styles/CourseGrid.css';
 import HorizontalLayout from '../components/HorizontalLayout';
 
 function Homepage() {
