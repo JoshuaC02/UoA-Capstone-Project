@@ -1,8 +1,3 @@
-/* Sidebar.css provides custom css for the side bar */
-.sidebox{
-    overflow: scroll;
-
-}
 .sidebar-btn-wrapper{
     padding: 30px 5px;
 }

@@ -21,7 +21,7 @@ function NavbarComp() {
     },[]); // dependency array which changes state upon change.
 
   return (
-    <Navbar expand="lg" className="my-navbar" style={{position:'sticky'}}>
+    <Navbar expand="lg" className="my-navbar">
         <Navbar.Brand href="#home" className="logo ">
             <img src={markermatch} id="logo" alt="Logo"></img>
         </Navbar.Brand> 

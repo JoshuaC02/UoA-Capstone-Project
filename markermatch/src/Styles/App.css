@@ -1,0 +1,32 @@
+.content-container {
+    display: flex;
+}
+
+
+.courses {
+    display: flex;
+    flex-wrap: wrap;
+    width:100%;
+    min-height: 100vh;
+
+}
+
+.my-navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+
+}
+
+.content-container {
+    display: flex;
+
+}
+.search-bar{
+    padding:2.5vh;
+    width:90%;
+    display:block;
+    border-radius:24px;
+    
+}
