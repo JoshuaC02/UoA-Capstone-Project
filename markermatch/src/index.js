@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import './Styles/CourseGrid.css'
+import './Styles/HorizontalLayout.css'
 import './Styles/NavbarComp.css'
 import './Styles/Sidebar.css'
 import App from './App';
