@@ -1,19 +1,24 @@
-import { Amplify } from 'aws-amplify';
+//https://ui.docs.amplify.aws/react/guides/auth-protected#adding-in-a-requireauth-component
+import { useEffect } from "react";
 
-import { withAuthenticator } from '@aws-amplify/ui-react';
+import { Authenticator, useAuthenticator, View } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
-import awsExports from '../aws-exports';
-Amplify.configure(awsExports);
+import { useNavigate, useLocation } from 'react-router';
 
-function Auth({ signOut, user }) {
-    console.log(user.attributes)
+export function Login() {
+  const { route } = useAuthenticator((context) => [context.route]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  let from = location.state?.from?.pathname || '/';
+  useEffect(() => {
+    if (route === 'authenticated') {
+      navigate(from, { replace: true });
+    }
+  }, [route, navigate, from]);
   return (
-    <>
-      <h1>Hello {user.attributes.given_name}</h1>
-      <button onClick={signOut}>Sign out</button>
-    </>
+    <Authenticator></Authenticator>
   );
 }
-//user.attributes.given_name, user.attributes.family_name, user.attributes.email
-export default withAuthenticator(Auth);
+
+export default Login;
