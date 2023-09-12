@@ -10,8 +10,6 @@ function getCourseData() {
 }
 
 
-
-
 function HorizontalLayout() {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,7 +42,7 @@ function HorizontalLayout() {
 
   return (
     <>
-      <div className="courses">
+      <div className="content-containers">
         <div className="search-bar">
           <input
             type="text"
@@ -54,23 +52,26 @@ function HorizontalLayout() {
             className="search-bar"
           />
         </div>
-        {courses.map(course => (
-          <div className="p-2" key={course.id}>
-            <Card style={{ width: '18rem' }}>
-              <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
-              <Card.Body>
-                <Card.Title>{course.courseName}</Card.Title>
-                <Card.Text>
-                  {course.summary}
-                </Card.Text>
-                <Card.Text>
-                  {course.instructor}
-                </Card.Text>
-                <Button variant="primary" style={{ backgroundColor: "#005DFF" }}>Add to Cart</Button>
-              </Card.Body>
-            </Card>
-          </div>
-        ))}
+        <div className="courses">
+          {courses.map(course => (
+            <div className="p-2" key={course.id}>
+              <Card style={{ width: '18rem'}}>
+                <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
+                <Card.Body>
+                  <Card.Title>{course.courseName}</Card.Title>
+                  <Card.Text>
+                    {course.summary}
+                  </Card.Text>
+                  <Card.Text>
+                    {course.instructor}
+                  </Card.Text>
+                  <Button variant="primary" style={{ backgroundColor: "#005DFF" }}>Add to Cart</Button>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
+        </div>
+        
       </div>
     </>
   );
