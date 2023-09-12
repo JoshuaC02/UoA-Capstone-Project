@@ -1,12 +1,7 @@
 .sidebar-btn-wrapper{
     padding: 30px 5px;
 }
-.sidebox{
-    height: calc(100vh - 130px);
-    /* position: fixed; */
-}
 
-/* To change sidebar link's text colour */
 a[aria-current="page"] .item-content {
     color: #c39be5; 
     font-weight: bold;
