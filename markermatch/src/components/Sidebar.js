@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
     CDBSidebar,
     CDBSidebarContent,
@@ -10,15 +11,12 @@ import {
   } from 'cdbreact';
   import { NavLink } from 'react-router-dom';
   
-  const Sidebar = ({ navHeight }) => {
-
-    const sidebarHeight = `calc(100vh - ${navHeight - 10}px)`;
-    console.log('Calculated Sidebar Height:', sidebarHeight);
+  function Sidebar(){
   
     return (
         <>
-            <div className="sidebox" style={{ height: sidebarHeight, position:'fixed', zIndex:1 }}>
-                <CDBSidebar id="CDBSidebar">
+            <div className="sidebox">
+                <CDBSidebar maxWidth="225px" id="CDBSidebar">
                     <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
                         <p id="Menu">Menu</p>
                     </CDBSidebarHeader>
@@ -27,19 +25,19 @@ import {
                             <NavLink exact to="/" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="home"> Home Page </CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/" activeClassName="activeClicked">
+                            <NavLink exact to="/application-status" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">Application Status</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/" activeClassName="activeClicked">
+                            <NavLink exact to="/assigned-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">Assigned Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/" activeClassName="activeClicked">
+                            <NavLink exact to="/view-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">View Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/" activeClassName="activeClicked">
+                            <NavLink exact to="/add-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">Add Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/" activeClassName="activeClicked">
+                            <NavLink exact to="/edit-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="edit">Edit Courses</CDBSidebarMenuItem>
                             </NavLink>
                         </CDBSidebarMenu>

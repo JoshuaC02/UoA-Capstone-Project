@@ -1,12 +1,17 @@
-/* Sidebar.css provides custom css for the side bar */
-.sidebox{
-    overflow: scroll;
-
-}
 .sidebar-btn-wrapper{
     padding: 30px 5px;
 }
+
+a[aria-current="page"] .item-content {
+    color: #c39be5; 
+    font-weight: bold;
+  }
   
+
+a:not([aria-current="page"]) .item-content {
+    color: white; 
+}
+
 #Menu{
     padding: 0;
     margin: 0;
@@ -14,10 +19,9 @@
     color: inherit;
 }
 #CDBSidebar{
-    color: white;
     background-color: #333;
-    
 }
+
 #CDBSidebarFooter{
     text-align: center;
 }
