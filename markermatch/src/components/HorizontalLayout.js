@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { DataStore } from '@aws-amplify/datastore';
+import { Cart } from './models';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
 
 function getCourseData() {
   return fetch(`http://localhost:3030/courses`)
@@ -9,6 +10,9 @@ function getCourseData() {
     .then(data => data);
 }
 
+function addToCart() {
+
+}
 
 function HorizontalLayout() {
   const [courses, setCourses] = useState([]);
