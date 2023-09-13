@@ -23,11 +23,11 @@ function HorizontalLayout() {
   const { user } = useAuthenticator((context) => [context.user]);
 
   async function addToCart(courseId, userId) {
-    if (userId == undefined) {
+    if (userId === undefined) {
       navigate("/auth", { replace: true });
     } else {
       const models = await DataStore.query(Cart, (c) => c.userId.eq(userId));
-      if (models.length == 0) {
+      if (models.length === 0) {
         DataStore.save(new Cart({
           userId: userId,
           selectedCourses: courseId
@@ -37,7 +37,7 @@ function HorizontalLayout() {
         let flag = false;
         const list = models[0].selectedCourses.split(",")
         for (const int in list) {
-          if (list[parseInt(int)].trim() == courseId) {
+          if (list[parseInt(int)].trim() === courseId) {
             flag = true;
           }
         }
