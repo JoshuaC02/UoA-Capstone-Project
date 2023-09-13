@@ -40,6 +40,9 @@ import {
                             <NavLink exact to="/edit-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="edit">Edit Courses</CDBSidebarMenuItem>
                             </NavLink>
+                            <NavLink exact to="/cart" activeClassName="activeClicked">
+                                <CDBSidebarMenuItem icon="home">Cart</CDBSidebarMenuItem>
+                            </NavLink>
                         </CDBSidebarMenu>
                     </CDBSidebarContent>
                     <CDBSidebarFooter id="CDBSidebarFooter"> <div className="sidebar-btn-wrapper"> Team 12 - 2023 </div> </CDBSidebarFooter>

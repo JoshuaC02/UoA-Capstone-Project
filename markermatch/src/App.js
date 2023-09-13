@@ -5,6 +5,7 @@ import Homepage from './pages/Homepage';
 import Authentication from './pages/Authentication';
 import Testpage from './pages/Testpage';
 import NoAuth from './pages/NoAuth';
+import Cart from './pages/Cart'
 
 import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
@@ -22,7 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<Authentication />} />
-          
+          <Route path="/cart" element={<Cart />} />
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={[<NavbarComp/>, <Sidebar />, <NoAuth/>]} />
         </Routes>
@@ -31,4 +32,3 @@ function App() {
   );
 }
 export default App;
-//[<NavbarComp/>, <Sidebar navHeight={navHeight} />]
