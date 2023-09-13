@@ -10,8 +10,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 
 function App() {
+  useEffect(() => {
+    // Set body overflow to "hidden" when the component mounts
+    document.body.style.overflow = "hidden";
 
-  return (
+  }, []);
+    return (
     <>
       <Router>
           <Homepage/>

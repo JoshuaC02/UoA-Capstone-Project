@@ -1,7 +1,9 @@
 .content-container {
     display: flex;
+    margin-left: 225px;
+    max-height: calc(100vh - 130px);
+    overflow-y: auto; /* Add a vertical scrollbar if content overflows */
 }
-
 .courses {
     display: flex;
     flex-wrap: wrap;
@@ -18,5 +20,4 @@
     display:block;
     border-radius:24px;
     margin:0;
-    
 } 

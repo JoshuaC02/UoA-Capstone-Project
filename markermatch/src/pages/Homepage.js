@@ -5,13 +5,15 @@ import HorizontalLayout from '../components/HorizontalLayout';
 
 function Homepage() {
   return (
-    <div className="homepage-container">
+    <>
       <NavbarComp />
-      <div className="content-container">
-        <Sidebar />
-        <HorizontalLayout />
+      <Sidebar />
+      <div className="homepage-container">
+        <div className="content-container">
+          <HorizontalLayout />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

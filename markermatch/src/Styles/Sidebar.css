@@ -1,9 +1,11 @@
 .sidebar-btn-wrapper{
     padding: 30px 5px;
 }
-.sidebox{
-    height: calc(100vh - 130px);
-    /* position: fixed; */
+.sidebox {
+    position: fixed;
+    top: 130px; 
+    bottom: 0;
+    overflow-y: auto;
 }
 
 /* To change sidebar link's text colour */
