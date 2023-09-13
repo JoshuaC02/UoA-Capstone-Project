@@ -24,25 +24,23 @@ export default function CourseCreateForm(props) {
   } = props;
   const initialValues = {
     name: "",
-    number: "",
-    coordinator: "",
+    summary: "",
+    instructor: "",
   };
   const [name, setName] = React.useState(initialValues.name);
-  const [number, setNumber] = React.useState(initialValues.number);
-  const [coordinator, setCoordinator] = React.useState(
-    initialValues.coordinator
-  );
+  const [summary, setSummary] = React.useState(initialValues.summary);
+  const [instructor, setInstructor] = React.useState(initialValues.instructor);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
-    setNumber(initialValues.number);
-    setCoordinator(initialValues.coordinator);
+    setSummary(initialValues.summary);
+    setInstructor(initialValues.instructor);
     setErrors({});
   };
   const validations = {
     name: [],
-    number: [],
-    coordinator: [],
+    summary: [],
+    instructor: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -71,8 +69,8 @@ export default function CourseCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           name,
-          number,
-          coordinator,
+          summary,
+          instructor,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -128,8 +126,8 @@ export default function CourseCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name: value,
-              number,
-              coordinator,
+              summary,
+              instructor,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -145,56 +143,56 @@ export default function CourseCreateForm(props) {
         {...getOverrideProps(overrides, "name")}
       ></TextField>
       <TextField
-        label="Number"
+        label="Summary"
         isRequired={false}
         isReadOnly={false}
-        value={number}
+        value={summary}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              number: value,
-              coordinator,
+              summary: value,
+              instructor,
             };
             const result = onChange(modelFields);
-            value = result?.number ?? value;
+            value = result?.summary ?? value;
           }
-          if (errors.number?.hasError) {
-            runValidationTasks("number", value);
+          if (errors.summary?.hasError) {
+            runValidationTasks("summary", value);
           }
-          setNumber(value);
+          setSummary(value);
         }}
-        onBlur={() => runValidationTasks("number", number)}
-        errorMessage={errors.number?.errorMessage}
-        hasError={errors.number?.hasError}
-        {...getOverrideProps(overrides, "number")}
+        onBlur={() => runValidationTasks("summary", summary)}
+        errorMessage={errors.summary?.errorMessage}
+        hasError={errors.summary?.hasError}
+        {...getOverrideProps(overrides, "summary")}
       ></TextField>
       <TextField
-        label="Coordinator"
+        label="Instructor"
         isRequired={false}
         isReadOnly={false}
-        value={coordinator}
+        value={instructor}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              number,
-              coordinator: value,
+              summary,
+              instructor: value,
             };
             const result = onChange(modelFields);
-            value = result?.coordinator ?? value;
+            value = result?.instructor ?? value;
           }
-          if (errors.coordinator?.hasError) {
-            runValidationTasks("coordinator", value);
+          if (errors.instructor?.hasError) {
+            runValidationTasks("instructor", value);
           }
-          setCoordinator(value);
+          setInstructor(value);
         }}
-        onBlur={() => runValidationTasks("coordinator", coordinator)}
-        errorMessage={errors.coordinator?.errorMessage}
-        hasError={errors.coordinator?.hasError}
-        {...getOverrideProps(overrides, "coordinator")}
+        onBlur={() => runValidationTasks("instructor", instructor)}
+        errorMessage={errors.instructor?.errorMessage}
+        hasError={errors.instructor?.hasError}
+        {...getOverrideProps(overrides, "instructor")}
       ></TextField>
       <Flex
         justifyContent="space-between"

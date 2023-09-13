@@ -14,20 +14,20 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type CourseCreateFormInputValues = {
     name?: string;
-    number?: string;
-    coordinator?: string;
+    summary?: string;
+    instructor?: string;
 };
 export declare type CourseCreateFormValidationValues = {
     name?: ValidationFunction<string>;
-    number?: ValidationFunction<string>;
-    coordinator?: ValidationFunction<string>;
+    summary?: ValidationFunction<string>;
+    instructor?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CourseCreateFormOverridesProps = {
     CourseCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
-    number?: PrimitiveOverrideProps<TextFieldProps>;
-    coordinator?: PrimitiveOverrideProps<TextFieldProps>;
+    summary?: PrimitiveOverrideProps<TextFieldProps>;
+    instructor?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CourseCreateFormProps = React.PropsWithChildren<{
     overrides?: CourseCreateFormOverridesProps | undefined | null;

@@ -20,11 +20,11 @@ function App() {
     <Router>
       <Authenticator.Provider>
         <Routes>
-          <Route path="/" element={[<NavbarComp/>, <Sidebar navHeight={navHeight} />, <Homepage />]} />
+          <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<Authentication />} />
           
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
-          <Route path="/notauthorised" element={[<NavbarComp/>, <Sidebar navHeight={navHeight} />, <NoAuth/>]} />
+          <Route path="/notauthorised" element={[<NavbarComp/>, <Sidebar />, <NoAuth/>]} />
         </Routes>
       </Authenticator.Provider>
     </Router>

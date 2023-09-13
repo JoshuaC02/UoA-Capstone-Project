@@ -10,8 +10,6 @@ import { useNavigate } from 'react-router';
 
 
 function NavbarComp() {
-  // currently the code just fetches the first user, but this will be later changed to fetch the respective user-
-  // -once they've logged in.
   const { user, signOut } = useAuthenticator((context) => [context.user, context.signOut]);
   const navigate = useNavigate();
   function logOut() {

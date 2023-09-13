@@ -4,10 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Course, MarkerApplication, User } = initSchema(schema);
+const { Cart, Course, MarkerApplication } = initSchema(schema);
 
 export {
+  Cart,
   Course,
-  MarkerApplication,
-  User
+  MarkerApplication
 };

@@ -8,13 +8,12 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Course } from "../models";
+import { Cart } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function CourseUpdateForm(props) {
+export default function CartCreateForm(props) {
   const {
-    id: idProp,
-    course: courseModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -24,38 +23,22 @@ export default function CourseUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
-    summary: "",
-    instructor: "",
+    userId: "",
+    selectedCourses: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
-  const [summary, setSummary] = React.useState(initialValues.summary);
-  const [instructor, setInstructor] = React.useState(initialValues.instructor);
+  const [userId, setUserId] = React.useState(initialValues.userId);
+  const [selectedCourses, setSelectedCourses] = React.useState(
+    initialValues.selectedCourses
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = courseRecord
-      ? { ...initialValues, ...courseRecord }
-      : initialValues;
-    setName(cleanValues.name);
-    setSummary(cleanValues.summary);
-    setInstructor(cleanValues.instructor);
+    setUserId(initialValues.userId);
+    setSelectedCourses(initialValues.selectedCourses);
     setErrors({});
   };
-  const [courseRecord, setCourseRecord] = React.useState(courseModelProp);
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(Course, idProp)
-        : courseModelProp;
-      setCourseRecord(record);
-    };
-    queryData();
-  }, [idProp, courseModelProp]);
-  React.useEffect(resetStateValues, [courseRecord]);
   const validations = {
-    name: [],
-    summary: [],
-    instructor: [],
+    userId: [],
+    selectedCourses: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -83,9 +66,8 @@ export default function CourseUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
-          summary,
-          instructor,
+          userId,
+          selectedCourses,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -115,13 +97,12 @@ export default function CourseUpdateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(
-            Course.copyOf(courseRecord, (updated) => {
-              Object.assign(updated, modelFields);
-            })
-          );
+          await DataStore.save(new Cart(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -129,100 +110,71 @@ export default function CourseUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "CourseUpdateForm")}
+      {...getOverrideProps(overrides, "CartCreateForm")}
       {...rest}
     >
       <TextField
-        label="Name"
+        label="User id"
         isRequired={false}
         isReadOnly={false}
-        value={name}
+        value={userId}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
-              summary,
-              instructor,
+              userId: value,
+              selectedCourses,
             };
             const result = onChange(modelFields);
-            value = result?.name ?? value;
+            value = result?.userId ?? value;
           }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
+          if (errors.userId?.hasError) {
+            runValidationTasks("userId", value);
           }
-          setName(value);
+          setUserId(value);
         }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
+        onBlur={() => runValidationTasks("userId", userId)}
+        errorMessage={errors.userId?.errorMessage}
+        hasError={errors.userId?.hasError}
+        {...getOverrideProps(overrides, "userId")}
       ></TextField>
       <TextField
-        label="Summary"
+        label="Selected courses"
         isRequired={false}
         isReadOnly={false}
-        value={summary}
+        value={selectedCourses}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
-              summary: value,
-              instructor,
+              userId,
+              selectedCourses: value,
             };
             const result = onChange(modelFields);
-            value = result?.summary ?? value;
+            value = result?.selectedCourses ?? value;
           }
-          if (errors.summary?.hasError) {
-            runValidationTasks("summary", value);
+          if (errors.selectedCourses?.hasError) {
+            runValidationTasks("selectedCourses", value);
           }
-          setSummary(value);
+          setSelectedCourses(value);
         }}
-        onBlur={() => runValidationTasks("summary", summary)}
-        errorMessage={errors.summary?.errorMessage}
-        hasError={errors.summary?.hasError}
-        {...getOverrideProps(overrides, "summary")}
-      ></TextField>
-      <TextField
-        label="Instructor"
-        isRequired={false}
-        isReadOnly={false}
-        value={instructor}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              summary,
-              instructor: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.instructor ?? value;
-          }
-          if (errors.instructor?.hasError) {
-            runValidationTasks("instructor", value);
-          }
-          setInstructor(value);
-        }}
-        onBlur={() => runValidationTasks("instructor", instructor)}
-        errorMessage={errors.instructor?.errorMessage}
-        hasError={errors.instructor?.hasError}
-        {...getOverrideProps(overrides, "instructor")}
+        onBlur={() => runValidationTasks("selectedCourses", selectedCourses)}
+        errorMessage={errors.selectedCourses?.errorMessage}
+        hasError={errors.selectedCourses?.hasError}
+        {...getOverrideProps(overrides, "selectedCourses")}
       ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || courseModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -232,10 +184,7 @@ export default function CourseUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || courseModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>
