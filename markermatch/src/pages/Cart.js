@@ -1,6 +1,6 @@
 import NavbarComp from '../components/NavbarComp';
 import Sidebar from '../components/Sidebar';
-import '../Styles/HorizontalLayout.css';
+import '../styles/HorizontalLayout.css';
 import ShoppingCart from '../components/ShoppingCart';
 
 function Cart() {

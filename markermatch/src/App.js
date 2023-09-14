@@ -1,6 +1,6 @@
-import './Styles/HorizontalLayout.css';
-import './Styles/NavbarComp.css';
-import './Styles/Sidebar.css';
+import './styles/HorizontalLayout.css';
+import './styles/NavbarComp.css';
+import './styles/Sidebar.css';
 import Homepage from './pages/Homepage';
 import Authentication from './pages/Authentication';
 import Testpage from './pages/Testpage';
@@ -19,7 +19,13 @@ import { Authenticator } from '@aws-amplify/ui-react';
 
 
 function App() {
-  return (
+  useEffect(() => {
+    // Set body overflow to "hidden" when the component mounts
+    document.body.style.overflow = "hidden";
+
+  }, []);  
+
+return (
     <Router>
       <Authenticator.Provider>
         <Routes>
