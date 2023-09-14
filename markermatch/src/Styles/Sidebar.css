@@ -2,13 +2,13 @@
     padding: 30px 5px;
 }
 .sidebox {
-    position: fixed;
-    top: 130px; 
-    bottom: 0;
-    overflow-y: auto;
+    flex: 0 0 auto;
+    background-color: lightblue; 
+    height: calc(100vh - 130px);
+    position: sticky;
+    z-index: 1; 
 }
 
-/* To change sidebar link's text colour */
 a[aria-current="page"] .item-content {
     color: #c39be5; 
     font-weight: bold;
