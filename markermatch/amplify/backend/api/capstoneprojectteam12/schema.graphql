@@ -23,5 +23,4 @@ type MarkerApplication @model @auth(rules: [{allow: public}]) {
   yearsOfStudy: String
   underPostGrad: Boolean
   currentTutor: String
-}
- 
+} 

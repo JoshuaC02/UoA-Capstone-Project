@@ -10,6 +10,8 @@ import Cart from './pages/Cart'
 import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
 import { RequireAuthCourseCoord } from './components/RequireAuthCourseCoord';
+import { RequireAuthMarkerCoord } from './components/RequireAuthUser';
+import { RequireAuthUser } from './components/RequireAuthUser';
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -23,7 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<Authentication />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={[<NavbarComp/>, <Sidebar />, <NoAuth/>]} />
         </Routes>
