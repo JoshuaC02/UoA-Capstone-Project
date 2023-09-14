@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getCourseData, filterCourses, addToCart } from '../helperFunctions/HorizontalHelper';
+import { useNavigate } from 'react-router-dom';
 
 function CourseData() {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [allCourses, setAllCourses] = useState([]);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -23,7 +25,7 @@ function CourseData() {
   }
 
   const addCourseToCart = (courseId, userId) => {
-    addToCart(courseId, userId)
+    addToCart(courseId, userId, navigate)
   }
 
   return {

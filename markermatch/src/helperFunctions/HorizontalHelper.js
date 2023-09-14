@@ -1,7 +1,6 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
 import { Course } from '../models';
-import { useNavigate } from 'react-router';
 
 export async function getCourseData() {
   return DataStore.query(Course);
@@ -20,10 +19,9 @@ export function filterCourses(allCourses, term) {
     return filteredCourses;
 }
 
-export async function addToCart(courseId, userId) {
-  const navigate = useNavigate();
+export async function addToCart(courseId, userId, callBack) {
   if (userId === undefined) {
-    navigate("/auth", { replace: true });
+    callBack("/auth", { replace: true });
   } else {
     const models = await DataStore.query(Cart, (c) => c.userId.eq(userId));
     if (models.length === 0) {
