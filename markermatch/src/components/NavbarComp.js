@@ -15,6 +15,8 @@ function NavbarComp() {
   function logOut() {
     signOut();
     navigate("/", { replace: true });
+    alert("Sign out successful.")
+
   }
   return (
     <Navbar expand="lg" className="my-navbar">
@@ -34,7 +36,7 @@ function NavbarComp() {
                     <BiUser className="adjust-user-size"/>
                 </div>
                 <div className="user logout">
-                <a style={{textDecoration:'underline', color:'blue'}} onClick={() => logOut()}><p className="adjust sign">Sign out</p></a>
+                <a style={{textDecoration:'underline', color:'blue', cursor:'pointer'}} onClick={() => logOut()}><p className="adjust sign">Sign out</p></a>
                     <PiSignOut className="adjust-user-size"/>
                 </div>
         </Navbar.Collapse>
