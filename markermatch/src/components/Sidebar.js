@@ -21,25 +21,25 @@ import {
                     </CDBSidebarHeader>
                     <CDBSidebarContent className="sidebar-content">
                         <CDBSidebarMenu>
-                            <NavLink exact to="/" activeClassName="activeClicked">
+                            <NavLink end to="/" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="home"> Home Page </CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/application-status" activeClassName="activeClicked">
+                            <NavLink end to="/application-status" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">Application Status</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/assigned-courses" activeClassName="activeClicked">
+                            <NavLink end to="/assigned-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">Assigned Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/view-courses" activeClassName="activeClicked">
+                            <NavLink end to="/view-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">View Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/add-courses" activeClassName="activeClicked">
+                            <NavLink end to="/add-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="columns">Add Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/edit-courses" activeClassName="activeClicked">
+                            <NavLink end to="/edit-courses" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="edit">Edit Courses</CDBSidebarMenuItem>
                             </NavLink>
-                            <NavLink exact to="/cart" activeClassName="activeClicked">
+                            <NavLink end to="/cart" activeClassName="activeClicked">
                                 <CDBSidebarMenuItem icon="home">Cart</CDBSidebarMenuItem>
                             </NavLink>
                         </CDBSidebarMenu>
