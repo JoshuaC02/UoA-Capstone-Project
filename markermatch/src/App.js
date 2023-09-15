@@ -33,7 +33,7 @@ return (
           <Route path="/auth" element={<Authentication />} />
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
-          <Route path="/notauthorised" element={[<NavbarComp/>, <Sidebar />, <NoAuth/>]} />
+          <Route path="/notauthorised" element={<NoAuth/>} />
         </Routes>
       </Authenticator.Provider>
     </Router>
