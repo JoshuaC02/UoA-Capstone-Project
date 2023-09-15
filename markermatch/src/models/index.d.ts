@@ -45,6 +45,10 @@ type EagerCourse = {
   readonly name?: string | null;
   readonly summary?: string | null;
   readonly instructor?: string | null;
+  readonly minGrade?: string | null;
+  readonly totalHours?: number | null;
+  readonly appOpen?: boolean | null;
+  readonly desc?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -58,6 +62,10 @@ type LazyCourse = {
   readonly name?: string | null;
   readonly summary?: string | null;
   readonly instructor?: string | null;
+  readonly minGrade?: string | null;
+  readonly totalHours?: number | null;
+  readonly appOpen?: boolean | null;
+  readonly desc?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

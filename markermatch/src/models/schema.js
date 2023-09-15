@@ -97,6 +97,34 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "minGrade": {
+                    "name": "minGrade",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "totalHours": {
+                    "name": "totalHours",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "appOpen": {
+                    "name": "appOpen",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "desc": {
+                    "name": "desc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -264,6 +292,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.4",
-    "version": "8e778e71b67a799bb310617fabcbeea0"
+    "codegenVersion": "3.4.3",
+    "version": "6ef9db1f10f3cd320b0753ae2faed052"
 };

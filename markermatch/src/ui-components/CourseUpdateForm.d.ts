@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { Course } from "../models";
 export declare type ValidationResponse = {
@@ -17,11 +17,19 @@ export declare type CourseUpdateFormInputValues = {
     name?: string;
     summary?: string;
     instructor?: string;
+    minGrade?: string;
+    totalHours?: number;
+    appOpen?: boolean;
+    desc?: string;
 };
 export declare type CourseUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     summary?: ValidationFunction<string>;
     instructor?: ValidationFunction<string>;
+    minGrade?: ValidationFunction<string>;
+    totalHours?: ValidationFunction<number>;
+    appOpen?: ValidationFunction<boolean>;
+    desc?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CourseUpdateFormOverridesProps = {
@@ -29,6 +37,10 @@ export declare type CourseUpdateFormOverridesProps = {
     name?: PrimitiveOverrideProps<TextFieldProps>;
     summary?: PrimitiveOverrideProps<TextFieldProps>;
     instructor?: PrimitiveOverrideProps<TextFieldProps>;
+    minGrade?: PrimitiveOverrideProps<TextFieldProps>;
+    totalHours?: PrimitiveOverrideProps<TextFieldProps>;
+    appOpen?: PrimitiveOverrideProps<SwitchFieldProps>;
+    desc?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CourseUpdateFormProps = React.PropsWithChildren<{
     overrides?: CourseUpdateFormOverridesProps | undefined | null;
