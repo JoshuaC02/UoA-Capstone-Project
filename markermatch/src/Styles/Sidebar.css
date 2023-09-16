@@ -9,14 +9,9 @@
     z-index: 1; 
 }
 
-a[aria-current="page"] .item-content {
-    color: #c39be5; 
-    font-weight: bold;
-  }
-  
-
-a:not([aria-current="page"]) .item-content {
-    color: white; 
+.activeClicked .item-content {
+    color: #c99b9b; 
+    
 }
 
 #Menu{

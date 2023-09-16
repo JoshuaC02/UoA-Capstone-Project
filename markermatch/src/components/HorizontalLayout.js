@@ -10,8 +10,6 @@ function HorizontalLayout() {
   const { courses, searchTerm, handleSearch, CourseCard } = CourseData();
   const { user } = useAuthenticator((context) => [context.user]);
 
-
-
   return (
     <>
       <div className="grid-container">

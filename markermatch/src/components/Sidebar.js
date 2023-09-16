@@ -1,4 +1,6 @@
 import React from 'react';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { getSideLinks } from '../helperFunctions/CheckUser';
 
 import {
     CDBSidebar,
@@ -9,46 +11,44 @@ import {
     CDBSidebarMenuItem,
     
   } from 'cdbreact';
-  import { NavLink } from 'react-router-dom';
+  import { useNavigate, useLocation } from 'react-router-dom';
   
   function Sidebar(){
-    return (
+    const { user } = useAuthenticator((context) => [context.user]);
+    const navigate = useNavigate(); 
+    const location = useLocation();
+    const isPathActive = (path) => location.pathname === path;
+    const pathRoutes = getSideLinks(user);
+      return (
         <>
-            <div className="sidebox">
-                <CDBSidebar maxWidth="225px" minWidth="80px" id="CDBSidebar">
-                    <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-                        <p id="Menu">Menu</p>
-                    </CDBSidebarHeader>
-                    <CDBSidebarContent className="sidebar-content">
-                        <CDBSidebarMenu>
-                            <NavLink end to="/" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="home"> Home Page </CDBSidebarMenuItem>
-                            </NavLink>
-                            <NavLink end to="/application-status" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="columns">Application Status</CDBSidebarMenuItem>
-                            </NavLink>
-                            <NavLink end to="/assigned-courses" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="columns">Assigned Courses</CDBSidebarMenuItem>
-                            </NavLink>
-                            <NavLink end to="/view-courses" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="columns">View Courses</CDBSidebarMenuItem>
-                            </NavLink>
-                            <NavLink end to="/add-courses" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="columns">Add Courses</CDBSidebarMenuItem>
-                            </NavLink>
-                            <NavLink end to="/edit-courses" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="edit">Edit Courses</CDBSidebarMenuItem>
-                            </NavLink>
-                            <NavLink end to="/cart" activeClassName="activeClicked">
-                                <CDBSidebarMenuItem icon="home">Cart</CDBSidebarMenuItem>
-                            </NavLink>
-                        </CDBSidebarMenu>
-                    </CDBSidebarContent>
-                    <CDBSidebarFooter id="CDBSidebarFooter"> <div className="sidebar-btn-wrapper"> Team 12 - 2023 </div> </CDBSidebarFooter>
-                </CDBSidebar>
-            </div>
+          <div className="sidebox">
+            <CDBSidebar maxWidth="225px" minWidth="80px" id="CDBSidebar">
+              <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
+                <p id="Menu">Menu</p>
+              </CDBSidebarHeader>
+              <CDBSidebarContent className="sidebar-content">
+                  {pathRoutes.map((link, index) =>
+                    link.show === undefined || link.show ? (
+                      <CDBSidebarMenuItem
+                        key={index}
+                        icon={link.icon}
+                        onClick={() => navigate(link.path)}
+                        className={isPathActive(link.path) ? 'activeClicked' : ''}
+                      >
+                        {link.label}
+                      </CDBSidebarMenuItem>
+                    ) : null
+                  )}
+                <CDBSidebarMenu>
+                </CDBSidebarMenu>
+              </CDBSidebarContent>
+              <CDBSidebarFooter id="CDBSidebarFooter">
+                <div className="sidebar-btn-wrapper"> Team 12 - 2023 </div>
+              </CDBSidebarFooter>
+            </CDBSidebar>
+          </div>
         </>
-    );
-  };
-
-export default Sidebar;
+      );
+    }
+    
+    export default Sidebar;
