@@ -32,15 +32,18 @@ import {
                       <CDBSidebarMenuItem
                         key={index}
                         icon={link.icon}
-                        onClick={() => navigate(link.path)}
+                        onClick={() => {                  
+                            if (!isPathActive(link.path)) {
+                            navigate(link.path);
+                          }
+                        }}
                         className={isPathActive(link.path) ? 'activeClicked' : ''}
+                        disabled={isPathActive(link.path)}
                       >
                         {link.label}
                       </CDBSidebarMenuItem>
                     ) : null
                   )}
-                <CDBSidebarMenu>
-                </CDBSidebarMenu>
               </CDBSidebarContent>
               <CDBSidebarFooter id="CDBSidebarFooter">
                 <div className="sidebar-btn-wrapper"> Team 12 - 2023 </div>
