@@ -3,7 +3,6 @@
 }
 .sidebox {
     flex: 0 0 auto;
-    background-color: lightblue; 
     height: calc(100vh - 130px);
     position: sticky;
     z-index: 1; 

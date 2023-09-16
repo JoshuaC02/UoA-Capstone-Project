@@ -16,12 +16,12 @@ import { RequireAuthUser } from './components/RequireAuthUser';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Authenticator } from '@aws-amplify/ui-react';
+import Studentpage from './pages/Studentpage';
 
 
 function App() {
   useEffect(() => {
-    // Set body overflow to "hidden" when the component mounts
-    document.body.style.overflow = "hidden";
+    // document.body.style.overflow = "hidden";
 
   }, []);  
 
@@ -32,7 +32,7 @@ return (
           <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<Authentication />} />
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
-          <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
+          <Route path="/student-page" element={<Studentpage />} />
           <Route path="/notauthorised" element={<NoAuth/>} />
         </Routes>
       </Authenticator.Provider>

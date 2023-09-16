@@ -1,36 +1,13 @@
 .student-container {
     display: flex;
-    height: calc(100vh - 130px);
+    max-height: calc(100vh - 130px);
     overflow: hidden;
-}
-/* 
-.table-responsive{
-    max-height: calc(100vh -  170px);
-    margin: 20px 0px 0px 20px;
-    border: 2px solid rgb(197, 193, 193);
-}
-.student-grid {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    overflow-y: auto; 
-    margin-top: 25px; 
-} */
+} 
 
-  
-/* .student-table {
-    border: 5px solid;
-    padding-bottom: 10px;
-}
-     */
-/* .student-table thead th{
-    font-size: 1.4rem;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
 
-} */
-/* .student-table tbody td {
-    font-size: 1rem;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-}  */
+.student-table{
+    width: 100%;
+    padding: 20px; 
+    overflow: hidden;
+} 
+
