@@ -183,7 +183,7 @@ const data = [
       hoursAssigned: 20,
     },
   ];
-function StudentView() {
+function ApplicationStatus() {
 
   const columns = useMemo(
       () => [
@@ -230,14 +230,12 @@ function StudentView() {
 
     <div className='student-table'>
         <MaterialReactTable columns={columns} data={data}
-        enableRowVirtualization   
-        // enableColumnVirtualization    
         muiTableContainerProps={{ sx: { maxHeight: `${m}px` } }}
         />
     </div>
     );
 }
 
-export default StudentView;
+export default ApplicationStatus;
 
 

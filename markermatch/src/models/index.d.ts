@@ -6,6 +6,36 @@ import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
 
 
+type EagerApplicationStatus = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicationStatus, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly appliedCourses?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyApplicationStatus = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicationStatus, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly appliedCourses?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ApplicationStatus = LazyLoading extends LazyLoadingDisabled ? EagerApplicationStatus : LazyApplicationStatus
+
+export declare const ApplicationStatus: (new (init: ModelInit<ApplicationStatus>) => ApplicationStatus) & {
+  copyOf(source: ApplicationStatus, mutator: (draft: MutableModel<ApplicationStatus>) => MutableModel<ApplicationStatus> | void): ApplicationStatus;
+}
+
 type EagerCart = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Cart, 'id'>;
