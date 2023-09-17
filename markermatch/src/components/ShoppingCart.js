@@ -4,14 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
 import { Course } from '../models';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import { ApplicationStatus } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useNavigate } from 'react-router';
-import { isEmpty } from '@aws-amplify/core';
 
 function ShoppingCart() {
-    const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const { user } = useAuthenticator((context) => [context.user]);
 
@@ -65,6 +61,25 @@ function ShoppingCart() {
         fetchCourses();
     }, []);
 
+    const checkOut = (courses, userId) => {
+        addCheckOut(courses, userId);
+      }
+
+    async function addCheckOut(courses, userId) {
+        // console.log(courses);
+        // const models = await DataStore.query(Cart, (c) => c.userId.eq(userId));
+        // if (models.length !== 0){
+        //     let flag = false;
+        //     const list = models[0].selectedCourses.split(",");
+
+        //     const updatedCourses = models[0].selectedCourses + ", ";
+        //     // await DataStore.save(
+        //     //   Cart.copyOf(models[0], updated => {
+        //     //     updated.selectedCourses = updatedCourses
+        //     //   })
+        //     //   );
+        // }
+     } 
     return (
         <>
             <div className="grid-container">
@@ -103,7 +118,7 @@ function ShoppingCart() {
                         </tbody>
                     </table>
                 </div>
-                <div id="checkout-button">Checkout!</div>
+                <div id="checkout-button" onClick={() => checkOut(courses, user?.username)} >Checkout!</div>
             </div>
         </>
     );
