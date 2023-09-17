@@ -5,7 +5,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
 import { Course } from '../models';
 import { ApplicationStatus } from '../models';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { Alert, useAuthenticator } from '@aws-amplify/ui-react';
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
@@ -63,23 +63,30 @@ function ShoppingCart() {
 
     const checkOut = (courses, userId) => {
         addCheckOut(courses, userId);
-      }
+    }
 
     async function addCheckOut(courses, userId) {
-        // console.log(courses);
-        // const models = await DataStore.query(Cart, (c) => c.userId.eq(userId));
-        // if (models.length !== 0){
-        //     let flag = false;
-        //     const list = models[0].selectedCourses.split(",");
+        let flag = true;
+        if (courses.length !== 0) {
+            try {
+                for (const course of courses) {
+                await DataStore.save(new ApplicationStatus({
+                    userId: userId,
+                    appliedCourses: course.name,
+                }));
 
-        //     const updatedCourses = models[0].selectedCourses + ", ";
-        //     // await DataStore.save(
-        //     //   Cart.copyOf(models[0], updated => {
-        //     //     updated.selectedCourses = updatedCourses
-        //     //   })
-        //     //   );
-        // }
-     } 
+            }
+            } catch (error) {
+                flag = false;
+            }
+        }
+        if(flag){
+            alert("Successfully checked out");
+        }
+        else{
+          alert("Error checking out");
+        }
+    }
     return (
         <>
             <div className="grid-container">
