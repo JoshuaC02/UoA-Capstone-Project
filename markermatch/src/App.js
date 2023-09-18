@@ -1,11 +1,13 @@
 import './styles/HorizontalLayout.css';
 import './styles/NavbarComp.css';
 import './styles/Sidebar.css';
+import './styles/AddCourses.css';
 import Homepage from './pages/Homepage';
 import Authentication from './pages/Authentication';
 import Testpage from './pages/Testpage';
 import NoAuth from './pages/NoAuth';
 import Cart from './pages/Cart'
+import AddCourses from './pages/AddCourses';
 
 import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
@@ -33,6 +35,7 @@ return (
           <Route path="/auth" element={<Authentication />} />
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
+          <Route path="/addcourses" element={<RequireAuthCourseCoord><AddCourses /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />
         </Routes>
       </Authenticator.Provider>
