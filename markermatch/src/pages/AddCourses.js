@@ -17,7 +17,7 @@ function AddCourses() {
                 <div className="content-container">
                     <Sidebar />
                     <div id="add-course-form">
-                        <Form>
+                        <Form className="border p-4 rounded " style={{ fontWeight: 600 }}>
                             <Row className="mb-3">
                                 <Form.Group as={Col}>
                                     <Form.Label>Course Faculty</Form.Label> {/* we can change this at any time as i understand this is to be used in compsci*/}
@@ -51,7 +51,7 @@ function AddCourses() {
                                     <Form.Select aria-label="Default select example">
                                         <option value="1">Semester 1</option>
                                         <option value="2">Semester 2</option>
-                
+
                                     </Form.Select>
                                 </Form.Group>
 
@@ -68,21 +68,60 @@ function AddCourses() {
 
 
                             </Row>
+                            <Row className="mb-3">
+                                <Form.Group as={Col} className="d-flex align-items-center">
+                                    <Form.Label >Estimated number of students</Form.Label>
+                                    <Form.Control />
+                                </Form.Group>
 
-                            <Form.Group className="mb-3">
-                                <Form.Label>Estimated number of students</Form.Label>
-                                <Form.Control />
-                            </Form.Group>
+                                <Form.Group as={Col} className="d-flex align-items-center">
+                                    <Form.Label >Do you require markers for this course? ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</Form.Label>
+                                    <Form.Check
+                                        type="switch"
+                                        id="custom-switch"
+                                        label=""
+                                    />
+                                </Form.Group>
+                            </Row>
 
-                            <Form.Group className="mb-3">
-                                <Form.Label>Current number of enrolled students</Form.Label>
-                                <Form.Control  />
-                            </Form.Group>
+                            <Row className="mb-3">
+                                <Form.Group as={Col} className="d-flex align-items-center">
+                                    <Form.Label >Current number of enrolled students</Form.Label>
+                                    <Form.Control />
+                                </Form.Group>
+
+                                <Form.Group as={Col} className="d-flex align-items-center">
+                                    <Form.Label >Would you like to preassign markers if available?⠀⠀⠀⠀⠀⠀⠀</Form.Label>
+                                    <Form.Check
+                                        type="switch"
+                                        id="custom-switch"
+                                        label=""
+                                    />
+                                </Form.Group>
+                            </Row>
+
+                            <Row className="mb-3">
+                                <Form.Group as={Col} className="d-flex align-items-center">
+                                    <Form.Label >Number of available marking hours</Form.Label>
+                                    <Form.Control />
+                                </Form.Group>
+
+                                <Form.Group as={Col} className="d-flex align-items-center">
+                                    <Form.Label >Applicant minimum grade</Form.Label>
+                                    <Form.Select aria-label="Default select example">
+                                        <option value="1">A+</option>
+                                        <option value="2">A</option>
+                                        <option value="3">A-</option>
+                                        <option value="4">B+</option>
+                                        <option value="5">B</option>
+                                        <option value="6">B-</option>
+
+                                    </Form.Select>
+                                </Form.Group>
+                            </Row>
 
 
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
+                           
                         </Form>
                     </div>
                 </div>
