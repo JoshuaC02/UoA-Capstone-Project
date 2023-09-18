@@ -27,7 +27,7 @@ export function getSideLinks(user){
     {
       icon: "edit",
       path: "/addcourses",
-      label: "Add-courses",
+      label: "Add Courses",
       show: isCourseCo,
     },
     {
