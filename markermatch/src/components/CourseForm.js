@@ -12,8 +12,8 @@ function CourseForm() {
         courseCode: '',
         coordinatorName: '',
         coordinatorEmail: '',
-        year: 2023,
-        semester: 1,
+        year: '2023',
+        semester: '1',
         directorName: '',
         directorEmail: '',
         estimatedStudents: '',
@@ -37,26 +37,34 @@ function CourseForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData)
+        for (const key in formData) {
+            if (formData[key]  == '') {
+                alert(`Please fill in all fields (no empty fields are allowed).`);
+                return;
+            }
+
+        }
 
         try {
             await DataStore.save(
                 new Course({
-                    "coordinatorName": formData.coordinatorName,
-                    "coordinatorEmail": formData.coordinatorEmail,
-                    "courseCode": formData.courseCode,
-                    "yearSemester": `${formData.year} Semester ${formData.semester}`,
-                    "faculty": formData.faculty,
-                    "preassignMarkers": formData.preassignMarkers,
-                    "requireMarkers": formData.requireMarkers,
-                    "estimatedStudents": parseInt(formData.estimatedStudents), 
-                    "enrolledStudents": parseInt(formData.enrolledStudents), 
-                    "summary": formData.summary,
-                    "minGrade": formData.minGrade,
-                    "totalHours": parseInt(formData.totalHours), 
-                    "appOpen": true, 
-                    "description": formData.description,
-                    "directorName": formData.directorName,
-                    "directorEmail": formData.directorEmail
+                    coordinatorName: formData.coordinatorName,
+                    coordinatorEmail: formData.coordinatorEmail,
+                    courseCode: formData.courseCode,
+                    yearSemester: `${formData.year} Semester ${formData.semester}`,
+                    faculty: formData.faculty,
+                    preassignMarkers: formData.preassignMarkers,
+                    requireMarkers: formData.requireMarkers,
+                    estimatedStudents: formData.estimatedStudents, 
+                    enrolledStudents: formData.enrolledStudents, 
+                    summary: formData.summary,
+                    minGrade: formData.minGrade,
+                    totalHours: `${formData.totalHours}`, 
+                    appOpen: true, 
+                    description: formData.description,
+                    directorName: formData.directorName,
+                    directorEmail: formData.directorEmail
                 })
             );
             alert('Course successfully added.');

@@ -12,19 +12,22 @@ type Cart @model @auth(rules: [{allow: public}]) {
 
 type Course @model @auth(rules: [{allow: public}]) {
   id: ID!
-  coordinatorDetails: String
-  directorDetails: String
+  coordinatorName: String
+  coordinatorEmail: String
   courseCode: String
   yearSemester: String
-  desc: String
-  preAssignment: Boolean
-  markersRequired: Boolean
-  estNumStudents: Int
-  currEnrolled: Int
+  faculty: String
+  preassignMarkers: Boolean
+  requireMarkers: Boolean
+  estimatedStudents: String
+  enrolledStudents: String
   summary: String
   minGrade: String
-  totalHours: Int
+  totalHours: String
   appOpen: Boolean
+  description: String
+  directorName: String
+  directorEmail: String
 }
 
 type MarkerApplication @model @auth(rules: [{allow: public}]) {

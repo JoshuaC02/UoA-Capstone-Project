@@ -142,15 +142,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "coordinatorDetails": {
-                    "name": "coordinatorDetails",
+                "coordinatorName": {
+                    "name": "coordinatorName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "directorDetails": {
-                    "name": "directorDetails",
+                "coordinatorEmail": {
+                    "name": "coordinatorEmail",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -170,38 +170,38 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "desc": {
-                    "name": "desc",
+                "faculty": {
+                    "name": "faculty",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "preAssignment": {
-                    "name": "preAssignment",
+                "preassignMarkers": {
+                    "name": "preassignMarkers",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
-                "markersRequired": {
-                    "name": "markersRequired",
+                "requireMarkers": {
+                    "name": "requireMarkers",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
-                "estNumStudents": {
-                    "name": "estNumStudents",
+                "estimatedStudents": {
+                    "name": "estimatedStudents",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "currEnrolled": {
-                    "name": "currEnrolled",
+                "enrolledStudents": {
+                    "name": "enrolledStudents",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -222,7 +222,7 @@ export const schema = {
                 "totalHours": {
                     "name": "totalHours",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -230,6 +230,27 @@ export const schema = {
                     "name": "appOpen",
                     "isArray": false,
                     "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "directorName": {
+                    "name": "directorName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "directorEmail": {
+                    "name": "directorEmail",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -408,5 +429,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "a2e0cfdc38679979b1cbbeb77be65c84"
+    "version": "121269c05f3d6292c82965d6a2b5c0ee"
 };

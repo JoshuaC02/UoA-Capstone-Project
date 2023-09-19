@@ -24,7 +24,7 @@ function HorizontalLayout() {
         </div>
         <div className="courses">
           {courses.map(course => (
-            <CourseCard key={course.name} course={course} user={user}/>
+            <CourseCard key={course.id} course={course} user={user}/>
           ))}
         </div>
       </div>

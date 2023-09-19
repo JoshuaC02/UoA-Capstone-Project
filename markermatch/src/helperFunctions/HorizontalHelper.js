@@ -3,8 +3,9 @@ import { Cart } from '../models';
 import { Course } from '../models';
 
 export async function getCourseData() {
-  return DataStore.query(Course);
   
+  return DataStore.query(Course);
+
 }
   
 export function filterCourses(allCourses, term) {
@@ -13,8 +14,11 @@ export function filterCourses(allCourses, term) {
     }
 
     const filteredCourses = allCourses.filter(course =>
-      course.name.toLowerCase().includes(term.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(term.toLowerCase())
+      course.courseCode.toLowerCase().includes(term.toLowerCase()) ||
+      course.coordinatorName.toLowerCase().includes(term.toLowerCase()) ||
+      course.directorName.toLowerCase().includes(term.toLowerCase()) ||
+      course.description.toLowerCase().includes(term.toLowerCase()) ||
+      course.faculty.toLowerCase().includes(term.toLowerCase())
     );
   
     return filteredCourses;
