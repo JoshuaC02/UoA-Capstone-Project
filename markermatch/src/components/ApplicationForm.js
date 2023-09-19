@@ -60,7 +60,7 @@ function ApplicationForm() {
           id="selectOptions"
           name="selectedOptions"
           multiple
-          value={formData.selectedOptions}
+          value={formData.selectedClasses}
           onChange={handleOptionChange}
         >
           <option value="101">Option 1</option>
@@ -70,7 +70,7 @@ function ApplicationForm() {
         </select>
         </div>
 
-        <p>Selected Options: {formData.selectedOptions.join(', ')}</p>
+        <p>Selected Options: {formData.selectedClasses.join(', ')}</p>
 
         <button type="submit">Submit</button>
 

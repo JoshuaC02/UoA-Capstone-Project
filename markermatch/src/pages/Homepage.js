@@ -1,6 +1,5 @@
 import NavbarComp from '../components/NavbarComp';
 import Sidebar from '../components/Sidebar';
-import '../styles/HorizontalLayout.css';
 import HorizontalLayout from '../components/HorizontalLayout';
 
 function Homepage() {
