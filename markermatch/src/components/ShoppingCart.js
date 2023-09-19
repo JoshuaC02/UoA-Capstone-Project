@@ -29,7 +29,6 @@ function ShoppingCart() {
                 }
             }
         }
-
         return listOfCourses;
     }
     async function deleteUserSelectedCourse(courseId, userId) {

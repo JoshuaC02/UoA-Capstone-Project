@@ -4,12 +4,108 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { DataStore } from '@aws-amplify/datastore';
 import { MarkerApplication } from '../models';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Amplify, Auth, Storage } from 'aws-amplify';
+import CourseData from '../hooks/CourseData';
+import { Cart, Course } from '../models';
+import Card from 'react-bootstrap/Card';
+import ReactCardFlip from "react-card-flip";
 
 function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
+    const { courses } = CourseData();
+    const [outCourses, setCourses] = useState([]);
+    const [preferredCourses, setPreferedCourses] = useState({});
+    
+    const ApplicationCard = ({course}) => {
+        const [isFlipped, setIsFlipped] = useState(false);
+        let appStatus = "No"
+        if (course.appOpen) {appStatus = "Yes"}
+        return (
+          <div className="p-2" key={course.id}>
+            <ReactCardFlip isFlipped={isFlipped}>
+              <Card style={{ width: '18rem'}} key="front">
+                <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
+                <Card.Body>
+                  <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
+                  <Card.Subtitle>
+                    {course.coordinatorName}
+                  </Card.Subtitle>
+                  <Card.Text style={{height:"49px", overflow:"scroll"}}>
+                    {course.description}
+                  </Card.Text>
+                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Form.Control
+                            name={course.faculty + course.courseCode}
+                            value={formData.prefRating[course.faculty + course.courseCode]}
+                            onChange={handlePreferenceChange}
+                            type="number"
+                        />
+                </Card.Body>
+              </Card>
+    
+              <Card style={{ width: '18rem'}} key="back">
+                <Card.Body>
+                  <Card.Text>
+                    Minimum Grade: {course.minGrade}
+                  </Card.Text>
+                  <Card.Text>
+                    Estimated Hours: {course.totalHours}
+                  </Card.Text>
+                  <Card.Text>
+                    Taking Applications: {course.appOpen}
+                  </Card.Text>
+                  <Card.Text style={{height:"176px", overflow:"scroll"}}>
+                    Description: <br />
+                    {course.summary}
+                  </Card.Text>
+                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Form.Control
+                            name={course.faculty + course.courseCode}
+                            value={formData.prefRating[course.faculty + course.courseCode]}
+                            onChange={handlePreferenceChange}
+                            type="number"
+                        />
+                </Card.Body>
+              </Card>
+            </ReactCardFlip>
+          </div>
+        )
+      }
+
+    async function getUserSelectedCourses() {
+        const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
+        let listOfCourses = [];
+        if (userCart[0] !== undefined) {
+            const selectedCourses = userCart[0].selectedCourses?.split(",");
+            const allCourses = await DataStore.query(Course)
+            for (let element in selectedCourses) {
+                for (let course in allCourses) {
+                    if (allCourses[course].faculty + allCourses[course].courseCode == selectedCourses[element].trim()) {
+                        listOfCourses.push(allCourses[course]);
+                    }
+                }
+            }
+        }
+
+        return listOfCourses;
+    }
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            const fetchedCourses = await getUserSelectedCourses();
+            let preferredCourses = {}
+            for (let course in fetchedCourses) {
+                preferredCourses[fetchedCourses[course].faculty + fetchedCourses[course].courseCode] = 0;
+            }
+            setCourses(fetchedCourses);
+            setPreferedCourses(preferredCourses);
+        };
+
+        fetchCourses();
+    }, []);
+
     const [formData, setFormData] = useState({
         givenName: user?.attributes?.given_name,
         familyName: user?.attributes?.family_name,
@@ -20,12 +116,12 @@ function MarkerApplicationForm() {
         validNzWorkPermit: false,
         degree: '',
         yearsOfStudy: '',
-        underPostGrad: '',
+        underPostGrad: 'Undergraduate',
         currentTutor: false,
         maxHours: 0,
         transcriptId: '',
         cvId: '',
-        prefRating: '1, 2, 3'
+        prefRating: {}
     });
 
     const handleChange = (e) => {
@@ -35,6 +131,14 @@ function MarkerApplicationForm() {
             [name]: type === 'checkbox' ? checked : value
         }));
     };
+
+    const handlePreferenceChange = async (e) => {
+        const { name, value, type, checked } = e.target;
+        if (value > 0 && value < outCourses.length + 1) {
+            formData.prefRating[name] = value
+        }
+        alert(formData.prefRating[name])
+    }
 
     const handleCvChange = async (e) => {
         const file = e.target.files[0];
@@ -53,12 +157,12 @@ function MarkerApplicationForm() {
             console.log("Error uploading transcript: ", error);
         }
     }
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData)
         for (const key in formData) {
-            if (formData[key] == '') {
+            if (formData[key] === '') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
                 return;
             }
@@ -250,6 +354,16 @@ function MarkerApplicationForm() {
                         />
                     </Form.Group>
                 </Row>
+                <Row>
+                <div className="grid-container">
+                    <div className="courses">
+                        {outCourses.map(course => (
+                            <ApplicationCard key={course.id} course={course} user={user}/>
+                        ))}
+                    </div>
+                </div>
+                </Row>
+                
 
                 <Button variant="primary" type="submit">Submit</Button>
             </Form>

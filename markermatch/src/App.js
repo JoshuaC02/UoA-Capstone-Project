@@ -40,7 +40,7 @@ return (
           <Route path="/addcourses" element={<RequireAuthCourseCoord><AddCourses /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />
           <Route path="/student-interface" element={<Studentpage/>} />
-          <Route path="/application-form" element={<ApplicationPage />} />
+          <Route path="/application-form" element={<RequireAuthUser><ApplicationPage /></RequireAuthUser>} />
         </Routes>
       </Authenticator.Provider>
     </Router>

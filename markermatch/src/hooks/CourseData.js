@@ -44,10 +44,10 @@ function CourseData() {
             <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
             <Card.Body>
               <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
-              <Card.Text>
+              <Card.Subtitle>
                 {course.coordinatorName}
-              </Card.Text>
-              <Card.Text>
+              </Card.Subtitle>
+              <Card.Text style={{height:"49px", overflow:"scroll"}}>
                 {course.description}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
