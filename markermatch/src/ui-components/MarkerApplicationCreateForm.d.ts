@@ -21,9 +21,14 @@ export declare type MarkerApplicationCreateFormInputValues = {
     validNzWorkPermit?: boolean;
     degree?: string;
     yearsOfStudy?: string;
-    underPostGrad?: boolean;
-    currentTutor?: string;
+    underPostGrad?: string;
+    currentTutor?: boolean;
     maxHours?: number;
+    transcriptId?: string;
+    cvId?: string;
+    prefRating?: string;
+    givenName?: string;
+    familyName?: string;
 };
 export declare type MarkerApplicationCreateFormValidationValues = {
     userId?: ValidationFunction<string>;
@@ -34,9 +39,14 @@ export declare type MarkerApplicationCreateFormValidationValues = {
     validNzWorkPermit?: ValidationFunction<boolean>;
     degree?: ValidationFunction<string>;
     yearsOfStudy?: ValidationFunction<string>;
-    underPostGrad?: ValidationFunction<boolean>;
-    currentTutor?: ValidationFunction<string>;
+    underPostGrad?: ValidationFunction<string>;
+    currentTutor?: ValidationFunction<boolean>;
     maxHours?: ValidationFunction<number>;
+    transcriptId?: ValidationFunction<string>;
+    cvId?: ValidationFunction<string>;
+    prefRating?: ValidationFunction<string>;
+    givenName?: ValidationFunction<string>;
+    familyName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MarkerApplicationCreateFormOverridesProps = {
@@ -49,9 +59,14 @@ export declare type MarkerApplicationCreateFormOverridesProps = {
     validNzWorkPermit?: PrimitiveOverrideProps<SwitchFieldProps>;
     degree?: PrimitiveOverrideProps<TextFieldProps>;
     yearsOfStudy?: PrimitiveOverrideProps<TextFieldProps>;
-    underPostGrad?: PrimitiveOverrideProps<SwitchFieldProps>;
-    currentTutor?: PrimitiveOverrideProps<TextFieldProps>;
+    underPostGrad?: PrimitiveOverrideProps<TextFieldProps>;
+    currentTutor?: PrimitiveOverrideProps<SwitchFieldProps>;
     maxHours?: PrimitiveOverrideProps<TextFieldProps>;
+    transcriptId?: PrimitiveOverrideProps<TextFieldProps>;
+    cvId?: PrimitiveOverrideProps<TextFieldProps>;
+    prefRating?: PrimitiveOverrideProps<TextFieldProps>;
+    givenName?: PrimitiveOverrideProps<TextFieldProps>;
+    familyName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MarkerApplicationCreateFormProps = React.PropsWithChildren<{
     overrides?: MarkerApplicationCreateFormOverridesProps | undefined | null;

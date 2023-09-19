@@ -88,6 +88,7 @@ type EagerCourse = {
   readonly description?: string | null;
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
+  readonly name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -114,6 +115,7 @@ type LazyCourse = {
   readonly description?: string | null;
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
+  readonly name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -138,9 +140,14 @@ type EagerMarkerApplication = {
   readonly validNzWorkPermit?: boolean | null;
   readonly degree?: string | null;
   readonly yearsOfStudy?: string | null;
-  readonly underPostGrad?: boolean | null;
-  readonly currentTutor?: string | null;
+  readonly underPostGrad?: string | null;
+  readonly currentTutor?: boolean | null;
   readonly maxHours?: number | null;
+  readonly transcriptId?: string | null;
+  readonly cvId?: string | null;
+  readonly prefRating?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -159,9 +166,14 @@ type LazyMarkerApplication = {
   readonly validNzWorkPermit?: boolean | null;
   readonly degree?: string | null;
   readonly yearsOfStudy?: string | null;
-  readonly underPostGrad?: boolean | null;
-  readonly currentTutor?: string | null;
+  readonly underPostGrad?: string | null;
+  readonly currentTutor?: boolean | null;
   readonly maxHours?: number | null;
+  readonly transcriptId?: string | null;
+  readonly cvId?: string | null;
+  readonly prefRating?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
