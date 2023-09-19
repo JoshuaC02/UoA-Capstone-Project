@@ -51,7 +51,7 @@ function CourseData() {
                 {course.description}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
+              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.faculty + '' + course.courseCode, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
 
@@ -71,7 +71,7 @@ function CourseData() {
                 {course.summary}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
+              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.faculty + '' + course.courseCode, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
         </ReactCardFlip>

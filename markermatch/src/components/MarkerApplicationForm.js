@@ -11,9 +11,11 @@ import { Amplify, Auth, Storage } from 'aws-amplify';
 function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
     const [formData, setFormData] = useState({
+        givenName: user?.attributes?.given_name,
+        familyName: user?.attributes?.family_name,
         auid: '',
         upi: '',
-        preferredEmail: '',
+        preferredEmail: user?.attributes?.email,
         overseas: false,
         validNzWorkPermit: false,
         degree: '',
@@ -56,7 +58,7 @@ function MarkerApplicationForm() {
         e.preventDefault();
         console.log(formData)
         for (const key in formData) {
-            if (formData[key]  == '') {
+            if (formData[key] == '') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
                 return;
             }
@@ -66,6 +68,9 @@ function MarkerApplicationForm() {
 
             await DataStore.save(
                 new MarkerApplication({
+                    givenName: formData.givenName,
+                    givenName: formData.familyName,
+                    familyName: user?.attributes?.familyName,
                     userId: user?.username,
                     auid: formData.auid,
                     upi: formData.upi,
@@ -96,6 +101,26 @@ function MarkerApplicationForm() {
             <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Form.Group as={Col}>
+                        <Form.Label>Given Name</Form.Label>
+                        <Form.Control
+                            name="givenName"
+                            placeholder="John"
+                            value={formData.givenName}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+
+                    <Form.Group as={Col}>
+                        <Form.Label>Family Name</Form.Label>
+                        <Form.Control
+                            name="familyName"
+                            placeholder="Doe"
+                            value={formData.familyName}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+
+                    <Form.Group as={Col}>
                         <Form.Label>Auckland University ID (AUID)</Form.Label>
                         <Form.Control
                             name="auid"
@@ -119,7 +144,6 @@ function MarkerApplicationForm() {
                         <Form.Label>Contact Email:</Form.Label>
                         <Form.Control
                             name="preferredEmail"
-                            defaultValue="test@test.com" // not working
                             value={formData.preferredEmail}
                             onChange={handleChange}
                         />

@@ -28,6 +28,8 @@ export declare type MarkerApplicationUpdateFormInputValues = {
     transcriptId?: string;
     cvId?: string;
     prefRating?: string;
+    givenName?: string;
+    familyName?: string;
 };
 export declare type MarkerApplicationUpdateFormValidationValues = {
     userId?: ValidationFunction<string>;
@@ -44,6 +46,8 @@ export declare type MarkerApplicationUpdateFormValidationValues = {
     transcriptId?: ValidationFunction<string>;
     cvId?: ValidationFunction<string>;
     prefRating?: ValidationFunction<string>;
+    givenName?: ValidationFunction<string>;
+    familyName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MarkerApplicationUpdateFormOverridesProps = {
@@ -62,6 +66,8 @@ export declare type MarkerApplicationUpdateFormOverridesProps = {
     transcriptId?: PrimitiveOverrideProps<TextFieldProps>;
     cvId?: PrimitiveOverrideProps<TextFieldProps>;
     prefRating?: PrimitiveOverrideProps<TextFieldProps>;
+    givenName?: PrimitiveOverrideProps<TextFieldProps>;
+    familyName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MarkerApplicationUpdateFormProps = React.PropsWithChildren<{
     overrides?: MarkerApplicationUpdateFormOverridesProps | undefined | null;

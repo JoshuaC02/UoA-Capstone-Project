@@ -47,5 +47,7 @@ type MarkerApplication @model @auth(rules: [{allow: public}]) {
   transcriptId: String
   cvId: String
   prefRating: String
+  givenName: String
+  familyName: String
 }
  

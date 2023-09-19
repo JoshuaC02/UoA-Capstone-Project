@@ -146,6 +146,8 @@ type EagerMarkerApplication = {
   readonly transcriptId?: string | null;
   readonly cvId?: string | null;
   readonly prefRating?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -170,6 +172,8 @@ type LazyMarkerApplication = {
   readonly transcriptId?: string | null;
   readonly cvId?: string | null;
   readonly prefRating?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

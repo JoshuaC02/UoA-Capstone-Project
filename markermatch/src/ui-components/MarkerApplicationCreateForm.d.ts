@@ -27,6 +27,8 @@ export declare type MarkerApplicationCreateFormInputValues = {
     transcriptId?: string;
     cvId?: string;
     prefRating?: string;
+    givenName?: string;
+    familyName?: string;
 };
 export declare type MarkerApplicationCreateFormValidationValues = {
     userId?: ValidationFunction<string>;
@@ -43,6 +45,8 @@ export declare type MarkerApplicationCreateFormValidationValues = {
     transcriptId?: ValidationFunction<string>;
     cvId?: ValidationFunction<string>;
     prefRating?: ValidationFunction<string>;
+    givenName?: ValidationFunction<string>;
+    familyName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MarkerApplicationCreateFormOverridesProps = {
@@ -61,6 +65,8 @@ export declare type MarkerApplicationCreateFormOverridesProps = {
     transcriptId?: PrimitiveOverrideProps<TextFieldProps>;
     cvId?: PrimitiveOverrideProps<TextFieldProps>;
     prefRating?: PrimitiveOverrideProps<TextFieldProps>;
+    givenName?: PrimitiveOverrideProps<TextFieldProps>;
+    familyName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MarkerApplicationCreateFormProps = React.PropsWithChildren<{
     overrides?: MarkerApplicationCreateFormOverridesProps | undefined | null;
