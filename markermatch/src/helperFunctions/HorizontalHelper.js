@@ -3,6 +3,7 @@ import { Cart } from '../models';
 import { Course } from '../models';
 
 export async function getCourseData() {
+  // console.log(DataStore);
   return DataStore.query(Course);
 }
   
@@ -10,9 +11,10 @@ export function filterCourses(allCourses, term) {
     if (term.trim() === '') {
       return allCourses;
     }
-  
+    console.log(allCourses)
+    console.log(term)
     const filteredCourses = allCourses.filter(course =>
-      course.courseName.toLowerCase().includes(term.toLowerCase()) ||
+      course.name.toLowerCase().includes(term.toLowerCase()) ||
       course.instructor.toLowerCase().includes(term.toLowerCase())
     );
   
