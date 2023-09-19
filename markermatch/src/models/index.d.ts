@@ -6,6 +6,36 @@ import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
 
 
+type EagerApplicationStatus = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicationStatus, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly appliedCourses?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyApplicationStatus = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicationStatus, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly appliedCourses?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ApplicationStatus = LazyLoading extends LazyLoadingDisabled ? EagerApplicationStatus : LazyApplicationStatus
+
+export declare const ApplicationStatus: (new (init: ModelInit<ApplicationStatus>) => ApplicationStatus) & {
+  copyOf(source: ApplicationStatus, mutator: (draft: MutableModel<ApplicationStatus>) => MutableModel<ApplicationStatus> | void): ApplicationStatus;
+}
+
 type EagerCart = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Cart, 'id'>;
@@ -42,13 +72,19 @@ type EagerCourse = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name?: string | null;
+  readonly coordinatorDetails?: string | null;
+  readonly directorDetails?: string | null;
+  readonly courseCode?: string | null;
+  readonly yearSemester?: string | null;
+  readonly desc?: string | null;
+  readonly preAssignment?: boolean | null;
+  readonly markersRequired?: boolean | null;
+  readonly estNumStudents?: number | null;
+  readonly currEnrolled?: number | null;
   readonly summary?: string | null;
-  readonly instructor?: string | null;
   readonly minGrade?: string | null;
   readonly totalHours?: number | null;
   readonly appOpen?: boolean | null;
-  readonly desc?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -59,13 +95,19 @@ type LazyCourse = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name?: string | null;
+  readonly coordinatorDetails?: string | null;
+  readonly directorDetails?: string | null;
+  readonly courseCode?: string | null;
+  readonly yearSemester?: string | null;
+  readonly desc?: string | null;
+  readonly preAssignment?: boolean | null;
+  readonly markersRequired?: boolean | null;
+  readonly estNumStudents?: number | null;
+  readonly currEnrolled?: number | null;
   readonly summary?: string | null;
-  readonly instructor?: string | null;
   readonly minGrade?: string | null;
   readonly totalHours?: number | null;
   readonly appOpen?: boolean | null;
-  readonly desc?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -82,9 +124,9 @@ type EagerMarkerApplication = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly upi?: string | null;
+  readonly userId?: string | null;
   readonly auid?: string | null;
-  readonly maxHours?: number | null;
+  readonly upi?: string | null;
   readonly preferredEmail?: string | null;
   readonly overseas?: boolean | null;
   readonly validNzWorkPermit?: boolean | null;
@@ -92,6 +134,7 @@ type EagerMarkerApplication = {
   readonly yearsOfStudy?: string | null;
   readonly underPostGrad?: boolean | null;
   readonly currentTutor?: string | null;
+  readonly maxHours?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -102,9 +145,9 @@ type LazyMarkerApplication = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly upi?: string | null;
+  readonly userId?: string | null;
   readonly auid?: string | null;
-  readonly maxHours?: number | null;
+  readonly upi?: string | null;
   readonly preferredEmail?: string | null;
   readonly overseas?: boolean | null;
   readonly validNzWorkPermit?: boolean | null;
@@ -112,6 +155,7 @@ type LazyMarkerApplication = {
   readonly yearsOfStudy?: string | null;
   readonly underPostGrad?: boolean | null;
   readonly currentTutor?: string | null;
+  readonly maxHours?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

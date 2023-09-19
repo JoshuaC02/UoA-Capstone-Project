@@ -14,9 +14,9 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type MarkerApplicationUpdateFormInputValues = {
-    upi?: string;
+    userId?: string;
     auid?: string;
-    maxHours?: number;
+    upi?: string;
     preferredEmail?: string;
     overseas?: boolean;
     validNzWorkPermit?: boolean;
@@ -24,11 +24,12 @@ export declare type MarkerApplicationUpdateFormInputValues = {
     yearsOfStudy?: string;
     underPostGrad?: boolean;
     currentTutor?: string;
+    maxHours?: number;
 };
 export declare type MarkerApplicationUpdateFormValidationValues = {
-    upi?: ValidationFunction<string>;
+    userId?: ValidationFunction<string>;
     auid?: ValidationFunction<string>;
-    maxHours?: ValidationFunction<number>;
+    upi?: ValidationFunction<string>;
     preferredEmail?: ValidationFunction<string>;
     overseas?: ValidationFunction<boolean>;
     validNzWorkPermit?: ValidationFunction<boolean>;
@@ -36,13 +37,14 @@ export declare type MarkerApplicationUpdateFormValidationValues = {
     yearsOfStudy?: ValidationFunction<string>;
     underPostGrad?: ValidationFunction<boolean>;
     currentTutor?: ValidationFunction<string>;
+    maxHours?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MarkerApplicationUpdateFormOverridesProps = {
     MarkerApplicationUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    upi?: PrimitiveOverrideProps<TextFieldProps>;
+    userId?: PrimitiveOverrideProps<TextFieldProps>;
     auid?: PrimitiveOverrideProps<TextFieldProps>;
-    maxHours?: PrimitiveOverrideProps<TextFieldProps>;
+    upi?: PrimitiveOverrideProps<TextFieldProps>;
     preferredEmail?: PrimitiveOverrideProps<TextFieldProps>;
     overseas?: PrimitiveOverrideProps<SwitchFieldProps>;
     validNzWorkPermit?: PrimitiveOverrideProps<SwitchFieldProps>;
@@ -50,6 +52,7 @@ export declare type MarkerApplicationUpdateFormOverridesProps = {
     yearsOfStudy?: PrimitiveOverrideProps<TextFieldProps>;
     underPostGrad?: PrimitiveOverrideProps<SwitchFieldProps>;
     currentTutor?: PrimitiveOverrideProps<TextFieldProps>;
+    maxHours?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MarkerApplicationUpdateFormProps = React.PropsWithChildren<{
     overrides?: MarkerApplicationUpdateFormOverridesProps | undefined | null;

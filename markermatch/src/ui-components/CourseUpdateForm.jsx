@@ -30,33 +30,65 @@ export default function CourseUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
+    coordinatorDetails: "",
+    directorDetails: "",
+    courseCode: "",
+    yearSemester: "",
+    desc: "",
+    preAssignment: false,
+    markersRequired: false,
+    estNumStudents: "",
+    currEnrolled: "",
     summary: "",
-    instructor: "",
     minGrade: "",
     totalHours: "",
     appOpen: false,
-    desc: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
+  const [coordinatorDetails, setCoordinatorDetails] = React.useState(
+    initialValues.coordinatorDetails
+  );
+  const [directorDetails, setDirectorDetails] = React.useState(
+    initialValues.directorDetails
+  );
+  const [courseCode, setCourseCode] = React.useState(initialValues.courseCode);
+  const [yearSemester, setYearSemester] = React.useState(
+    initialValues.yearSemester
+  );
+  const [desc, setDesc] = React.useState(initialValues.desc);
+  const [preAssignment, setPreAssignment] = React.useState(
+    initialValues.preAssignment
+  );
+  const [markersRequired, setMarkersRequired] = React.useState(
+    initialValues.markersRequired
+  );
+  const [estNumStudents, setEstNumStudents] = React.useState(
+    initialValues.estNumStudents
+  );
+  const [currEnrolled, setCurrEnrolled] = React.useState(
+    initialValues.currEnrolled
+  );
   const [summary, setSummary] = React.useState(initialValues.summary);
-  const [instructor, setInstructor] = React.useState(initialValues.instructor);
   const [minGrade, setMinGrade] = React.useState(initialValues.minGrade);
   const [totalHours, setTotalHours] = React.useState(initialValues.totalHours);
   const [appOpen, setAppOpen] = React.useState(initialValues.appOpen);
-  const [desc, setDesc] = React.useState(initialValues.desc);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = courseRecord
       ? { ...initialValues, ...courseRecord }
       : initialValues;
-    setName(cleanValues.name);
+    setCoordinatorDetails(cleanValues.coordinatorDetails);
+    setDirectorDetails(cleanValues.directorDetails);
+    setCourseCode(cleanValues.courseCode);
+    setYearSemester(cleanValues.yearSemester);
+    setDesc(cleanValues.desc);
+    setPreAssignment(cleanValues.preAssignment);
+    setMarkersRequired(cleanValues.markersRequired);
+    setEstNumStudents(cleanValues.estNumStudents);
+    setCurrEnrolled(cleanValues.currEnrolled);
     setSummary(cleanValues.summary);
-    setInstructor(cleanValues.instructor);
     setMinGrade(cleanValues.minGrade);
     setTotalHours(cleanValues.totalHours);
     setAppOpen(cleanValues.appOpen);
-    setDesc(cleanValues.desc);
     setErrors({});
   };
   const [courseRecord, setCourseRecord] = React.useState(courseModelProp);
@@ -71,13 +103,19 @@ export default function CourseUpdateForm(props) {
   }, [idProp, courseModelProp]);
   React.useEffect(resetStateValues, [courseRecord]);
   const validations = {
-    name: [],
+    coordinatorDetails: [],
+    directorDetails: [],
+    courseCode: [],
+    yearSemester: [],
+    desc: [],
+    preAssignment: [],
+    markersRequired: [],
+    estNumStudents: [],
+    currEnrolled: [],
     summary: [],
-    instructor: [],
     minGrade: [],
     totalHours: [],
     appOpen: [],
-    desc: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -105,13 +143,19 @@ export default function CourseUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
+          coordinatorDetails,
+          directorDetails,
+          courseCode,
+          yearSemester,
+          desc,
+          preAssignment,
+          markersRequired,
+          estNumStudents,
+          currEnrolled,
           summary,
-          instructor,
           minGrade,
           totalHours,
           appOpen,
-          desc,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -159,34 +203,338 @@ export default function CourseUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Name"
+        label="Coordinator details"
         isRequired={false}
         isReadOnly={false}
-        value={name}
+        value={coordinatorDetails}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
+              coordinatorDetails: value,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
               summary,
-              instructor,
               minGrade,
               totalHours,
               appOpen,
-              desc,
             };
             const result = onChange(modelFields);
-            value = result?.name ?? value;
+            value = result?.coordinatorDetails ?? value;
           }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
+          if (errors.coordinatorDetails?.hasError) {
+            runValidationTasks("coordinatorDetails", value);
           }
-          setName(value);
+          setCoordinatorDetails(value);
         }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
+        onBlur={() =>
+          runValidationTasks("coordinatorDetails", coordinatorDetails)
+        }
+        errorMessage={errors.coordinatorDetails?.errorMessage}
+        hasError={errors.coordinatorDetails?.hasError}
+        {...getOverrideProps(overrides, "coordinatorDetails")}
+      ></TextField>
+      <TextField
+        label="Director details"
+        isRequired={false}
+        isReadOnly={false}
+        value={directorDetails}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails: value,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.directorDetails ?? value;
+          }
+          if (errors.directorDetails?.hasError) {
+            runValidationTasks("directorDetails", value);
+          }
+          setDirectorDetails(value);
+        }}
+        onBlur={() => runValidationTasks("directorDetails", directorDetails)}
+        errorMessage={errors.directorDetails?.errorMessage}
+        hasError={errors.directorDetails?.hasError}
+        {...getOverrideProps(overrides, "directorDetails")}
+      ></TextField>
+      <TextField
+        label="Course code"
+        isRequired={false}
+        isReadOnly={false}
+        value={courseCode}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode: value,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.courseCode ?? value;
+          }
+          if (errors.courseCode?.hasError) {
+            runValidationTasks("courseCode", value);
+          }
+          setCourseCode(value);
+        }}
+        onBlur={() => runValidationTasks("courseCode", courseCode)}
+        errorMessage={errors.courseCode?.errorMessage}
+        hasError={errors.courseCode?.hasError}
+        {...getOverrideProps(overrides, "courseCode")}
+      ></TextField>
+      <TextField
+        label="Year semester"
+        isRequired={false}
+        isReadOnly={false}
+        value={yearSemester}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester: value,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.yearSemester ?? value;
+          }
+          if (errors.yearSemester?.hasError) {
+            runValidationTasks("yearSemester", value);
+          }
+          setYearSemester(value);
+        }}
+        onBlur={() => runValidationTasks("yearSemester", yearSemester)}
+        errorMessage={errors.yearSemester?.errorMessage}
+        hasError={errors.yearSemester?.hasError}
+        {...getOverrideProps(overrides, "yearSemester")}
+      ></TextField>
+      <TextField
+        label="Desc"
+        isRequired={false}
+        isReadOnly={false}
+        value={desc}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc: value,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.desc ?? value;
+          }
+          if (errors.desc?.hasError) {
+            runValidationTasks("desc", value);
+          }
+          setDesc(value);
+        }}
+        onBlur={() => runValidationTasks("desc", desc)}
+        errorMessage={errors.desc?.errorMessage}
+        hasError={errors.desc?.hasError}
+        {...getOverrideProps(overrides, "desc")}
+      ></TextField>
+      <SwitchField
+        label="Pre assignment"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={preAssignment}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment: value,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.preAssignment ?? value;
+          }
+          if (errors.preAssignment?.hasError) {
+            runValidationTasks("preAssignment", value);
+          }
+          setPreAssignment(value);
+        }}
+        onBlur={() => runValidationTasks("preAssignment", preAssignment)}
+        errorMessage={errors.preAssignment?.errorMessage}
+        hasError={errors.preAssignment?.hasError}
+        {...getOverrideProps(overrides, "preAssignment")}
+      ></SwitchField>
+      <SwitchField
+        label="Markers required"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={markersRequired}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired: value,
+              estNumStudents,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.markersRequired ?? value;
+          }
+          if (errors.markersRequired?.hasError) {
+            runValidationTasks("markersRequired", value);
+          }
+          setMarkersRequired(value);
+        }}
+        onBlur={() => runValidationTasks("markersRequired", markersRequired)}
+        errorMessage={errors.markersRequired?.errorMessage}
+        hasError={errors.markersRequired?.hasError}
+        {...getOverrideProps(overrides, "markersRequired")}
+      ></SwitchField>
+      <TextField
+        label="Est num students"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={estNumStudents}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents: value,
+              currEnrolled,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.estNumStudents ?? value;
+          }
+          if (errors.estNumStudents?.hasError) {
+            runValidationTasks("estNumStudents", value);
+          }
+          setEstNumStudents(value);
+        }}
+        onBlur={() => runValidationTasks("estNumStudents", estNumStudents)}
+        errorMessage={errors.estNumStudents?.errorMessage}
+        hasError={errors.estNumStudents?.hasError}
+        {...getOverrideProps(overrides, "estNumStudents")}
+      ></TextField>
+      <TextField
+        label="Curr enrolled"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={currEnrolled}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled: value,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+            };
+            const result = onChange(modelFields);
+            value = result?.currEnrolled ?? value;
+          }
+          if (errors.currEnrolled?.hasError) {
+            runValidationTasks("currEnrolled", value);
+          }
+          setCurrEnrolled(value);
+        }}
+        onBlur={() => runValidationTasks("currEnrolled", currEnrolled)}
+        errorMessage={errors.currEnrolled?.errorMessage}
+        hasError={errors.currEnrolled?.hasError}
+        {...getOverrideProps(overrides, "currEnrolled")}
       ></TextField>
       <TextField
         label="Summary"
@@ -197,13 +545,19 @@ export default function CourseUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
               summary: value,
-              instructor,
               minGrade,
               totalHours,
               appOpen,
-              desc,
             };
             const result = onChange(modelFields);
             value = result?.summary ?? value;
@@ -219,36 +573,6 @@ export default function CourseUpdateForm(props) {
         {...getOverrideProps(overrides, "summary")}
       ></TextField>
       <TextField
-        label="Instructor"
-        isRequired={false}
-        isReadOnly={false}
-        value={instructor}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              summary,
-              instructor: value,
-              minGrade,
-              totalHours,
-              appOpen,
-              desc,
-            };
-            const result = onChange(modelFields);
-            value = result?.instructor ?? value;
-          }
-          if (errors.instructor?.hasError) {
-            runValidationTasks("instructor", value);
-          }
-          setInstructor(value);
-        }}
-        onBlur={() => runValidationTasks("instructor", instructor)}
-        errorMessage={errors.instructor?.errorMessage}
-        hasError={errors.instructor?.hasError}
-        {...getOverrideProps(overrides, "instructor")}
-      ></TextField>
-      <TextField
         label="Min grade"
         isRequired={false}
         isReadOnly={false}
@@ -257,13 +581,19 @@ export default function CourseUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
               summary,
-              instructor,
               minGrade: value,
               totalHours,
               appOpen,
-              desc,
             };
             const result = onChange(modelFields);
             value = result?.minGrade ?? value;
@@ -291,13 +621,19 @@ export default function CourseUpdateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
-              name,
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
               summary,
-              instructor,
               minGrade,
               totalHours: value,
               appOpen,
-              desc,
             };
             const result = onChange(modelFields);
             value = result?.totalHours ?? value;
@@ -321,13 +657,19 @@ export default function CourseUpdateForm(props) {
           let value = e.target.checked;
           if (onChange) {
             const modelFields = {
-              name,
+              coordinatorDetails,
+              directorDetails,
+              courseCode,
+              yearSemester,
+              desc,
+              preAssignment,
+              markersRequired,
+              estNumStudents,
+              currEnrolled,
               summary,
-              instructor,
               minGrade,
               totalHours,
               appOpen: value,
-              desc,
             };
             const result = onChange(modelFields);
             value = result?.appOpen ?? value;
@@ -342,36 +684,6 @@ export default function CourseUpdateForm(props) {
         hasError={errors.appOpen?.hasError}
         {...getOverrideProps(overrides, "appOpen")}
       ></SwitchField>
-      <TextField
-        label="Desc"
-        isRequired={false}
-        isReadOnly={false}
-        value={desc}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              summary,
-              instructor,
-              minGrade,
-              totalHours,
-              appOpen,
-              desc: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.desc ?? value;
-          }
-          if (errors.desc?.hasError) {
-            runValidationTasks("desc", value);
-          }
-          setDesc(value);
-        }}
-        onBlur={() => runValidationTasks("desc", desc)}
-        errorMessage={errors.desc?.errorMessage}
-        hasError={errors.desc?.hasError}
-        {...getOverrideProps(overrides, "desc")}
-      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

@@ -1,5 +1,71 @@
 export const schema = {
     "models": {
+        "ApplicationStatus": {
+            "name": "ApplicationStatus",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "appliedCourses": {
+                    "name": "appliedCourses",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "ApplicationStatuses",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Cart": {
             "name": "Cart",
             "fields": {
@@ -76,22 +142,71 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "name": {
-                    "name": "name",
+                "coordinatorDetails": {
+                    "name": "coordinatorDetails",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "directorDetails": {
+                    "name": "directorDetails",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "courseCode": {
+                    "name": "courseCode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "yearSemester": {
+                    "name": "yearSemester",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "desc": {
+                    "name": "desc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "preAssignment": {
+                    "name": "preAssignment",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "markersRequired": {
+                    "name": "markersRequired",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "estNumStudents": {
+                    "name": "estNumStudents",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "currEnrolled": {
+                    "name": "currEnrolled",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
                 "summary": {
                     "name": "summary",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "instructor": {
-                    "name": "instructor",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -115,13 +230,6 @@ export const schema = {
                     "name": "appOpen",
                     "isArray": false,
                     "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "desc": {
-                    "name": "desc",
-                    "isArray": false,
-                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -177,8 +285,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "upi": {
-                    "name": "upi",
+                "userId": {
+                    "name": "userId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -191,10 +299,10 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "maxHours": {
-                    "name": "maxHours",
+                "upi": {
+                    "name": "upi",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -247,6 +355,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "maxHours": {
+                    "name": "maxHours",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -293,5 +408,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "6ef9db1f10f3cd320b0753ae2faed052"
+    "version": "a2e0cfdc38679979b1cbbeb77be65c84"
 };

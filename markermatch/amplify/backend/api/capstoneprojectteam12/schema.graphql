@@ -1,3 +1,9 @@
+type ApplicationStatus @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userId: String
+  appliedCourses: String
+}
+
 type Cart @model @auth(rules: [{allow: public}]) {
   id: ID!
   userId: String
@@ -6,20 +12,26 @@ type Cart @model @auth(rules: [{allow: public}]) {
 
 type Course @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String
+  coordinatorDetails: String
+  directorDetails: String
+  courseCode: String
+  yearSemester: String
+  desc: String
+  preAssignment: Boolean
+  markersRequired: Boolean
+  estNumStudents: Int
+  currEnrolled: Int
   summary: String
-  instructor: String
   minGrade: String
   totalHours: Int
   appOpen: Boolean
-  desc: String
 }
 
 type MarkerApplication @model @auth(rules: [{allow: public}]) {
   id: ID!
-  upi: String
+  userId: String
   auid: String
-  maxHours: Int
+  upi: String
   preferredEmail: String
   overseas: Boolean
   validNzWorkPermit: Boolean
@@ -27,5 +39,6 @@ type MarkerApplication @model @auth(rules: [{allow: public}]) {
   yearsOfStudy: String
   underPostGrad: Boolean
   currentTutor: String
+  maxHours: Int
 }
  
