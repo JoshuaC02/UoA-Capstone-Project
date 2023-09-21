@@ -37,6 +37,12 @@ export function getSideLinks(user){
       show: isCourseCo,
     },
     {
+      icon: "columns",
+      path: "/view-applicants",
+      label: "View Applicants",
+      show: isCourseCo,
+    },
+    {
       icon: "edit",
       path: "/cart",
       label: "Cart",

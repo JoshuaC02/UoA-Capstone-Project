@@ -8,6 +8,7 @@ import Testpage from './pages/Testpage';
 import NoAuth from './pages/NoAuth';
 import Cart from './pages/Cart'
 import AddCourses from './pages/AddCourses';
+import ApplicantTable from './pages/ApplicantTable';
 
 import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
@@ -36,6 +37,7 @@ return (
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
           <Route path="/addcourses" element={<RequireAuthCourseCoord><AddCourses /></RequireAuthCourseCoord>} />
+          <Route path="/view-applicants" element={<RequireAuthCourseCoord><ApplicantTable /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />
         </Routes>
       </Authenticator.Provider>
