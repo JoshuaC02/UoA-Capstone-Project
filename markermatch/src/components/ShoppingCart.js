@@ -77,13 +77,20 @@ function ShoppingCart() {
                     userId: userId,
                     appliedCourses: course.name,
                 }));
-
             }
             } catch (error) {
                 flag = false;
             }
         }
         if(flag){
+            try{
+                for (const course of courses){
+                    deleteUserSelectedCourse(course.name, userId)
+                }
+                
+            }catch(error){
+                alert("Error checking out");      
+            }
             alert("Successfully checked out");
         }
         else{

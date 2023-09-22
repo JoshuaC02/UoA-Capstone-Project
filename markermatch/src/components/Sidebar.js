@@ -16,7 +16,6 @@ import {
   function Sidebar(){
     const { user } = useAuthenticator((context) => [context.user]);
     const isCourseCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "CourseCoordinators";
-    console.log(isCourseCo)
     const navigate = useNavigate(); 
     const location = useLocation();
     const isPathActive = (path) => location.pathname === path;
