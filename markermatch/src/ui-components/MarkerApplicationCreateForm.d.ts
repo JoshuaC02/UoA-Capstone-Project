@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SwitchFieldProps, TextAreaFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 export declare type ValidationResponse = {
     hasError: boolean;
@@ -13,42 +13,60 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type MarkerApplicationCreateFormInputValues = {
-    upi?: string;
+    userId?: string;
     auid?: string;
-    maxHours?: number;
+    upi?: string;
     preferredEmail?: string;
     overseas?: boolean;
     validNzWorkPermit?: boolean;
     degree?: string;
     yearsOfStudy?: string;
-    underPostGrad?: boolean;
-    currentTutor?: string;
+    underPostGrad?: string;
+    currentTutor?: boolean;
+    maxHours?: number;
+    transcriptId?: string;
+    cvId?: string;
+    prefRating?: string;
+    givenName?: string;
+    familyName?: string;
 };
 export declare type MarkerApplicationCreateFormValidationValues = {
-    upi?: ValidationFunction<string>;
+    userId?: ValidationFunction<string>;
     auid?: ValidationFunction<string>;
-    maxHours?: ValidationFunction<number>;
+    upi?: ValidationFunction<string>;
     preferredEmail?: ValidationFunction<string>;
     overseas?: ValidationFunction<boolean>;
     validNzWorkPermit?: ValidationFunction<boolean>;
     degree?: ValidationFunction<string>;
     yearsOfStudy?: ValidationFunction<string>;
-    underPostGrad?: ValidationFunction<boolean>;
-    currentTutor?: ValidationFunction<string>;
+    underPostGrad?: ValidationFunction<string>;
+    currentTutor?: ValidationFunction<boolean>;
+    maxHours?: ValidationFunction<number>;
+    transcriptId?: ValidationFunction<string>;
+    cvId?: ValidationFunction<string>;
+    prefRating?: ValidationFunction<string>;
+    givenName?: ValidationFunction<string>;
+    familyName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MarkerApplicationCreateFormOverridesProps = {
     MarkerApplicationCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    upi?: PrimitiveOverrideProps<TextFieldProps>;
+    userId?: PrimitiveOverrideProps<TextFieldProps>;
     auid?: PrimitiveOverrideProps<TextFieldProps>;
-    maxHours?: PrimitiveOverrideProps<TextFieldProps>;
+    upi?: PrimitiveOverrideProps<TextFieldProps>;
     preferredEmail?: PrimitiveOverrideProps<TextFieldProps>;
     overseas?: PrimitiveOverrideProps<SwitchFieldProps>;
     validNzWorkPermit?: PrimitiveOverrideProps<SwitchFieldProps>;
     degree?: PrimitiveOverrideProps<TextFieldProps>;
     yearsOfStudy?: PrimitiveOverrideProps<TextFieldProps>;
-    underPostGrad?: PrimitiveOverrideProps<SwitchFieldProps>;
-    currentTutor?: PrimitiveOverrideProps<TextFieldProps>;
+    underPostGrad?: PrimitiveOverrideProps<TextFieldProps>;
+    currentTutor?: PrimitiveOverrideProps<SwitchFieldProps>;
+    maxHours?: PrimitiveOverrideProps<TextFieldProps>;
+    transcriptId?: PrimitiveOverrideProps<TextFieldProps>;
+    cvId?: PrimitiveOverrideProps<TextFieldProps>;
+    prefRating?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    givenName?: PrimitiveOverrideProps<TextFieldProps>;
+    familyName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MarkerApplicationCreateFormProps = React.PropsWithChildren<{
     overrides?: MarkerApplicationCreateFormOverridesProps | undefined | null;

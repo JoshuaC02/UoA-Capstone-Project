@@ -142,8 +142,64 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "name": {
-                    "name": "name",
+                "coordinatorName": {
+                    "name": "coordinatorName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "coordinatorEmail": {
+                    "name": "coordinatorEmail",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "courseCode": {
+                    "name": "courseCode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "yearSemester": {
+                    "name": "yearSemester",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "faculty": {
+                    "name": "faculty",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "preassignMarkers": {
+                    "name": "preassignMarkers",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "requireMarkers": {
+                    "name": "requireMarkers",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "estimatedStudents": {
+                    "name": "estimatedStudents",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "enrolledStudents": {
+                    "name": "enrolledStudents",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -151,13 +207,6 @@ export const schema = {
                 },
                 "summary": {
                     "name": "summary",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "instructor": {
-                    "name": "instructor",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -173,7 +222,7 @@ export const schema = {
                 "totalHours": {
                     "name": "totalHours",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -184,8 +233,29 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "desc": {
-                    "name": "desc",
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "directorName": {
+                    "name": "directorName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "directorEmail": {
+                    "name": "directorEmail",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -243,8 +313,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "upi": {
-                    "name": "upi",
+                "userId": {
+                    "name": "userId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -257,10 +327,10 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "maxHours": {
-                    "name": "maxHours",
+                "upi": {
+                    "name": "upi",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -302,12 +372,54 @@ export const schema = {
                 "underPostGrad": {
                     "name": "underPostGrad",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
                 "currentTutor": {
                     "name": "currentTutor",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "maxHours": {
+                    "name": "maxHours",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "transcriptId": {
+                    "name": "transcriptId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cvId": {
+                    "name": "cvId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "prefRating": {
+                    "name": "prefRating",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "givenName": {
+                    "name": "givenName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "familyName": {
+                    "name": "familyName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -359,5 +471,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "5945b9f5b81d22a26cf1848b5c05e452"
+    "version": "e125d58f35f68e1c0a99e16a71f554d8"
 };

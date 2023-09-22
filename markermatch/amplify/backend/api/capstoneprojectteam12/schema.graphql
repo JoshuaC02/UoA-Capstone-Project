@@ -12,26 +12,42 @@ type Cart @model @auth(rules: [{allow: public}]) {
 
 type Course @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String
+  coordinatorName: String
+  coordinatorEmail: String
+  courseCode: String
+  yearSemester: String
+  faculty: String
+  preassignMarkers: Boolean
+  requireMarkers: Boolean
+  estimatedStudents: String
+  enrolledStudents: String
   summary: String
-  instructor: String
   minGrade: String
-  totalHours: Int
+  totalHours: String
   appOpen: Boolean
-  desc: String
+  description: String
+  directorName: String
+  directorEmail: String
+  name: String
 }
 
 type MarkerApplication @model @auth(rules: [{allow: public}]) {
   id: ID!
-  upi: String
+  userId: String
   auid: String
-  maxHours: Int
+  upi: String
   preferredEmail: String
   overseas: Boolean
   validNzWorkPermit: Boolean
   degree: String
   yearsOfStudy: String
-  underPostGrad: Boolean
-  currentTutor: String
+  underPostGrad: String
+  currentTutor: Boolean
+  maxHours: Int
+  transcriptId: String
+  cvId: String
+  prefRating: AWSJSON
+  givenName: String
+  familyName: String
 }
  

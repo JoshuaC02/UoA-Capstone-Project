@@ -5,6 +5,7 @@ import '../styles/StudentView.css';
 import StudentView from '../components/StudentView';
 
 
+
 function Studentpage() {
   return (
     <>

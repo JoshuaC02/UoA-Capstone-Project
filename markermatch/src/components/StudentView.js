@@ -62,7 +62,7 @@ function ApplicationStatuss() {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    });
 
     return (
 

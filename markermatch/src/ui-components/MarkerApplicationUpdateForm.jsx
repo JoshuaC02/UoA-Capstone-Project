@@ -11,6 +11,7 @@ import {
   Flex,
   Grid,
   SwitchField,
+  TextAreaField,
   TextField,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
@@ -30,20 +31,26 @@ export default function MarkerApplicationUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    upi: "",
+    userId: "",
     auid: "",
-    maxHours: "",
+    upi: "",
     preferredEmail: "",
     overseas: false,
     validNzWorkPermit: false,
     degree: "",
     yearsOfStudy: "",
-    underPostGrad: false,
-    currentTutor: "",
+    underPostGrad: "",
+    currentTutor: false,
+    maxHours: "",
+    transcriptId: "",
+    cvId: "",
+    prefRating: "",
+    givenName: "",
+    familyName: "",
   };
-  const [upi, setUpi] = React.useState(initialValues.upi);
+  const [userId, setUserId] = React.useState(initialValues.userId);
   const [auid, setAuid] = React.useState(initialValues.auid);
-  const [maxHours, setMaxHours] = React.useState(initialValues.maxHours);
+  const [upi, setUpi] = React.useState(initialValues.upi);
   const [preferredEmail, setPreferredEmail] = React.useState(
     initialValues.preferredEmail
   );
@@ -61,14 +68,22 @@ export default function MarkerApplicationUpdateForm(props) {
   const [currentTutor, setCurrentTutor] = React.useState(
     initialValues.currentTutor
   );
+  const [maxHours, setMaxHours] = React.useState(initialValues.maxHours);
+  const [transcriptId, setTranscriptId] = React.useState(
+    initialValues.transcriptId
+  );
+  const [cvId, setCvId] = React.useState(initialValues.cvId);
+  const [prefRating, setPrefRating] = React.useState(initialValues.prefRating);
+  const [givenName, setGivenName] = React.useState(initialValues.givenName);
+  const [familyName, setFamilyName] = React.useState(initialValues.familyName);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = markerApplicationRecord
       ? { ...initialValues, ...markerApplicationRecord }
       : initialValues;
-    setUpi(cleanValues.upi);
+    setUserId(cleanValues.userId);
     setAuid(cleanValues.auid);
-    setMaxHours(cleanValues.maxHours);
+    setUpi(cleanValues.upi);
     setPreferredEmail(cleanValues.preferredEmail);
     setOverseas(cleanValues.overseas);
     setValidNzWorkPermit(cleanValues.validNzWorkPermit);
@@ -76,6 +91,17 @@ export default function MarkerApplicationUpdateForm(props) {
     setYearsOfStudy(cleanValues.yearsOfStudy);
     setUnderPostGrad(cleanValues.underPostGrad);
     setCurrentTutor(cleanValues.currentTutor);
+    setMaxHours(cleanValues.maxHours);
+    setTranscriptId(cleanValues.transcriptId);
+    setCvId(cleanValues.cvId);
+    setPrefRating(
+      typeof cleanValues.prefRating === "string" ||
+        cleanValues.prefRating === null
+        ? cleanValues.prefRating
+        : JSON.stringify(cleanValues.prefRating)
+    );
+    setGivenName(cleanValues.givenName);
+    setFamilyName(cleanValues.familyName);
     setErrors({});
   };
   const [markerApplicationRecord, setMarkerApplicationRecord] = React.useState(
@@ -92,9 +118,9 @@ export default function MarkerApplicationUpdateForm(props) {
   }, [idProp, markerApplicationModelProp]);
   React.useEffect(resetStateValues, [markerApplicationRecord]);
   const validations = {
-    upi: [],
+    userId: [],
     auid: [],
-    maxHours: [],
+    upi: [],
     preferredEmail: [],
     overseas: [],
     validNzWorkPermit: [],
@@ -102,6 +128,12 @@ export default function MarkerApplicationUpdateForm(props) {
     yearsOfStudy: [],
     underPostGrad: [],
     currentTutor: [],
+    maxHours: [],
+    transcriptId: [],
+    cvId: [],
+    prefRating: [{ type: "JSON" }],
+    givenName: [],
+    familyName: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -129,9 +161,9 @@ export default function MarkerApplicationUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          upi,
+          userId,
           auid,
-          maxHours,
+          upi,
           preferredEmail,
           overseas,
           validNzWorkPermit,
@@ -139,6 +171,12 @@ export default function MarkerApplicationUpdateForm(props) {
           yearsOfStudy,
           underPostGrad,
           currentTutor,
+          maxHours,
+          transcriptId,
+          cvId,
+          prefRating,
+          givenName,
+          familyName,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -186,17 +224,17 @@ export default function MarkerApplicationUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Upi"
+        label="User id"
         isRequired={false}
         isReadOnly={false}
-        value={upi}
+        value={userId}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi: value,
+              userId: value,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -204,19 +242,25 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
-            value = result?.upi ?? value;
+            value = result?.userId ?? value;
           }
-          if (errors.upi?.hasError) {
-            runValidationTasks("upi", value);
+          if (errors.userId?.hasError) {
+            runValidationTasks("userId", value);
           }
-          setUpi(value);
+          setUserId(value);
         }}
-        onBlur={() => runValidationTasks("upi", upi)}
-        errorMessage={errors.upi?.errorMessage}
-        hasError={errors.upi?.hasError}
-        {...getOverrideProps(overrides, "upi")}
+        onBlur={() => runValidationTasks("userId", userId)}
+        errorMessage={errors.userId?.errorMessage}
+        hasError={errors.userId?.hasError}
+        {...getOverrideProps(overrides, "userId")}
       ></TextField>
       <TextField
         label="Auid"
@@ -227,9 +271,9 @@ export default function MarkerApplicationUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid: value,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -237,6 +281,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.auid ?? value;
@@ -252,21 +302,17 @@ export default function MarkerApplicationUpdateForm(props) {
         {...getOverrideProps(overrides, "auid")}
       ></TextField>
       <TextField
-        label="Max hours"
+        label="Upi"
         isRequired={false}
         isReadOnly={false}
-        type="number"
-        step="any"
-        value={maxHours}
+        value={upi}
         onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours: value,
+              upi: value,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -274,19 +320,25 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
-            value = result?.maxHours ?? value;
+            value = result?.upi ?? value;
           }
-          if (errors.maxHours?.hasError) {
-            runValidationTasks("maxHours", value);
+          if (errors.upi?.hasError) {
+            runValidationTasks("upi", value);
           }
-          setMaxHours(value);
+          setUpi(value);
         }}
-        onBlur={() => runValidationTasks("maxHours", maxHours)}
-        errorMessage={errors.maxHours?.errorMessage}
-        hasError={errors.maxHours?.hasError}
-        {...getOverrideProps(overrides, "maxHours")}
+        onBlur={() => runValidationTasks("upi", upi)}
+        errorMessage={errors.upi?.errorMessage}
+        hasError={errors.upi?.hasError}
+        {...getOverrideProps(overrides, "upi")}
       ></TextField>
       <TextField
         label="Preferred email"
@@ -297,9 +349,9 @@ export default function MarkerApplicationUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail: value,
               overseas,
               validNzWorkPermit,
@@ -307,6 +359,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.preferredEmail ?? value;
@@ -330,9 +388,9 @@ export default function MarkerApplicationUpdateForm(props) {
           let value = e.target.checked;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas: value,
               validNzWorkPermit,
@@ -340,6 +398,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.overseas ?? value;
@@ -363,9 +427,9 @@ export default function MarkerApplicationUpdateForm(props) {
           let value = e.target.checked;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit: value,
@@ -373,6 +437,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.validNzWorkPermit ?? value;
@@ -398,9 +468,9 @@ export default function MarkerApplicationUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -408,6 +478,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.degree ?? value;
@@ -431,9 +507,9 @@ export default function MarkerApplicationUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -441,6 +517,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy: value,
               underPostGrad,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.yearsOfStudy ?? value;
@@ -455,18 +537,18 @@ export default function MarkerApplicationUpdateForm(props) {
         hasError={errors.yearsOfStudy?.hasError}
         {...getOverrideProps(overrides, "yearsOfStudy")}
       ></TextField>
-      <SwitchField
+      <TextField
         label="Under post grad"
-        defaultChecked={false}
-        isDisabled={false}
-        isChecked={underPostGrad}
+        isRequired={false}
+        isReadOnly={false}
+        value={underPostGrad}
         onChange={(e) => {
-          let value = e.target.checked;
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -474,6 +556,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad: value,
               currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.underPostGrad ?? value;
@@ -487,19 +575,19 @@ export default function MarkerApplicationUpdateForm(props) {
         errorMessage={errors.underPostGrad?.errorMessage}
         hasError={errors.underPostGrad?.hasError}
         {...getOverrideProps(overrides, "underPostGrad")}
-      ></SwitchField>
-      <TextField
+      ></TextField>
+      <SwitchField
         label="Current tutor"
-        isRequired={false}
-        isReadOnly={false}
-        value={currentTutor}
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={currentTutor}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = e.target.checked;
           if (onChange) {
             const modelFields = {
-              upi,
+              userId,
               auid,
-              maxHours,
+              upi,
               preferredEmail,
               overseas,
               validNzWorkPermit,
@@ -507,6 +595,12 @@ export default function MarkerApplicationUpdateForm(props) {
               yearsOfStudy,
               underPostGrad,
               currentTutor: value,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
             };
             const result = onChange(modelFields);
             value = result?.currentTutor ?? value;
@@ -520,6 +614,244 @@ export default function MarkerApplicationUpdateForm(props) {
         errorMessage={errors.currentTutor?.errorMessage}
         hasError={errors.currentTutor?.hasError}
         {...getOverrideProps(overrides, "currentTutor")}
+      ></SwitchField>
+      <TextField
+        label="Max hours"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={maxHours}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              userId,
+              auid,
+              upi,
+              preferredEmail,
+              overseas,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours: value,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
+            };
+            const result = onChange(modelFields);
+            value = result?.maxHours ?? value;
+          }
+          if (errors.maxHours?.hasError) {
+            runValidationTasks("maxHours", value);
+          }
+          setMaxHours(value);
+        }}
+        onBlur={() => runValidationTasks("maxHours", maxHours)}
+        errorMessage={errors.maxHours?.errorMessage}
+        hasError={errors.maxHours?.hasError}
+        {...getOverrideProps(overrides, "maxHours")}
+      ></TextField>
+      <TextField
+        label="Transcript id"
+        isRequired={false}
+        isReadOnly={false}
+        value={transcriptId}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              auid,
+              upi,
+              preferredEmail,
+              overseas,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId: value,
+              cvId,
+              prefRating,
+              givenName,
+              familyName,
+            };
+            const result = onChange(modelFields);
+            value = result?.transcriptId ?? value;
+          }
+          if (errors.transcriptId?.hasError) {
+            runValidationTasks("transcriptId", value);
+          }
+          setTranscriptId(value);
+        }}
+        onBlur={() => runValidationTasks("transcriptId", transcriptId)}
+        errorMessage={errors.transcriptId?.errorMessage}
+        hasError={errors.transcriptId?.hasError}
+        {...getOverrideProps(overrides, "transcriptId")}
+      ></TextField>
+      <TextField
+        label="Cv id"
+        isRequired={false}
+        isReadOnly={false}
+        value={cvId}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              auid,
+              upi,
+              preferredEmail,
+              overseas,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId,
+              cvId: value,
+              prefRating,
+              givenName,
+              familyName,
+            };
+            const result = onChange(modelFields);
+            value = result?.cvId ?? value;
+          }
+          if (errors.cvId?.hasError) {
+            runValidationTasks("cvId", value);
+          }
+          setCvId(value);
+        }}
+        onBlur={() => runValidationTasks("cvId", cvId)}
+        errorMessage={errors.cvId?.errorMessage}
+        hasError={errors.cvId?.hasError}
+        {...getOverrideProps(overrides, "cvId")}
+      ></TextField>
+      <TextAreaField
+        label="Pref rating"
+        isRequired={false}
+        isReadOnly={false}
+        value={prefRating}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              auid,
+              upi,
+              preferredEmail,
+              overseas,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating: value,
+              givenName,
+              familyName,
+            };
+            const result = onChange(modelFields);
+            value = result?.prefRating ?? value;
+          }
+          if (errors.prefRating?.hasError) {
+            runValidationTasks("prefRating", value);
+          }
+          setPrefRating(value);
+        }}
+        onBlur={() => runValidationTasks("prefRating", prefRating)}
+        errorMessage={errors.prefRating?.errorMessage}
+        hasError={errors.prefRating?.hasError}
+        {...getOverrideProps(overrides, "prefRating")}
+      ></TextAreaField>
+      <TextField
+        label="Given name"
+        isRequired={false}
+        isReadOnly={false}
+        value={givenName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              auid,
+              upi,
+              preferredEmail,
+              overseas,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName: value,
+              familyName,
+            };
+            const result = onChange(modelFields);
+            value = result?.givenName ?? value;
+          }
+          if (errors.givenName?.hasError) {
+            runValidationTasks("givenName", value);
+          }
+          setGivenName(value);
+        }}
+        onBlur={() => runValidationTasks("givenName", givenName)}
+        errorMessage={errors.givenName?.errorMessage}
+        hasError={errors.givenName?.hasError}
+        {...getOverrideProps(overrides, "givenName")}
+      ></TextField>
+      <TextField
+        label="Family name"
+        isRequired={false}
+        isReadOnly={false}
+        value={familyName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              auid,
+              upi,
+              preferredEmail,
+              overseas,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              prefRating,
+              givenName,
+              familyName: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.familyName ?? value;
+          }
+          if (errors.familyName?.hasError) {
+            runValidationTasks("familyName", value);
+          }
+          setFamilyName(value);
+        }}
+        onBlur={() => runValidationTasks("familyName", familyName)}
+        errorMessage={errors.familyName?.errorMessage}
+        hasError={errors.familyName?.hasError}
+        {...getOverrideProps(overrides, "familyName")}
       ></TextField>
       <Flex
         justifyContent="space-between"
