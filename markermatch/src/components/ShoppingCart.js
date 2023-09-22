@@ -16,12 +16,15 @@ function ShoppingCart() {
         let listOfCourses = [];
         if (userCart[0] !== undefined) {
             const selectedCourses = userCart[0].selectedCourses?.split(",");
+            const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
-                let course = await DataStore.query(Course, (c) => c.name.eq(selectedCourses[element].trim()))
-                listOfCourses.push(course[0]);
+                for (let course in allCourses) {
+                    if (allCourses[course].faculty + allCourses[course].courseCode == selectedCourses[element].trim()) {
+                        listOfCourses.push(allCourses[course]);
+                    }
+                }
             }
         }
-
         return listOfCourses;
     }
     async function deleteUserSelectedCourse(courseId, userId) {
@@ -102,13 +105,13 @@ function ShoppingCart() {
                             {courses.length > 0 ? (
                                 courses.map(course => (
                                     <tr key={course.id}>
-                                        <td>{course.name}</td>
+                                        <td>{course.faculty} {course.courseCode}</td>
                                         <td>{course.summary}</td>
-                                        <td>{course.instructor}</td>
+                                        <td>{course.directorName}</td>
                                         <td>
                                             <button
                                                 id="remove-button"
-                                                onClick={() => deleteUserSelectedCourse(course.name, user.username)}
+                                                onClick={() => deleteUserSelectedCourse(course.faculty + course.courseCode, user.username)}
                                             >
                                                 Delete
                                             </button>

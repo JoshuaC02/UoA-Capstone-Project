@@ -16,8 +16,8 @@ export function getSideLinks(user){
     },
     {
       icon: "edit",
-      path: "/add-courses",
-      label: "Add-courses",
+      path: "/addcourses",
+      label: "Add Courses",
       show: isCourseCo,
     },
     {

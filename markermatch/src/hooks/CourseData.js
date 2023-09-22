@@ -15,6 +15,7 @@ function CourseData() {
   useEffect(() => {
     const fetchCourses = async () => {
       const fetchedCourses = await getCourseData();
+      console.log(fetchedCourses)
       setCourses(fetchedCourses);
       setAllCourses(fetchedCourses);
     };
@@ -42,15 +43,15 @@ function CourseData() {
           <Card style={{ width: '18rem'}} key="front">
             <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
             <Card.Body>
-              <Card.Title>{course.name}</Card.Title>
-              <Card.Text>
-                {course.summary}
-              </Card.Text>
-              <Card.Text>
-                {course.instructor}
+              <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
+              <Card.Subtitle>
+                {course.coordinatorName}
+              </Card.Subtitle>
+              <Card.Text style={{height:"49px", overflow:"scroll"}}>
+                {course.description}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
+              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.faculty + '' + course.courseCode, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
 
@@ -63,14 +64,14 @@ function CourseData() {
                 Estimated Hours: {course.totalHours}
               </Card.Text>
               <Card.Text>
-                Taking Applications: {appStatus}
+                Taking Applications: {course.appOpen}
               </Card.Text>
               <Card.Text style={{height:"176px", overflow:"scroll"}}>
                 Description: <br />
-                {course.desc}
+                {course.summary}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
+              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.faculty + '' + course.courseCode, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
         </ReactCardFlip>

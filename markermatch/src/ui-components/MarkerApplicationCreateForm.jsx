@@ -109,7 +109,7 @@ export default function MarkerApplicationCreateForm(props) {
     maxHours: [],
     transcriptId: [],
     cvId: [],
-    prefRating: [{ type: "JSON" }],
+    prefRating: [],
     givenName: [],
     familyName: [],
   };
@@ -180,8 +180,8 @@ export default function MarkerApplicationCreateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value === "") {
-              modelFields[key] = null;
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
             }
           });
           await DataStore.save(new MarkerApplication(modelFields));
@@ -713,10 +713,11 @@ export default function MarkerApplicationCreateForm(props) {
         hasError={errors.cvId?.hasError}
         {...getOverrideProps(overrides, "cvId")}
       ></TextField>
-      <TextAreaField
+      <TextField
         label="Pref rating"
         isRequired={false}
         isReadOnly={false}
+        value={prefRating}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -750,7 +751,7 @@ export default function MarkerApplicationCreateForm(props) {
         errorMessage={errors.prefRating?.errorMessage}
         hasError={errors.prefRating?.hasError}
         {...getOverrideProps(overrides, "prefRating")}
-      ></TextAreaField>
+      ></TextField>
       <TextField
         label="Given name"
         isRequired={false}

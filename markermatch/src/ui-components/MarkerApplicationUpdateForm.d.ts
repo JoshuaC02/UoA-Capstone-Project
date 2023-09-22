@@ -65,7 +65,7 @@ export declare type MarkerApplicationUpdateFormOverridesProps = {
     maxHours?: PrimitiveOverrideProps<TextFieldProps>;
     transcriptId?: PrimitiveOverrideProps<TextFieldProps>;
     cvId?: PrimitiveOverrideProps<TextFieldProps>;
-    prefRating?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    prefRating?: PrimitiveOverrideProps<TextFieldProps>;
     givenName?: PrimitiveOverrideProps<TextFieldProps>;
     familyName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;

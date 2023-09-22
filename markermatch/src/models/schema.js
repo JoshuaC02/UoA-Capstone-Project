@@ -407,7 +407,7 @@ export const schema = {
                 "prefRating": {
                     "name": "prefRating",
                     "isArray": false,
-                    "type": "AWSJSON",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -470,6 +470,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.4",
-    "version": "e125d58f35f68e1c0a99e16a71f554d8"
+    "codegenVersion": "3.4.3",
+    "version": "b29579d2d26643b40a5b40a922ab27cb"
 };

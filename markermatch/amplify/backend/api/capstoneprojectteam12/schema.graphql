@@ -46,7 +46,7 @@ type MarkerApplication @model @auth(rules: [{allow: public}]) {
   maxHours: Int
   transcriptId: String
   cvId: String
-  prefRating: AWSJSON
+  prefRating: String
   givenName: String
   familyName: String
 }

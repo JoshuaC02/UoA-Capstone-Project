@@ -94,12 +94,7 @@ export default function MarkerApplicationUpdateForm(props) {
     setMaxHours(cleanValues.maxHours);
     setTranscriptId(cleanValues.transcriptId);
     setCvId(cleanValues.cvId);
-    setPrefRating(
-      typeof cleanValues.prefRating === "string" ||
-        cleanValues.prefRating === null
-        ? cleanValues.prefRating
-        : JSON.stringify(cleanValues.prefRating)
-    );
+    setPrefRating(cleanValues.prefRating);
     setGivenName(cleanValues.givenName);
     setFamilyName(cleanValues.familyName);
     setErrors({});
@@ -131,7 +126,7 @@ export default function MarkerApplicationUpdateForm(props) {
     maxHours: [],
     transcriptId: [],
     cvId: [],
-    prefRating: [{ type: "JSON" }],
+    prefRating: [],
     givenName: [],
     familyName: [],
   };
@@ -202,8 +197,8 @@ export default function MarkerApplicationUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value === "") {
-              modelFields[key] = null;
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
             }
           });
           await DataStore.save(
@@ -736,7 +731,7 @@ export default function MarkerApplicationUpdateForm(props) {
         hasError={errors.cvId?.hasError}
         {...getOverrideProps(overrides, "cvId")}
       ></TextField>
-      <TextAreaField
+      <TextField
         label="Pref rating"
         isRequired={false}
         isReadOnly={false}
@@ -774,7 +769,7 @@ export default function MarkerApplicationUpdateForm(props) {
         errorMessage={errors.prefRating?.errorMessage}
         hasError={errors.prefRating?.hasError}
         {...getOverrideProps(overrides, "prefRating")}
-      ></TextAreaField>
+      ></TextField>
       <TextField
         label="Given name"
         isRequired={false}

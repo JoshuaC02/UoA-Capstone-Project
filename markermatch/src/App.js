@@ -1,11 +1,15 @@
 import './styles/HorizontalLayout.css';
 import './styles/NavbarComp.css';
 import './styles/Sidebar.css';
+import './styles/AddCourses.css';
 import Homepage from './pages/Homepage';
 import Authentication from './pages/Authentication';
 import Testpage from './pages/Testpage';
 import NoAuth from './pages/NoAuth';
 import Cart from './pages/Cart'
+import AddCourses from './pages/AddCourses';
+import Studentpage from './pages/Studentpage';
+import ApplicationPage from './pages/ApplicationPage';
 
 import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
@@ -18,12 +22,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Authenticator } from '@aws-amplify/ui-react';
 import Statuspage from './pages/Studentpage';
 
+import { Amplify, Storage } from 'aws-amplify';
+
 
 function App() {
   useEffect(() => {
+    document.body.style.overflow = "hidden";
 
   }, []);  
-
 return (
     <Router>
       <Authenticator.Provider>
@@ -32,7 +38,10 @@ return (
           <Route path="/auth" element={<Authentication />} />
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
           <Route path="/application-status" element={<RequireAuthUser><Statuspage/></RequireAuthUser>}  />
+          <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
+          <Route path="/addcourses" element={<RequireAuthCourseCoord><AddCourses /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />
+          <Route path="/application-form" element={<RequireAuthUser><ApplicationPage /></RequireAuthUser>} />
         </Routes>
       </Authenticator.Provider>
     </Router>
