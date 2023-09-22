@@ -106,7 +106,7 @@ function ShoppingCart() {
                         </tbody>
                     </table>
                 </div>
-                <div id="checkout-button">Checkout!</div>
+                <div id="checkout-button"><a href="/application-form">Checkout!</a></div>
             </div>
         </>
     );
