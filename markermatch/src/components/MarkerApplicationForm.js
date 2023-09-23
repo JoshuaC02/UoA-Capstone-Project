@@ -172,33 +172,17 @@ function MarkerApplicationForm() {
 
     const handlePreferenceChange = async (e) => { 
         const { name, value } = e.target;
-        if (parseInt(value) > courses.length || parseInt(value) === 0) {
-            alert("Please enter a valid number (between 1 and the number of courses in your cart)")
-            return;
-        }
-        for (const key in formData.courseSpecifics) {
-            if (key.includes("_preference")) {
-                if (formData.courseSpecifics[key] === parseInt(value) && key != name) {
-                    alert("Preferences must be unique")
-                    return;
-                }
-            }
-        }
         formData.courseSpecifics[name] = parseInt(value);
-        //alert("preference: " + formData.courseSpecifics[name]);
-        //alert(JSON.stringify(formData.courseSpecifics));
     }
 
     const handleGradeChange = async (e) => {
         const { name, value } = e.target;
         formData.courseSpecifics[name] = value
-        //alert("grade: " + formData.courseSpecifics[name])
     }
 
     const handlePreviousMarkerChange = async (e) => {
         const { name, value } = e.target;
         formData.courseSpecifics[name] = value
-        //alert("marker: " + formData.courseSpecifics[name])
     }
 
     const handleCvChange = async (e) => {
@@ -231,6 +215,20 @@ function MarkerApplicationForm() {
                 for (const subKey in formData.courseSpecifics) {
                     if (formData.courseSpecifics[subKey] === "") {
                         alert(`Please fill in all fields (no empty fields are allowed). test`);
+                        return;
+                    }
+                }
+            }
+        }
+        for (const aKey in formData.courseSpecifics) {
+            if (aKey.includes("_preference")) {
+                if (formData.courseSpecifics >= courses.length) {
+                    alert("Preferences must be unique and valid")
+                    return;
+                }
+                for (const bKey in formData.courseSpecifics) {
+                    if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
+                        alert("Preferences must be unique and valid")
                         return;
                     }
                 }
