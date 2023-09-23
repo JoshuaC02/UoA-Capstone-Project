@@ -110,13 +110,8 @@ export default function ApplicationStatusUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-<<<<<<< HEAD
             if (typeof value === "string" && value === "") {
               modelFields[key] = null;
-=======
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
->>>>>>> origin/application-form
             }
           });
           await DataStore.save(

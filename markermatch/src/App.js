@@ -26,10 +26,6 @@ import { Amplify, Storage } from 'aws-amplify';
 
 
 function App() {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-
-  }, []);  
 return (
     <Router>
       <Authenticator.Provider>

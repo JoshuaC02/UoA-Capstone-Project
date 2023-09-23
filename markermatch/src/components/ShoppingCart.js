@@ -6,6 +6,8 @@ import { Cart } from '../models';
 import { Course } from '../models';
 import { ApplicationStatus } from '../models';
 import { Alert, useAuthenticator } from '@aws-amplify/ui-react';
+import { Link } from 'react-router-dom';
+
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
@@ -64,39 +66,6 @@ function ShoppingCart() {
         fetchCourses();
     }, []);
 
-    const checkOut = (courses, userId) => {
-        addCheckOut(courses, userId);
-    }
-
-    async function addCheckOut(courses, userId) {
-        let flag = true;
-        if (courses.length !== 0) {
-            try {
-                for (const course of courses) {
-                await DataStore.save(new ApplicationStatus({
-                    userId: userId,
-                    appliedCourses: course.name,
-                }));
-            }
-            } catch (error) {
-                flag = false;
-            }
-        }
-        if(flag){
-            try{
-                for (const course of courses){
-                    deleteUserSelectedCourse(course.name, userId)
-                }
-                
-            }catch(error){
-                alert("Error checking out");      
-            }
-            alert("Successfully checked out");
-        }
-        else{
-          alert("Error checking out");
-        }
-    }
     return (
         <>
             <div className="grid-container">

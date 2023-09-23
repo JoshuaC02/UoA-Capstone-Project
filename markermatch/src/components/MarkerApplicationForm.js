@@ -8,11 +8,12 @@ import { useState, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Amplify, Auth, Storage } from 'aws-amplify';
 import CourseData from '../hooks/CourseData';
-import { Cart, Course } from '../models';
+import { Cart, Course, ApplicationStatus } from '../models';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
+import { async } from 'q';
 
-function MarkerApplicationForm() {
+function MarkerApplicationForm( {myCourses, myUserId}) {
     const { user } = useAuthenticator((context) => [context.user]);
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
@@ -257,13 +258,56 @@ function MarkerApplicationForm() {
                     courseSpecifics: JSON.stringify(formData.courseSpecifics)
                 })
             );
+            addCheckOut(outCourses, user.username);
             alert('Application successfully submitted.');
+            
         } catch (error) {
             console.error('Error submitting application:', error);
             alert(error)
             alert('An error has occurred, please refer to console.');
         }
     };
+
+    async function addCheckOut(outCourses, userId) {
+        let flag = true;
+        if (outCourses.length !== 0) {
+            try {
+                for (const course of outCourses) {
+                await DataStore.save(new ApplicationStatus({
+                    userId: userId,
+                    appliedCourses: course.faculty + " " + course.courseCode,
+                }));
+            }
+            } catch (error) {
+                flag = false;
+            }
+        }
+        if(flag){
+            alert("Successfully Submitted the form");
+            deleteAllSelectedCourses(userId);
+        }
+        else{
+            alert("Error Submitting the form");
+        }
+    }
+    async function deleteAllSelectedCourses (userId){
+        const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
+        const selectedCourses = userCart[0].selectedCourses?.split(",") || [];
+
+        try{
+            if (selectedCourses.length > 0) {
+                selectedCourses.length = 0;
+                const updatedCart = await DataStore.save(
+                    Cart.copyOf(userCart[0], (updated) => {
+                        updated.selectedCourses = "";
+                    })
+                );
+                alert("0 Selected Courses in cart");
+            }
+        }catch(e){
+            alert("Error removing selected courses from cart")
+        }
+    }
 
 
     return (
