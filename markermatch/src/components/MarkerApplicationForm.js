@@ -8,16 +8,19 @@ import { useState, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Amplify, Auth, Storage } from 'aws-amplify';
 import CourseData from '../hooks/CourseData';
-import { Cart, Course, ApplicationStatus } from '../models';
+import { Cart, Course } from '../models';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
-import { async } from 'q';
+import '../styles/MarkerApplicationForm.css';
 
-function MarkerApplicationForm( {myCourses, myUserId}) {
+
+
+function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
-    
+    const [step, setStep] = useState(1);
+
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
         let appStatus = "No"
@@ -204,6 +207,16 @@ function MarkerApplicationForm( {myCourses, myUserId}) {
         }
     }
 
+    //Steps to form
+    const handleNext = () => {
+        setStep(step + 1);
+      };
+    
+      const handlePrevious = () => {
+        setStep(step - 1);
+      };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData)
@@ -258,9 +271,7 @@ function MarkerApplicationForm( {myCourses, myUserId}) {
                     courseSpecifics: JSON.stringify(formData.courseSpecifics)
                 })
             );
-            addCheckOut(outCourses, user.username);
             alert('Application successfully submitted.');
-            
         } catch (error) {
             console.error('Error submitting application:', error);
             alert(error)
@@ -268,53 +279,38 @@ function MarkerApplicationForm( {myCourses, myUserId}) {
         }
     };
 
-    async function addCheckOut(outCourses, userId) {
-        let flag = true;
-        if (outCourses.length !== 0) {
-            try {
-                for (const course of outCourses) {
-                await DataStore.save(new ApplicationStatus({
-                    userId: userId,
-                    appliedCourses: course.faculty + " " + course.courseCode,
-                }));
-            }
-            } catch (error) {
-                flag = false;
-            }
-        }
-        if(flag){
-            alert("Successfully Submitted the form");
-            deleteAllSelectedCourses(userId);
-        }
-        else{
-            alert("Error Submitting the form");
-        }
-    }
-    async function deleteAllSelectedCourses (userId){
-        const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
-        const selectedCourses = userCart[0].selectedCourses?.split(",") || [];
-
-        try{
-            if (selectedCourses.length > 0) {
-                selectedCourses.length = 0;
-                const updatedCart = await DataStore.save(
-                    Cart.copyOf(userCart[0], (updated) => {
-                        updated.selectedCourses = "";
-                    })
-                );
-                alert("0 Selected Courses in cart");
-            }
-        }catch(e){
-            alert("Error removing selected courses from cart")
-        }
-    }
-
-
     return (
         <>
-
             <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
-                <Row className="mb-3">
+                {step === 1 && (
+                <div>
+                    <Row className="mb-3">
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Upload your transcript:</Form.Label>
+                            <Form.Control 
+                                type="file"
+                                name="transcript"
+                                onChange={handleTranscriptChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Upload your CV:</Form.Label>
+                            <Form.Control 
+                                type="file" 
+                                name="cv"
+                                onChange={handleCvChange}
+                            />
+                        </Form.Group>
+                    </Row>
+                    
+                    <button className="next-button" type="button" onClick={handleNext}>Next</button>
+                </div>
+                )}
+
+                {step === 2 && (
+                <div>
+                    <Row className="mb-3">
                     <Form.Group as={Col}>
                         <Form.Label>Given Name</Form.Label>
                         <Form.Control
@@ -444,27 +440,15 @@ function MarkerApplicationForm( {myCourses, myUserId}) {
                             type="number"
                         />
                     </Form.Group>
-                </Row>
 
-                <Row className="mb-3">
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Upload your transcript:</Form.Label>
-                        <Form.Control 
-                            type="file"
-                            name="transcript"
-                            onChange={handleTranscriptChange}
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Upload your CV:</Form.Label>
-                        <Form.Control 
-                            type="file" 
-                            name="cv"
-                            onChange={handleCvChange}
-                        />
-                    </Form.Group>
                 </Row>
+                    <button className="previous-button" type="button" onClick={handlePrevious}>Previous</button>
+                    <button className="next-button" type="button" onClick={handleNext}>Next</button>
+                </div>
+                )}
+
+                {step === 3 && (
+                <div>
                 <Row>
                 <div className="grid-container">
                     <div className="courses">
@@ -474,9 +458,10 @@ function MarkerApplicationForm( {myCourses, myUserId}) {
                     </div>
                 </div>
                 </Row>
-                
-
+                <button className="previous-button" type="button" onClick={handlePrevious}>Previous</button>
                 <Button variant="primary" type="submit">Submit</Button>
+                </div>
+                )}
             </Form>
         </>
     );

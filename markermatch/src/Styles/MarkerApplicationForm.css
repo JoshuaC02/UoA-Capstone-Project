@@ -1,0 +1,28 @@
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.previous-button,
+.next-button,
+.submit-button {
+  padding: 10px 20px;
+  background-color: grey;
+  color: #fff;
+  border: 2px solid #ccc;
+  cursor: pointer;
+}
+
+.previous-button {
+  background-color: #ccc;
+  float: left;
+}
+
+.next-button {
+  float: right;
+}
