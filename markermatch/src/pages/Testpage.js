@@ -1,4 +1,4 @@
-import { Amplify } from 'aws-amplify';
+/*import { Amplify } from 'aws-amplify';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -13,4 +13,4 @@ function Testpage() {
   );
 }
 
-export default Testpage;
+export default Testpage;*/

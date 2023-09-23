@@ -1,0 +1,29 @@
+/* CSS Styles for Buttons */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .previous-button,
+  .next-button,
+  .submit-button {
+    padding: 10px 20px;
+    background-color: grey;
+    color: #fff;
+    border: 2px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .previous-button {
+    background-color: #ccc;
+  }
+  
+  .previous-button {
+    float: left;
+  }
+  
+  .next-button {
+    float: right;
+  }
+  

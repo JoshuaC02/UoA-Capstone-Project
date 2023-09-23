@@ -11,12 +11,16 @@ import CourseData from '../hooks/CourseData';
 import { Cart, Course } from '../models';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
+import '../styles/MarkerApplicationForm.css';
+
+
 
 function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
-    
+    const [step, setStep] = useState(1);
+
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
         let appStatus = "No"
@@ -203,6 +207,16 @@ function MarkerApplicationForm() {
         }
     }
 
+    //Steps to form
+    const handleNext = () => {
+        setStep(step + 1);
+      };
+    
+      const handlePrevious = () => {
+        setStep(step - 1);
+      };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData)
@@ -265,12 +279,38 @@ function MarkerApplicationForm() {
         }
     };
 
-
     return (
         <>
-
             <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
-                <Row className="mb-3">
+                {step === 1 && (
+                <div>
+                    <Row className="mb-3">
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Upload your transcript:</Form.Label>
+                            <Form.Control 
+                                type="file"
+                                name="transcript"
+                                onChange={handleTranscriptChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Upload your CV:</Form.Label>
+                            <Form.Control 
+                                type="file" 
+                                name="cv"
+                                onChange={handleCvChange}
+                            />
+                        </Form.Group>
+                    </Row>
+                    
+                    <button type="button" onClick={handleNext}>Next</button>
+                </div>
+                )}
+
+                {step === 2 && (
+                <div>
+                    <Row className="mb-3">
                     <Form.Group as={Col}>
                         <Form.Label>Given Name</Form.Label>
                         <Form.Control
@@ -400,27 +440,16 @@ function MarkerApplicationForm() {
                             type="number"
                         />
                     </Form.Group>
-                </Row>
 
-                <Row className="mb-3">
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Upload your transcript:</Form.Label>
-                        <Form.Control 
-                            type="file"
-                            name="transcript"
-                            onChange={handleTranscriptChange}
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Upload your CV:</Form.Label>
-                        <Form.Control 
-                            type="file" 
-                            name="cv"
-                            onChange={handleCvChange}
-                        />
-                    </Form.Group>
                 </Row>
+                    <button type="button" onClick={handlePrevious}>Previous</button>
+                    <button type="button" onClick={handleNext}>Next</button>
+                </div>
+                )}
+
+
+                {step === 3 && (
+                <div>
                 <Row>
                 <div className="grid-container">
                     <div className="courses">
@@ -430,9 +459,10 @@ function MarkerApplicationForm() {
                     </div>
                 </div>
                 </Row>
-                
-
+                <button type="button" onClick={handlePrevious}>Previous</button>
                 <Button variant="primary" type="submit">Submit</Button>
+                </div>
+                )}
             </Form>
         </>
     );
