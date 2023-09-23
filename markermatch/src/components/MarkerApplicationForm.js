@@ -16,7 +16,6 @@ function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
-    const [preferredCourses, setPreferedCourses] = useState({});
     
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
@@ -36,11 +35,29 @@ function MarkerApplicationForm() {
                     {course.description}
                   </Card.Text>
                   <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Card.Text>Preference?</Card.Text>
                   <Form.Control
-                            name={course.faculty + course.courseCode}
-                            value={formData.prefRating[course.faculty + course.courseCode]}
+                            name={course.faculty + course.courseCode + "_preference"}
+                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_preference"]}
                             onChange={handlePreferenceChange}
                             type="number"
+                            id="preference"
+                        />
+                  <Card.Text>Previous Grade</Card.Text>
+                  <Form.Control
+                            name={course.faculty + course.courseCode + "_previousGrade"}
+                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
+                            onChange={handleGradeChange}
+                            type="string"
+                            id="previousGrade"
+                        />
+                  <Card.Text>Previous Tutor?</Card.Text>
+                  <Form.Check
+                            name={course.faculty + course.courseCode + "_previousTutor"}
+                            type="checkbox"
+                            id="previousTutor"
+                            checked={formData.courseSpecifics[course.faculty + course.courseCode + "_previousTutor"]}
+                            onChange={handlePreviousMarkerChange}
                         />
                 </Card.Body>
               </Card>
@@ -61,12 +78,31 @@ function MarkerApplicationForm() {
                     {course.summary}
                   </Card.Text>
                   <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Card.Text>Preference?</Card.Text>
                   <Form.Control
-                            name={course.faculty + course.courseCode}
-                            value={formData.prefRating[course.faculty + course.courseCode]}
+                            name={course.faculty + course.courseCode + "_preference"}
+                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_preference"]}
                             onChange={handlePreferenceChange}
                             type="number"
+                            id="preference"
                         />
+                  <Card.Text>Previous Grade</Card.Text>
+                  <Form.Control
+                            name={course.faculty + course.courseCode + "_previousGrade"}
+                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
+                            onChange={handleGradeChange}
+                            type="string"
+                            id="previousGrade"
+                        />
+                  <Card.Text>Previous Tutor?</Card.Text>
+                  <Form.Check
+                            name={course.faculty + course.courseCode + "_previousTutor"}
+                            type="checkbox"
+                            id="previousTutor"
+                            checked={formData.courseSpecifics[course.faculty + course.courseCode + "_previousTutor"]}
+                            onChange={handlePreviousMarkerChange}
+                        />
+                  
                 </Card.Body>
               </Card>
             </ReactCardFlip>
@@ -92,20 +128,6 @@ function MarkerApplicationForm() {
         return listOfCourses;
     }
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            const fetchedCourses = await getUserSelectedCourses();
-            let preferredCourses = {}
-            for (let course in fetchedCourses) {
-                preferredCourses[fetchedCourses[course].faculty + fetchedCourses[course].courseCode] = 0;
-            }
-            setCourses(fetchedCourses);
-            setPreferedCourses(preferredCourses);
-        };
-
-        fetchCourses();
-    }, []);
-
     const [formData, setFormData] = useState({
         givenName: user?.attributes?.given_name,
         familyName: user?.attributes?.family_name,
@@ -121,8 +143,24 @@ function MarkerApplicationForm() {
         maxHours: 0,
         transcriptId: '',
         cvId: '',
-        prefRating: {}
+        courseSpecifics: {}
     });
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            const fetchedCourses = await getUserSelectedCourses();
+            /* 
+            for (let course in fetchedCourses) {
+                formData.courseSpecifics[fetchedCourses[course].faculty + fetchedCourses[course].courseCode + "_preference"] = "";
+                formData.courseSpecifics[fetchedCourses[course].faculty + fetchedCourses[course].courseCode + "_previousGrade"] = "";
+                formData.courseSpecifics[fetchedCourses[course].faculty + fetchedCourses[course].courseCode + "_previousTutor"] = false;
+            }
+            */
+            setCourses(fetchedCourses);
+        };
+
+        fetchCourses();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -132,12 +170,19 @@ function MarkerApplicationForm() {
         }));
     };
 
-    const handlePreferenceChange = async (e) => {
-        const { name, value, type, checked } = e.target;
-        if (value > 0 && value < outCourses.length + 1) {
-            formData.prefRating[name] = value
-        }
-        alert(formData.prefRating[name])
+    const handlePreferenceChange = async (e) => { 
+        const { name, value } = e.target;
+        formData.courseSpecifics[name] = parseInt(value);
+    }
+
+    const handleGradeChange = async (e) => {
+        const { name, value } = e.target;
+        formData.courseSpecifics[name] = value
+    }
+
+    const handlePreviousMarkerChange = async (e) => {
+        const { name, value } = e.target;
+        formData.courseSpecifics[name] = value
     }
 
     const handleCvChange = async (e) => {
@@ -166,6 +211,28 @@ function MarkerApplicationForm() {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
                 return;
             }
+            else if (key === "courseSpecifics") {
+                for (const subKey in formData.courseSpecifics) {
+                    if (formData.courseSpecifics[subKey] === "") {
+                        alert(`Please fill in all fields (no empty fields are allowed). test`);
+                        return;
+                    }
+                }
+            }
+        }
+        for (const aKey in formData.courseSpecifics) {
+            if (aKey.includes("_preference")) {
+                if (formData.courseSpecifics >= courses.length) {
+                    alert("Preferences must be unique and valid")
+                    return;
+                }
+                for (const bKey in formData.courseSpecifics) {
+                    if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
+                        alert("Preferences must be unique and valid")
+                        return;
+                    }
+                }
+            }
         }
 
         try {
@@ -173,8 +240,7 @@ function MarkerApplicationForm() {
             await DataStore.save(
                 new MarkerApplication({
                     givenName: formData.givenName,
-                    givenName: formData.familyName,
-                    familyName: user?.attributes?.familyName,
+                    familyName: formData.familyName,
                     userId: user?.username,
                     auid: formData.auid,
                     upi: formData.upi,
@@ -188,12 +254,13 @@ function MarkerApplicationForm() {
                     maxHours: parseInt(formData.maxHours),
                     transcriptId: formData.transcriptId, 
                     cvId: formData.cvId, 
-                    prefRating: formData.prefRating
+                    courseSpecifics: JSON.stringify(formData.courseSpecifics)
                 })
             );
             alert('Application successfully submitted.');
         } catch (error) {
             console.error('Error submitting application:', error);
+            alert(error)
             alert('An error has occurred, please refer to console.');
         }
     };
