@@ -1,0 +1,69 @@
+.content-container {
+    display: flex;
+    height: calc(100vh - 130px);
+    overflow: auto;
+}
+
+.courses {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    width:100%;
+    align-items: center;
+}
+
+.search-bar {
+    padding: 1.8vh;
+    width: 90%;
+    display: block;
+    border-radius: 24px;
+    margin: 0;
+}
+
+.shopping-cart {
+    width: 80%;
+
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.styled-table th {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.styled-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #f2f2f2;
+}
+
+#remove-button {
+    border-radius: 1vh;
+}
+
+#checkout-button {
+    width: 50%;
+    
+    border: 1px solid black;
+    padding: 2vh;
+    text-align: center;
+    border-radius: 2vh;
+}
