@@ -1,7 +1,7 @@
-import './styles/HorizontalLayout.css';
-import './styles/NavbarComp.css';
-import './styles/Sidebar.css';
-import './styles/AddCourses.css';
+import './Styles/HorizontalLayout.css';
+import './Styles/NavbarComp.css';
+import './Styles/Sidebar.css';
+import './Styles/AddCourses.css';
 import Homepage from './pages/Homepage';
 import Authentication from './pages/Authentication';
 import Testpage from './pages/Testpage';
