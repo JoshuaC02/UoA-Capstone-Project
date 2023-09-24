@@ -7,30 +7,34 @@ import { Course } from '../models';
 import { ApplicationStatus } from '../models';
 import { Alert, useAuthenticator } from '@aws-amplify/ui-react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
     const { user } = useAuthenticator((context) => [context.user]);
-
+    const navigate = useNavigate();
+    
     async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
+
         let listOfCourses = [];
         if (userCart[0] !== undefined) {
             const selectedCourses = userCart[0].selectedCourses?.split(",");
             const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
                 for (let course in allCourses) {
-                    if (allCourses[course].faculty + allCourses[course].courseCode === selectedCourses[element].trim()) {
+                    if (allCourses[course].faculty + ' ' + allCourses[course].courseCode == selectedCourses[element].trim()) {
                         listOfCourses.push(allCourses[course]);
                     }
                 }
+
             }
         }
+        
         return listOfCourses;
     }
     async function deleteUserSelectedCourse(courseId, userId) {
-
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(userId));
         const courseRemoved = courseId.trim();
         let selectedCourses = userCart[0].selectedCourses?.split(",");
@@ -60,11 +64,19 @@ function ShoppingCart() {
     useEffect(() => {
         const fetchCourses = async () => {
             const fetchedCourses = await getUserSelectedCourses();
+
             setCourses(fetchedCourses);
         };
 
         fetchCourses();
     }, []);
+
+    const handleCartSubmission = () => {
+        if (courses.length == 0){
+            alert('There are no courses in your cart!')
+        }
+        navigate("/application-form", { replace: true });
+    }
 
     return (
         <>
@@ -87,7 +99,7 @@ function ShoppingCart() {
                                         <td>
                                             <button
                                                 id="remove-button"
-                                                onClick={() => deleteUserSelectedCourse(course.faculty + course.courseCode, user.username)}
+                                                onClick={() => deleteUserSelectedCourse(course.name, user.username)}
                                             >
                                                 Delete
                                             </button>
@@ -104,7 +116,7 @@ function ShoppingCart() {
                         </tbody>
                     </table>
                 </div>
-                <div id="checkout-button"><a href="/application-form">Checkout!</a></div>
+                <div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>
             </div>
         </>
     );
