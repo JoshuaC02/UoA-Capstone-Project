@@ -25,10 +25,16 @@ export function filterCourses(allCourses, term) {
 }
 
 export async function addToCart(courseId, userId, callBack) {
+
+  console.log(courseId, userId)
+ 
+
   if (userId === undefined) {
     callBack("/auth", { replace: true });
   } else {
     const models = await DataStore.query(Cart, (c) => c.userId.eq(userId));
+    console.log(models)
+    console.log(models.length)
     if (models.length === 0) {
       DataStore.save(new Cart({
         userId: userId,
@@ -38,6 +44,7 @@ export async function addToCart(courseId, userId, callBack) {
     }else {
       let flag = false;
       const list = models[0].selectedCourses.split(",")
+
       for (const int in list) {
         if (list[parseInt(int)].trim() === courseId) {
           flag = true;

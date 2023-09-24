@@ -8,22 +8,23 @@ import { useState } from 'react';
 
 function CourseForm() {
     const [formData, setFormData] = useState({
-        faculty: '',
-        courseCode: '',
-        coordinatorName: '',
-        coordinatorEmail: '',
+        faculty: 'COMPSCI',
+        courseCode: '201',
+        coordinatorName: 'John Doe',
+        coordinatorEmail: 'johndoe@gmail.com',
         year: '2023',
         semester: '1',
-        directorName: '',
-        directorEmail: '',
-        estimatedStudents: '',
+        directorName: 'Johnny Doe',
+        directorEmail: 'Johnnydde@gmail.com',
+        estimatedStudents: '100',
         requireMarkers: false,
-        enrolledStudents: '',
+        enrolledStudents: '90',
         preassignMarkers: false,
-        totalHours: '',
+        totalHours: '50',
         minGrade: 'A+',
-        description: '',
-        summary: ''
+        description: 'This course is not real lol',
+        summary: 'Blah blahj longer not real course blahhhhh',
+
     });
 
     const handleChange = (e) => {
@@ -39,7 +40,7 @@ function CourseForm() {
         e.preventDefault();
         console.log(formData)
         for (const key in formData) {
-            if (formData[key]  == '') {
+            if (formData[key]  === '') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
                 return;
             }
@@ -64,7 +65,8 @@ function CourseForm() {
                     appOpen: true, 
                     description: formData.description,
                     directorName: formData.directorName,
-                    directorEmail: formData.directorEmail
+                    directorEmail: formData.directorEmail,
+                    name: `${formData.faculty} ${formData.courseCode}`
                 })
             );
             alert('Course successfully added.');
