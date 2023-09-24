@@ -66,6 +66,10 @@ function ShoppingCart() {
         fetchCourses();
     }, []);
 
+    const handleCartSubmission = () => {
+        console.log(courses.length());
+    }
+
     return (
         <>
             <div className="grid-container">
@@ -104,7 +108,7 @@ function ShoppingCart() {
                         </tbody>
                     </table>
                 </div>
-                <div id="checkout-button"><a href="/application-form">Checkout!</a></div>
+                <div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>
             </div>
         </>
     );
