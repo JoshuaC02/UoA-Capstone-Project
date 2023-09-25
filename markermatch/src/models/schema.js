@@ -313,15 +313,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "userId": {
-                    "name": "userId",
+                "givenName": {
+                    "name": "givenName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "auid": {
-                    "name": "auid",
+                "familyName": {
+                    "name": "familyName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -334,17 +334,17 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "preferredEmail": {
-                    "name": "preferredEmail",
+                "auid": {
+                    "name": "auid",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "overseas": {
-                    "name": "overseas",
+                "preferredEmail": {
+                    "name": "preferredEmail",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -404,22 +404,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "prefRating": {
-                    "name": "prefRating",
+                "userId": {
+                    "name": "userId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "givenName": {
-                    "name": "givenName",
+                "overseas": {
+                    "name": "overseas",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
-                "familyName": {
-                    "name": "familyName",
+                "courseSpecifics": {
+                    "name": "courseSpecifics",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -471,5 +471,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "b29579d2d26643b40a5b40a922ab27cb"
+    "version": "a77bed3f8ed1d33317f325a5b59f7dae"
 };

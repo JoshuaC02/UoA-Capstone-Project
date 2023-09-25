@@ -132,11 +132,11 @@ type EagerMarkerApplication = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly userId?: string | null;
-  readonly auid?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly upi?: string | null;
+  readonly auid?: string | null;
   readonly preferredEmail?: string | null;
-  readonly overseas?: boolean | null;
   readonly validNzWorkPermit?: boolean | null;
   readonly degree?: string | null;
   readonly yearsOfStudy?: string | null;
@@ -145,9 +145,9 @@ type EagerMarkerApplication = {
   readonly maxHours?: number | null;
   readonly transcriptId?: string | null;
   readonly cvId?: string | null;
-  readonly prefRating?: string | null;
-  readonly givenName?: string | null;
-  readonly familyName?: string | null;
+  readonly userId?: string | null;
+  readonly overseas?: boolean | null;
+  readonly courseSpecifics?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -158,11 +158,11 @@ type LazyMarkerApplication = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly userId?: string | null;
-  readonly auid?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly upi?: string | null;
+  readonly auid?: string | null;
   readonly preferredEmail?: string | null;
-  readonly overseas?: boolean | null;
   readonly validNzWorkPermit?: boolean | null;
   readonly degree?: string | null;
   readonly yearsOfStudy?: string | null;
@@ -171,9 +171,9 @@ type LazyMarkerApplication = {
   readonly maxHours?: number | null;
   readonly transcriptId?: string | null;
   readonly cvId?: string | null;
-  readonly prefRating?: string | null;
-  readonly givenName?: string | null;
-  readonly familyName?: string | null;
+  readonly userId?: string | null;
+  readonly overseas?: boolean | null;
+  readonly courseSpecifics?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
