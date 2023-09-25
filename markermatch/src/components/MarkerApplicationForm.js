@@ -12,6 +12,7 @@ import { Cart, Course } from '../models';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import '../styles/MarkerApplicationForm.css';
+import MultiStepProgressBar from "./MultiStepProgressBar/MultiStepProgressBar";
 
 
 
@@ -19,7 +20,6 @@ function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
-    const [step, setStep] = useState(1);
 
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
@@ -206,16 +206,7 @@ function MarkerApplicationForm() {
             console.log("Error uploading transcript: ", error);
         }
     }
-
-    //Steps to form
-    const handleNext = () => {
-        setStep(step + 1);
-      };
-    
-      const handlePrevious = () => {
-        setStep(step - 1);
-      };
-
+//
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -279,11 +270,33 @@ function MarkerApplicationForm() {
         }
     };
 
+    const [step, setStep] = useState(1);
+    
+    const nextPageNumber = (pageNumber) => {
+        switch (pageNumber) {
+          case "1":
+            break;
+          case "2":
+            break;
+          case "3":
+            break;
+        }
+      };
+    const handleNext = () => {
+        setStep(step + 1);
+      };
+    
+      const handlePrevious = () => {
+        setStep(step - 1);
+      };
+
     return (
         <>
             <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
+            <MultiStepProgressBar step={step.toString()} onPageNumberClick={nextPageNumber} />
                 {step === 1 && (
                 <div>
+
                     <Row className="mb-3">
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Upload your transcript:</Form.Label>
@@ -310,6 +323,7 @@ function MarkerApplicationForm() {
 
                 {step === 2 && (
                 <div>
+
                     <Row className="mb-3">
                     <Form.Group as={Col}>
                         <Form.Label>Given Name</Form.Label>
@@ -449,6 +463,7 @@ function MarkerApplicationForm() {
 
                 {step === 3 && (
                 <div>
+
                 <Row>
                 <div className="grid-container">
                     <div className="courses">
@@ -459,7 +474,7 @@ function MarkerApplicationForm() {
                 </div>
                 </Row>
                 <button className="previous-button" type="button" onClick={handlePrevious}>Previous</button>
-                <Button variant="primary" type="submit">Submit</Button>
+                <Button className="next-button " variant="primary" type="submit">Submit</Button>
                 </div>
                 )}
             </Form>
