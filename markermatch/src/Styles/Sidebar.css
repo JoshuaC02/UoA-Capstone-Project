@@ -3,7 +3,7 @@
 }
 .sidebox {
     flex: 0 0 auto;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 75px);
     position: sticky;
     z-index: 1; 
 }
