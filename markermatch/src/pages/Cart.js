@@ -4,13 +4,15 @@ import ShoppingCart from '../components/ShoppingCart';
 
 function Cart() {
   return (
-    <div className="homepage-container">
+    <>
       <NavbarComp />
-      <div className="content-container">
-        <Sidebar />
-        <ShoppingCart />
+      <div className="homepage-container">
+        <div className="content-container">
+          <Sidebar />
+          <ShoppingCart />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

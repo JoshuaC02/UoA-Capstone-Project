@@ -4,17 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
+import { DataStore } from '@aws-amplify/datastore';
+
 
 
 function CourseData() {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [allCourses, setAllCourses] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourses = async () => {
       const fetchedCourses = await getCourseData();
+      console.log(fetchedCourses)
       setCourses(fetchedCourses);
       setAllCourses(fetchedCourses);
     };
@@ -32,29 +35,29 @@ function CourseData() {
     addToCart(courseId, userId, navigate)
   }
 
-  const CourseCard = ({course, user}) => {
+  const CourseCard = ({ course, user }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     let appStatus = "No"
-    if (course.appOpen) {appStatus = "Yes"}
+    if (course.appOpen) { appStatus = "Yes" }
     return (
       <div className="p-2" key={course.id}>
         <ReactCardFlip isFlipped={isFlipped}>
-          <Card style={{ width: '18rem'}} key="front">
-            <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
+          <Card style={{  width: '15vw', height:'48vh' }} key="front">
+            <Card.Img style={{ maxHeight: "30vh", maxWidth: "15vw", width: "100%", height: "auto" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
             <Card.Body>
-              <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
-              <Card.Subtitle>
+              <Card.Title>{course.name}</Card.Title>
+              <Card.Text>
                 {course.coordinatorName}
-              </Card.Subtitle>
-              <Card.Text style={{height:"49px", overflow:"scroll"}}>
+              </Card.Text>
+              <Card.Text>
                 {course.description}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.faculty + '' + course.courseCode, user?.username)}>Add to Cart</Button>
+              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
 
-          <Card style={{ width: '18rem'}} key="back">
+          <Card style={{ width: '15vw', height:'48vh'}} key="back">
             <Card.Body>
               <Card.Text>
                 Minimum Grade: {course.minGrade}
@@ -63,14 +66,14 @@ function CourseData() {
                 Estimated Hours: {course.totalHours}
               </Card.Text>
               <Card.Text>
-                Taking Applications: {course.appOpen}
+                Taking Applications: {course.appOpen ? 'Yes' : 'No'}
               </Card.Text>
-              <Card.Text style={{height:"176px", overflow:"scroll"}}>
+              <Card.Text style={{ height: "60%", overflowY: "scroll"}}>
                 Description: <br />
                 {course.summary}
               </Card.Text>
-              <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.faculty + '' + course.courseCode, user?.username)}>Add to Cart</Button>
+              <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>Return</Button>{' '}
+              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
         </ReactCardFlip>

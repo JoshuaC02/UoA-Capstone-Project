@@ -1,7 +1,5 @@
 import React from 'react';
 import markermatch from '../images/markermatch.png';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // format to use fontawsome in case we need
-// import { faUser } from '@fortawesome/free-solid-svg-icons'; // format to use fontawsome in case we need
 import Navbar from 'react-bootstrap/Navbar';
 import { PiSignOut, PiWifiNoneLight } from 'react-icons/pi';
 import { BiUser } from 'react-icons/bi';
@@ -19,7 +17,7 @@ function NavbarComp() {
 
   }
   return (
-    <Navbar expand="lg" className="my-navbar">
+    <Navbar expand="sm" className="my-navbar" style={{padding: '0px'}}>
         <Navbar.Brand href="#home" className="logo ">
             <img src={markermatch} id="logo" alt="Logo"></img>
         </Navbar.Brand> 

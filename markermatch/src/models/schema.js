@@ -261,6 +261,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "thumbnailId": {
+                    "name": "thumbnailId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -422,6 +429,13 @@ export const schema = {
                     "name": "courseSpecifics",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "preferredMarker": {
+                    "name": "preferredMarker",
+                    "isArray": false,
+                    "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },

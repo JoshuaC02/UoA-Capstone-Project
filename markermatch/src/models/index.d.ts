@@ -89,6 +89,7 @@ type EagerCourse = {
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
   readonly name?: string | null;
+  readonly thumbnailId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -116,6 +117,7 @@ type LazyCourse = {
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
   readonly name?: string | null;
+  readonly thumbnailId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -148,6 +150,7 @@ type EagerMarkerApplication = {
   readonly userId?: string | null;
   readonly overseas?: boolean | null;
   readonly courseSpecifics?: string | null;
+  readonly preferredMarker?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -174,6 +177,7 @@ type LazyMarkerApplication = {
   readonly userId?: string | null;
   readonly overseas?: boolean | null;
   readonly courseSpecifics?: string | null;
+  readonly preferredMarker?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

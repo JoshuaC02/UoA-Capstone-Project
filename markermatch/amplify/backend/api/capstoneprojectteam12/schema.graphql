@@ -29,6 +29,7 @@ type Course @model @auth(rules: [{allow: public}]) {
   directorName: String
   directorEmail: String
   name: String
+  thumbnailId: String
 }
 
 type MarkerApplication @model @auth(rules: [{allow: public}]) {
@@ -49,5 +50,6 @@ type MarkerApplication @model @auth(rules: [{allow: public}]) {
   userId: String
   overseas: Boolean
   courseSpecifics: String
+  preferredMarker: Boolean
 }
  

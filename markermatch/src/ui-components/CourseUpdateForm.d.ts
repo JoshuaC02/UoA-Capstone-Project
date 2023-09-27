@@ -31,6 +31,7 @@ export declare type CourseUpdateFormInputValues = {
     directorName?: string;
     directorEmail?: string;
     name?: string;
+    thumbnailId?: string;
 };
 export declare type CourseUpdateFormValidationValues = {
     coordinatorName?: ValidationFunction<string>;
@@ -50,6 +51,7 @@ export declare type CourseUpdateFormValidationValues = {
     directorName?: ValidationFunction<string>;
     directorEmail?: ValidationFunction<string>;
     name?: ValidationFunction<string>;
+    thumbnailId?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CourseUpdateFormOverridesProps = {
@@ -71,6 +73,7 @@ export declare type CourseUpdateFormOverridesProps = {
     directorName?: PrimitiveOverrideProps<TextFieldProps>;
     directorEmail?: PrimitiveOverrideProps<TextFieldProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
+    thumbnailId?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CourseUpdateFormProps = React.PropsWithChildren<{
     overrides?: CourseUpdateFormOverridesProps | undefined | null;

@@ -290,6 +290,28 @@ function MarkerApplicationForm() {
       const handlePrevious = () => {
         setStep(step - 1);
       };
+      /*
+        if(flag){
+            alert("Successfully Submitted the form");
+            deleteAllSelectedCourses();
+        }
+        else{
+            alert("Error Submitting the form");
+        }
+    }
+    */
+    async function deleteAllSelectedCourses (){
+        const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
+        const selectedCourses = userCart[0].selectedCourses?.split(",") || [];
+
+        try{
+            await DataStore.delete(userCart[0]);
+            alert("0 Selected Courses in cart");
+        }catch(e){
+            alert("Error removing selected courses from cart")
+        }
+    }
+
 
     return (
         <>

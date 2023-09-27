@@ -23,7 +23,7 @@ import {
       return (
         <>
           <div className="sidebox">
-            <CDBSidebar maxWidth="225px" minWidth="80px" id="CDBSidebar">
+            <CDBSidebar maxWidth="220px" minWidth="80px" id="CDBSidebar">
               <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
                 <p id="Menu">Menu</p>
               </CDBSidebarHeader>

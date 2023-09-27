@@ -2,6 +2,7 @@ import './styles/HorizontalLayout.css';
 import './styles/NavbarComp.css';
 import './styles/Sidebar.css';
 import './styles/AddCourses.css';
+import './styles/StudentView.css';
 import Homepage from './pages/Homepage';
 import Authentication from './pages/Authentication';
 import Testpage from './pages/Testpage';
