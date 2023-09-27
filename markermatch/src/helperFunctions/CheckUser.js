@@ -15,16 +15,6 @@ export function getSideLinks(user){
       label: "Application Status",
     },
     {
-      icon: "columns",
-      path: "/assigned-courses",
-      label: "Assigned Courses",
-    },
-    {
-      icon: "columns",
-      path: "/view-courses",
-      label: "View Courses",
-    },
-    {
       icon: "edit",
       path: "/addcourses",
       label: "Add Courses",

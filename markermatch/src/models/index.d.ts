@@ -88,6 +88,7 @@ type EagerCourse = {
   readonly description?: string | null;
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
+  readonly name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -114,6 +115,7 @@ type LazyCourse = {
   readonly description?: string | null;
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
+  readonly name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -130,17 +132,23 @@ type EagerMarkerApplication = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly userId?: string | null;
-  readonly auid?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly upi?: string | null;
+  readonly auid?: string | null;
   readonly preferredEmail?: string | null;
-  readonly overseas?: boolean | null;
   readonly validNzWorkPermit?: boolean | null;
   readonly degree?: string | null;
   readonly yearsOfStudy?: string | null;
-  readonly underPostGrad?: boolean | null;
-  readonly currentTutor?: string | null;
+  readonly underPostGrad?: string | null;
+  readonly currentTutor?: boolean | null;
   readonly maxHours?: number | null;
+  readonly transcriptId?: string | null;
+  readonly cvId?: string | null;
+  readonly userId?: string | null;
+  readonly overseas?: boolean | null;
+  readonly courseSpecifics?: string | null;
+  readonly preferredMarker?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -151,17 +159,23 @@ type LazyMarkerApplication = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly userId?: string | null;
-  readonly auid?: string | null;
+  readonly givenName?: string | null;
+  readonly familyName?: string | null;
   readonly upi?: string | null;
+  readonly auid?: string | null;
   readonly preferredEmail?: string | null;
-  readonly overseas?: boolean | null;
   readonly validNzWorkPermit?: boolean | null;
   readonly degree?: string | null;
   readonly yearsOfStudy?: string | null;
-  readonly underPostGrad?: boolean | null;
-  readonly currentTutor?: string | null;
+  readonly underPostGrad?: string | null;
+  readonly currentTutor?: boolean | null;
   readonly maxHours?: number | null;
+  readonly transcriptId?: string | null;
+  readonly cvId?: string | null;
+  readonly userId?: string | null;
+  readonly overseas?: boolean | null;
+  readonly courseSpecifics?: string | null;
+  readonly preferredMarker?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

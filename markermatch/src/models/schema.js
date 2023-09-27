@@ -254,6 +254,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -306,15 +313,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "userId": {
-                    "name": "userId",
+                "givenName": {
+                    "name": "givenName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "auid": {
-                    "name": "auid",
+                "familyName": {
+                    "name": "familyName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -327,17 +334,17 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "preferredEmail": {
-                    "name": "preferredEmail",
+                "auid": {
+                    "name": "auid",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "overseas": {
-                    "name": "overseas",
+                "preferredEmail": {
+                    "name": "preferredEmail",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -365,14 +372,14 @@ export const schema = {
                 "underPostGrad": {
                     "name": "underPostGrad",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
                 "currentTutor": {
                     "name": "currentTutor",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -380,6 +387,48 @@ export const schema = {
                     "name": "maxHours",
                     "isArray": false,
                     "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "transcriptId": {
+                    "name": "transcriptId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cvId": {
+                    "name": "cvId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "overseas": {
+                    "name": "overseas",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "courseSpecifics": {
+                    "name": "courseSpecifics",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "preferredMarker": {
+                    "name": "preferredMarker",
+                    "isArray": false,
+                    "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -428,6 +477,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.4",
-    "version": "121269c05f3d6292c82965d6a2b5c0ee"
+    "codegenVersion": "3.4.3",
+    "version": "4c164b06b072a288d2c48381c72aadaf"
 };

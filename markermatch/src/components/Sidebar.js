@@ -16,7 +16,6 @@ import {
   function Sidebar(){
     const { user } = useAuthenticator((context) => [context.user]);
     const isCourseCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "CourseCoordinators";
-    console.log(isCourseCo)
     const navigate = useNavigate(); 
     const location = useLocation();
     const isPathActive = (path) => location.pathname === path;
@@ -24,7 +23,7 @@ import {
       return (
         <>
           <div className="sidebox">
-            <CDBSidebar maxWidth="225px" minWidth="80px" id="CDBSidebar">
+            <CDBSidebar maxWidth="220px" minWidth="80px" id="CDBSidebar">
               <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
                 <p id="Menu">Menu</p>
               </CDBSidebarHeader>

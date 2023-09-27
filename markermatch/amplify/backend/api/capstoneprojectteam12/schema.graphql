@@ -28,20 +28,27 @@ type Course @model @auth(rules: [{allow: public}]) {
   description: String
   directorName: String
   directorEmail: String
+  name: String
 }
 
 type MarkerApplication @model @auth(rules: [{allow: public}]) {
   id: ID!
-  userId: String
-  auid: String
+  givenName: String
+  familyName: String
   upi: String
+  auid: String
   preferredEmail: String
-  overseas: Boolean
   validNzWorkPermit: Boolean
   degree: String
   yearsOfStudy: String
-  underPostGrad: Boolean
-  currentTutor: String
+  underPostGrad: String
+  currentTutor: Boolean
   maxHours: Int
+  transcriptId: String
+  cvId: String
+  userId: String
+  overseas: Boolean
+  courseSpecifics: String
+  preferredMarker: Boolean
 }
  
