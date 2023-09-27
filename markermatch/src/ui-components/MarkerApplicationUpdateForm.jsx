@@ -46,6 +46,7 @@ export default function MarkerApplicationUpdateForm(props) {
     userId: "",
     overseas: false,
     courseSpecifics: "",
+    preferredMarker: false,
   };
   const [givenName, setGivenName] = React.useState(initialValues.givenName);
   const [familyName, setFamilyName] = React.useState(initialValues.familyName);
@@ -77,6 +78,9 @@ export default function MarkerApplicationUpdateForm(props) {
   const [courseSpecifics, setCourseSpecifics] = React.useState(
     initialValues.courseSpecifics
   );
+  const [preferredMarker, setPreferredMarker] = React.useState(
+    initialValues.preferredMarker
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = markerApplicationRecord
@@ -98,6 +102,7 @@ export default function MarkerApplicationUpdateForm(props) {
     setUserId(cleanValues.userId);
     setOverseas(cleanValues.overseas);
     setCourseSpecifics(cleanValues.courseSpecifics);
+    setPreferredMarker(cleanValues.preferredMarker);
     setErrors({});
   };
   const [markerApplicationRecord, setMarkerApplicationRecord] = React.useState(
@@ -130,6 +135,7 @@ export default function MarkerApplicationUpdateForm(props) {
     userId: [],
     overseas: [],
     courseSpecifics: [],
+    preferredMarker: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -173,6 +179,7 @@ export default function MarkerApplicationUpdateForm(props) {
           userId,
           overseas,
           courseSpecifics,
+          preferredMarker,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -198,8 +205,8 @@ export default function MarkerApplicationUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value === "") {
-              modelFields[key] = null;
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
             }
           });
           await DataStore.save(
@@ -244,6 +251,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.givenName ?? value;
@@ -283,6 +291,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.familyName ?? value;
@@ -322,6 +331,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.upi ?? value;
@@ -361,6 +371,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.auid ?? value;
@@ -400,6 +411,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.preferredEmail ?? value;
@@ -439,6 +451,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.validNzWorkPermit ?? value;
@@ -480,6 +493,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.degree ?? value;
@@ -519,6 +533,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.yearsOfStudy ?? value;
@@ -558,6 +573,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.underPostGrad ?? value;
@@ -597,6 +613,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.currentTutor ?? value;
@@ -640,6 +657,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.maxHours ?? value;
@@ -679,6 +697,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.transcriptId ?? value;
@@ -718,6 +737,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.cvId ?? value;
@@ -757,6 +777,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId: value,
               overseas,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.userId ?? value;
@@ -796,6 +817,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas: value,
               courseSpecifics,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.overseas ?? value;
@@ -835,6 +857,7 @@ export default function MarkerApplicationUpdateForm(props) {
               userId,
               overseas,
               courseSpecifics: value,
+              preferredMarker,
             };
             const result = onChange(modelFields);
             value = result?.courseSpecifics ?? value;
@@ -849,6 +872,46 @@ export default function MarkerApplicationUpdateForm(props) {
         hasError={errors.courseSpecifics?.hasError}
         {...getOverrideProps(overrides, "courseSpecifics")}
       ></TextField>
+      <SwitchField
+        label="Preferred marker"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={preferredMarker}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              givenName,
+              familyName,
+              upi,
+              auid,
+              preferredEmail,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              userId,
+              overseas,
+              courseSpecifics,
+              preferredMarker: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.preferredMarker ?? value;
+          }
+          if (errors.preferredMarker?.hasError) {
+            runValidationTasks("preferredMarker", value);
+          }
+          setPreferredMarker(value);
+        }}
+        onBlur={() => runValidationTasks("preferredMarker", preferredMarker)}
+        errorMessage={errors.preferredMarker?.errorMessage}
+        hasError={errors.preferredMarker?.hasError}
+        {...getOverrideProps(overrides, "preferredMarker")}
+      ></SwitchField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

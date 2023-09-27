@@ -425,6 +425,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "preferredMarker": {
+                    "name": "preferredMarker",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -470,6 +477,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.4",
-    "version": "a77bed3f8ed1d33317f325a5b59f7dae"
+    "codegenVersion": "3.4.3",
+    "version": "4c164b06b072a288d2c48381c72aadaf"
 };

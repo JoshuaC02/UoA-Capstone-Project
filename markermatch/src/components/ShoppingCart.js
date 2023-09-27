@@ -8,6 +8,9 @@ import { ApplicationStatus } from '../models';
 import { Alert, useAuthenticator } from '@aws-amplify/ui-react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ReactCardFlip from "react-card-flip";
 
 
 function ShoppingCart() {
@@ -38,12 +41,14 @@ function ShoppingCart() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(userId));
         const courseRemoved = courseId.trim();
         let selectedCourses = userCart[0].selectedCourses?.split(",");
+        let modifiedCourses = []
         for (let element in selectedCourses) {
-            if (selectedCourses[element].trim()=== courseId) {
-                if (parseInt(element)=== selectedCourses.length - 1) {
+            if (selectedCourses[parseInt(element)].trim() === courseId) {
+                if (parseInt(element) === selectedCourses.length - 1) {
                     selectedCourses.pop()
+                    modifiedCourses = selectedCourses
                 } else {
-                    selectedCourses = selectedCourses.slice(0, element) + selectedCourses.slice(element + 1)
+                    modifiedCourses = selectedCourses.slice(0, parseInt(element)).concat(selectedCourses.slice(parseInt(element)+1))
                 }
             }
         }
@@ -52,7 +57,7 @@ function ShoppingCart() {
         }
         const updatedCart = await DataStore.save(
             Cart.copyOf(userCart[0], updated => {
-                updated.selectedCourses = selectedCourses.toString()
+                updated.selectedCourses = modifiedCourses.toString()
             })
         );
 
@@ -60,6 +65,52 @@ function ShoppingCart() {
         alert(courseRemoved + ' has been removed from your cart.')
         setCourses(newCourses);
     }
+
+    const CourseCardCart = ({course, user}) => {
+        const [isFlipped, setIsFlipped] = useState(false);
+        let appStatus = "No"
+        if (course.appOpen) {appStatus = "Yes"}
+        return (
+          <div className="p-2" key={course.id}>
+            <ReactCardFlip isFlipped={isFlipped}>
+              <Card style={{ width: '18rem'}} key="front">
+                <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
+                <Card.Body>
+                  <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
+                  <Card.Text>
+                    {course.coordinatorName}
+                  </Card.Text>
+                  <Card.Text>
+                    {course.description}
+                  </Card.Text>
+                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Button variant="primary" style={{ backgroundColor: "#FF0000" }} onClick={() => deleteUserSelectedCourse(course.faculty + " " + course.courseCode, user?.username)}>Remove from cart</Button>
+                </Card.Body>
+              </Card>
+    
+              <Card style={{ width: '18rem'}} key="back">
+                <Card.Body>
+                  <Card.Text>
+                    Minimum Grade: {course.minGrade}
+                  </Card.Text>
+                  <Card.Text>
+                    Estimated Hours: {course.totalHours}
+                  </Card.Text>
+                  <Card.Text>
+                    Taking Applications: {course.appOpen}
+                  </Card.Text>
+                  <Card.Text style={{height:"176px", overflow:"scroll"}}>
+                    Description: <br />
+                    {course.summary}
+                  </Card.Text>
+                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Button variant="primary" style={{ backgroundColor: "#FF0000" }} onClick={() => deleteUserSelectedCourse(course.faculty + " " + course.courseCode, user?.username)}>Remove from cart</Button>
+                </Card.Body>
+              </Card>
+            </ReactCardFlip>
+          </div>
+        )
+      }
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -82,39 +133,11 @@ function ShoppingCart() {
         <>
             <div className="grid-container">
                 <div className="shopping-cart">
-                    <table className="styled-table">
-                        <tbody>
-                            <tr>
-                                <th>Course Name</th>
-                                <th>Summary</th>
-                                <th>Instructor</th>
-                                <th>Remove</th>
-                            </tr>
-                            {courses.length > 0 ? (
-                                courses.map(course => (
-                                    <tr key={course.id}>
-                                        <td>{course.faculty} {course.courseCode}</td>
-                                        <td>{course.summary}</td>
-                                        <td>{course.directorName}</td>
-                                        <td>
-                                            <button
-                                                id="remove-button"
-                                                onClick={() => deleteUserSelectedCourse(course.name, user.username)}
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="4">
-                                        <p style={{ textAlign: 'center' }}>No courses in your cart.</p>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="courses">
+                        {courses.map(course => (
+                            <CourseCardCart course={course} user={user}/>
+                        ))}
+                    </div>
                 </div>
                 <div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>
             </div>

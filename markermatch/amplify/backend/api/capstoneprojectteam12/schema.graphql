@@ -49,5 +49,6 @@ type MarkerApplication @model @auth(rules: [{allow: public}]) {
   userId: String
   overseas: Boolean
   courseSpecifics: String
+  preferredMarker: Boolean
 }
  
