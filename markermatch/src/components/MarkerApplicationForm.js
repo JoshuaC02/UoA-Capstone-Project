@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Amplify, Auth, Storage } from 'aws-amplify';
 import CourseData from '../hooks/CourseData';
-import { Cart, Course } from '../models';
+import { Cart, Course, ApplicationStatus } from '../models';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import '../styles/MarkerApplicationForm.css';
@@ -123,7 +123,7 @@ function MarkerApplicationForm() {
             const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
                 for (let course in allCourses) {
-                    if (allCourses[course].faculty + allCourses[course].courseCode == selectedCourses[element].trim()) {
+                    if (allCourses[course].faculty + allCourses[course].courseCode === selectedCourses[element].trim().replace(/\s+/g, '')) {
                         listOfCourses.push(allCourses[course]);
                     }
                 }
@@ -211,7 +211,6 @@ function MarkerApplicationForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
         for (const key in formData) {
             if (formData[key] === '') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
@@ -263,6 +262,7 @@ function MarkerApplicationForm() {
                     courseSpecifics: JSON.stringify(formData.courseSpecifics)
                 })
             );
+            addCheckOut(outCourses, user.username);
             alert('Application successfully submitted.');
         } catch (error) {
             console.error('Error submitting application:', error);
@@ -290,23 +290,33 @@ function MarkerApplicationForm() {
       const handlePrevious = () => {
         setStep(step - 1);
       };
-      /*
+    async function addCheckOut(outCourses, userId) {
+        let flag = true;
+        if (outCourses.length !== 0) {
+            try {
+                for (const course of outCourses) {
+                await DataStore.save(new ApplicationStatus({
+                    userId: userId,
+                    appliedCourses: course.faculty + " " + course.courseCode,
+                }));
+            }
+            } catch (error) {
+                flag = false;
+            }
+        }
         if(flag){
-            alert("Successfully Submitted the form");
             deleteAllSelectedCourses();
         }
         else{
             alert("Error Submitting the form");
         }
     }
-    */
     async function deleteAllSelectedCourses (){
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
         const selectedCourses = userCart[0].selectedCourses?.split(",") || [];
 
         try{
             await DataStore.delete(userCart[0]);
-            alert("0 Selected Courses in cart");
         }catch(e){
             alert("Error removing selected courses from cart")
         }

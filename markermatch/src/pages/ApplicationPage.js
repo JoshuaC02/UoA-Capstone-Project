@@ -7,7 +7,6 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 function ApplicationPage() {
   return (
     <div>
-      <h1>Application Page</h1>
       <MarkerApplicationForm />
     </div>
   );
