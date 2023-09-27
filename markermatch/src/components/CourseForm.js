@@ -7,6 +7,8 @@ import { Course } from '../models';
 import { useState } from 'react';
 import ReactCardFlip from "react-card-flip";
 import Card from 'react-bootstrap/Card';
+import { Amplify, Auth, Storage } from 'aws-amplify';
+
 
 function CourseForm() {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -28,7 +30,7 @@ function CourseForm() {
         minGrade: 'A+',
         description: 'A ficticious Computer Science course.',
         summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium consectetur neque et pretium. Praesent elementum tortor ut nibh vulputate pharetra. Donec pharetra elit vitae velit gravida, a interdum justo ullamcorper. Pellentesque sit amet pretium arcu. Nulla aliquet pharetra nibh. Vestibulum efficitur leo sed velit volutpat mollis. Suspendisse posuere massa eget ante pretium, at fringilla leo pretium. Pellentesque eget posuere dolor. Nunc lacinia risus quis purus venenatis vestibulum. Phasellus ut porta tortor, sit ',
-
+        thumbnailId: '',
     });
 
     const handleChange = (e) => {
@@ -40,16 +42,52 @@ function CourseForm() {
 
     };
 
-    const handleFileUpload = (e) => {
+
+    const handleFileUpload = async (e) => {
         const file = e.target.files[0];
+
+        const fileType = file.type.split('/').pop();
+
+        if (!(fileType === 'jpeg' || fileType === 'jpg' || fileType === 'png' || fileType === 'webp')) {
+            return
+        }
+
+        /* randomise thumnbail id to prevent same id */
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+
+        for (let i = 0; i < 9; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            result += characters[randomIndex];
+        }
+        result = result + '.'+ fileType;
+        console.log(result)
+
+        const updatedFormData = { ...formData, thumbnailId: result };
+
+        setFormData(updatedFormData);
+        /* end */
+
+        
+        /* set the preview image */
         const reader = new FileReader();
-      
+
         reader.onload = () => {
-          setUploadedFile(reader.result);
+            setUploadedFile(reader.result);
         };
-      
+
         reader.readAsDataURL(file);
-      };
+
+        /* end */
+    
+
+        try {
+            formData.thumbnailId = (await Storage.put(result, file, { level: "public" })).key;
+        } catch (error) {
+            console.log("Error uploading thumbnail: ", error);
+        }
+        console.log(formData)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,33 +100,34 @@ function CourseForm() {
 
         }
 
-        try {
-            await DataStore.save(
-                new Course({
-                    coordinatorName: formData.coordinatorName,
-                    coordinatorEmail: formData.coordinatorEmail,
-                    courseCode: formData.courseCode,
-                    yearSemester: `${formData.year} Semester ${formData.semester}`,
-                    faculty: formData.faculty,
-                    preassignMarkers: formData.preassignMarkers,
-                    requireMarkers: formData.requireMarkers,
-                    estimatedStudents: formData.estimatedStudents,
-                    enrolledStudents: formData.enrolledStudents,
-                    summary: formData.summary,
-                    minGrade: formData.minGrade,
-                    totalHours: `${formData.totalHours}`,
-                    appOpen: true,
-                    description: formData.description,
-                    directorName: formData.directorName,
-                    directorEmail: formData.directorEmail,
-                    name: `${formData.faculty} ${formData.courseCode}`
-                })
-            );
-            alert('Course successfully added.');
-        } catch (error) {
-            console.error('Error adding course:', error);
-            alert('An error has occurred, please refer to console.');
-        }
+
+        // try {
+        //     await DataStore.save(
+        //         new Course({
+        //             coordinatorName: formData.coordinatorName,
+        //             coordinatorEmail: formData.coordinatorEmail,
+        //             courseCode: formData.courseCode,
+        //             yearSemester: `${formData.year} Semester ${formData.semester}`,
+        //             faculty: formData.faculty,
+        //             preassignMarkers: formData.preassignMarkers,
+        //             requireMarkers: formData.requireMarkers,
+        //             estimatedStudents: formData.estimatedStudents,
+        //             enrolledStudents: formData.enrolledStudents,
+        //             summary: formData.summary,
+        //             minGrade: formData.minGrade,
+        //             totalHours: `${formData.totalHours}`,
+        //             appOpen: true,
+        //             description: formData.description,
+        //             directorName: formData.directorName,
+        //             directorEmail: formData.directorEmail,
+        //             name: `${formData.faculty} ${formData.courseCode}`
+        //         })
+        //     );
+        //     alert('Course successfully added.');
+        // } catch (error) {
+        //     console.error('Error adding course:', error);
+        //     alert('An error has occurred, please refer to console.');
+        // }
     };
 
 
@@ -300,7 +339,7 @@ function CourseForm() {
                     <div className="p-2">
                         <ReactCardFlip isFlipped={isFlipped}>
                             <Card style={{ width: '18vw', height: '50vh' }} key="front">
-                            <Card.Img style={{ maxHeight: "30vh", maxWidth: "18vw", width: "100%", height: "auto" }} variant="top" src={uploadedFile || "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />                               <Card.Body>
+                                <Card.Img style={{ maxHeight: "30vh", maxWidth: "18vw", width: "100%", height: "auto" }} variant="top" src={uploadedFile || "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />                               <Card.Body>
                                     <Card.Title>{formData.faculty + ' ' + formData.courseCode}</Card.Title>
                                     <Card.Text>
                                         {formData.coordinatorName}
