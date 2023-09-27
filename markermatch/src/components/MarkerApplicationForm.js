@@ -13,7 +13,8 @@ import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import '../styles/MarkerApplicationForm.css';
 import MultiStepProgressBar from "./MultiStepProgressBar/MultiStepProgressBar";
-
+import NavbarComp from '../components/NavbarComp';
+import Sidebar from '../components/Sidebar';
 
 
 function MarkerApplicationForm() {
@@ -292,7 +293,11 @@ function MarkerApplicationForm() {
 
     return (
         <>
-            <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
+        <div className="page-container">
+        <NavbarComp />
+        <div className="content">
+            <Sidebar />
+            <Form className="p-4 rounded" style={{ fontWeight: 600, width: '100%', height: '100%' }} onSubmit={handleSubmit}>
             <MultiStepProgressBar step={step.toString()} onPageNumberClick={nextPageNumber} />
                 {step === 1 && (
                 <div>
@@ -478,6 +483,8 @@ function MarkerApplicationForm() {
                 </div>
                 )}
             </Form>
+            </div>
+            </div>
         </>
     );
 }
