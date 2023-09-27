@@ -12,7 +12,8 @@ import { Amplify, Auth, Storage } from 'aws-amplify';
 
 function CourseForm() {
     const [isFlipped, setIsFlipped] = useState(false);
-    const [uploadedFile, setUploadedFile] = useState(null);
+    const [previewFile, setPreviewFile] = useState(null);
+    const [uploadFile, setUploadFile] = useState(null);
     const [formData, setFormData] = useState({
         faculty: 'COMPSCI',
         courseCode: '391',
@@ -43,11 +44,28 @@ function CourseForm() {
     };
 
 
-    const handleFileUpload = async (e) => {
+    const handleFilePreview = async (e) => {
         const file = e.target.files[0];
 
-        const fileType = file.type.split('/').pop();
+        setUploadFile(file);
 
+
+        /* set the preview image */
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            setPreviewFile(reader.result);
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+    const handleFileUpload = async () => {
+
+        const fileType = uploadFile.type.split('/').pop();
+        
+        /* only recognise these ones lol */
         if (!(fileType === 'jpeg' || fileType === 'jpg' || fileType === 'png' || fileType === 'webp')) {
             return
         }
@@ -64,34 +82,31 @@ function CourseForm() {
         console.log(result)
 
         const updatedFormData = { ...formData, thumbnailId: result };
-
         setFormData(updatedFormData);
-        /* end */
-
-        
-        /* set the preview image */
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            setUploadedFile(reader.result);
-        };
-
-        reader.readAsDataURL(file);
-
-        /* end */
-    
-
+  
         try {
-            formData.thumbnailId = (await Storage.put(result, file, { level: "public" })).key;
+            formData.thumbnailId = (await Storage.put(result, uploadFile, { level: "public" })).key;
         } catch (error) {
             console.log("Error uploading thumbnail: ", error);
         }
         console.log(formData)
+        
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
+        // console.log(formData)
+        console.log(uploadFile);
+
+        try{
+            
+            await handleFileUpload();
+        }
+        catch (error){
+            alert('Failed uploading Transcript')
+        }
+
+
         for (const key in formData) {
             if (formData[key] === '') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
@@ -99,7 +114,7 @@ function CourseForm() {
             }
 
         }
-
+        
 
         // try {
         //     await DataStore.save(
@@ -327,7 +342,7 @@ function CourseForm() {
                     <Row className="mb-3">
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Please submit a thumbnail:</Form.Label>
-                            <Form.Control type="file" onChange={handleFileUpload} />
+                            <Form.Control type="file" onChange={handleFilePreview} />
                         </Form.Group>
                     </Row>
                     <Button variant="primary" type="submit">Submit</Button>
@@ -339,7 +354,7 @@ function CourseForm() {
                     <div className="p-2">
                         <ReactCardFlip isFlipped={isFlipped}>
                             <Card style={{ width: '18vw', height: '50vh' }} key="front">
-                                <Card.Img style={{ maxHeight: "30vh", maxWidth: "18vw", width: "100%", height: "auto" }} variant="top" src={uploadedFile || "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />                               <Card.Body>
+                                <Card.Img style={{ maxHeight: "30vh", maxWidth: "18vw", width: "100%", height: "auto" }} variant="top" src={previewFile || "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />                               <Card.Body>
                                     <Card.Title>{formData.faculty + ' ' + formData.courseCode}</Card.Title>
                                     <Card.Text>
                                         {formData.coordinatorName}
