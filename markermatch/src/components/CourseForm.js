@@ -5,25 +5,29 @@ import Button from 'react-bootstrap/Button';
 import { DataStore } from '@aws-amplify/datastore';
 import { Course } from '../models';
 import { useState } from 'react';
+import ReactCardFlip from "react-card-flip";
+import Card from 'react-bootstrap/Card';
 
 function CourseForm() {
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [uploadedFile, setUploadedFile] = useState(null);
     const [formData, setFormData] = useState({
         faculty: 'COMPSCI',
-        courseCode: '201',
+        courseCode: '391',
         coordinatorName: 'John Doe',
         coordinatorEmail: 'johndoe@gmail.com',
         year: '2023',
         semester: '1',
-        directorName: 'Johnny Doe',
-        directorEmail: 'Johnnydde@gmail.com',
+        directorName: 'Jane Doe',
+        directorEmail: 'Janedoe@gmail.com',
         estimatedStudents: '100',
         requireMarkers: false,
         enrolledStudents: '90',
         preassignMarkers: false,
         totalHours: '50',
         minGrade: 'A+',
-        description: 'This course is not real lol',
-        summary: 'Blah blahj longer not real course blahhhhh',
+        description: 'A ficticious Computer Science course.',
+        summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium consectetur neque et pretium. Praesent elementum tortor ut nibh vulputate pharetra. Donec pharetra elit vitae velit gravida, a interdum justo ullamcorper. Pellentesque sit amet pretium arcu. Nulla aliquet pharetra nibh. Vestibulum efficitur leo sed velit volutpat mollis. Suspendisse posuere massa eget ante pretium, at fringilla leo pretium. Pellentesque eget posuere dolor. Nunc lacinia risus quis purus venenatis vestibulum. Phasellus ut porta tortor, sit ',
 
     });
 
@@ -33,14 +37,25 @@ function CourseForm() {
             ...prevData,
             [name]: type === 'checkbox' ? checked : value
         }));
-    
+
     };
+
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+      
+        reader.onload = () => {
+          setUploadedFile(reader.result);
+        };
+      
+        reader.readAsDataURL(file);
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData)
         for (const key in formData) {
-            if (formData[key]  === '') {
+            if (formData[key] === '') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
                 return;
             }
@@ -57,12 +72,12 @@ function CourseForm() {
                     faculty: formData.faculty,
                     preassignMarkers: formData.preassignMarkers,
                     requireMarkers: formData.requireMarkers,
-                    estimatedStudents: formData.estimatedStudents, 
-                    enrolledStudents: formData.enrolledStudents, 
+                    estimatedStudents: formData.estimatedStudents,
+                    enrolledStudents: formData.enrolledStudents,
                     summary: formData.summary,
                     minGrade: formData.minGrade,
-                    totalHours: `${formData.totalHours}`, 
-                    appOpen: true, 
+                    totalHours: `${formData.totalHours}`,
+                    appOpen: true,
                     description: formData.description,
                     directorName: formData.directorName,
                     directorEmail: formData.directorEmail,
@@ -72,205 +87,256 @@ function CourseForm() {
             alert('Course successfully added.');
         } catch (error) {
             console.error('Error adding course:', error);
-            alert('An error has occurred, please refer to console.'); 
+            alert('An error has occurred, please refer to console.');
         }
     };
 
 
     return (
-        <>
+        <div id="course-form-template">
+            <div id="form-template1">
 
-            <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Label>Course Faculty</Form.Label>
-                        <Form.Control
-                            name="faculty"
-                            placeholder="e.g. COMPSCI"
-                            value={formData.faculty}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+                <Form className="border p-4 rounded " style={{ fontWeight: 600 }} onSubmit={handleSubmit}>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
+                            <Form.Label>Course Faculty</Form.Label>
+                            <Form.Control
+                                name="faculty"
+                                placeholder="e.g. COMPSCI"
+                                value={formData.faculty}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>Course Code</Form.Label>
-                        <Form.Control
-                            name="courseCode"
-                            placeholder="e.g. 225"
-                            value={formData.courseCode}
-                            onChange={handleChange}
-                            type="number"
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Course Code</Form.Label>
+                            <Form.Control
+                                name="courseCode"
+                                placeholder="e.g. 225"
+                                value={formData.courseCode}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>Course Coordinator</Form.Label>
-                        <Form.Control
-                            name="coordinatorName"
-                            placeholder="Name"
-                            value={formData.coordinatorName}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Course Coordinator</Form.Label>
+                            <Form.Control
+                                name="coordinatorName"
+                                placeholder="Name"
+                                value={formData.coordinatorName}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>⠀</Form.Label>
-                        <Form.Control
-                            name="coordinatorEmail"
-                            placeholder="Email"
-                            value={formData.coordinatorEmail}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                </Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>⠀</Form.Label>
+                            <Form.Control
+                                name="coordinatorEmail"
+                                placeholder="Email"
+                                value={formData.coordinatorEmail}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Row>
 
-                <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Label>Year</Form.Label>
-                        <Form.Control
-                            name="year"
-                            defaultValue="2023"
-                            value={formData.year}
-                            onChange={handleChange}
-                            type="number"
-                        />
-                    </Form.Group>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
+                            <Form.Label>Year</Form.Label>
+                            <Form.Control
+                                name="year"
+                                defaultValue="2023"
+                                value={formData.year}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>Semester</Form.Label>
-                        <Form.Select
-                            name="semester"
-                            aria-label="Default select example"
-                            value={formData.semester}
-                            onChange={handleChange}
-                        >
-                            <option value="Semester 1">Semester 1</option>
-                            <option value="Semester 2">Semester 2</option>
-                        </Form.Select>
-                    </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Semester</Form.Label>
+                            <Form.Select
+                                name="semester"
+                                aria-label="Default select example"
+                                value={formData.semester}
+                                onChange={handleChange}
+                            >
+                                <option value="Semester 1">Semester 1</option>
+                                <option value="Semester 2">Semester 2</option>
+                            </Form.Select>
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>Course Director</Form.Label>
-                        <Form.Control
-                            name="directorName"
-                            placeholder="Name"
-                            value={formData.directorName}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Course Director</Form.Label>
+                            <Form.Control
+                                name="directorName"
+                                placeholder="Name"
+                                value={formData.directorName}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>⠀</Form.Label>
-                        <Form.Control
-                            name="directorEmail"
-                            placeholder="Email"
-                            value={formData.directorEmail}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                </Row>
-                <Row className="mb-3">
-                    <Form.Group as={Col} className="d-flex align-items-center">
-                        <Form.Label>Estimated number of students</Form.Label>
-                        <Form.Control
-                            name="estimatedStudents"
-                            value={formData.estimatedStudents}
-                            onChange={handleChange}
-                            type="number"
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>⠀</Form.Label>
+                            <Form.Control
+                                name="directorEmail"
+                                placeholder="Email"
+                                value={formData.directorEmail}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Estimated number of students</Form.Label>
+                            <Form.Control
+                                name="estimatedStudents"
+                                value={formData.estimatedStudents}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col} className="d-flex align-items-center">
-                        <Form.Label>Do you require markers for this course? ⠀⠀⠀⠀⠀⠀⠀⠀⠀</Form.Label>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch-1"
-                            label=""
-                            checked={formData.requireMarkers}
-                            onChange={handleChange}
-                            name="requireMarkers"
-                        />
-                    </Form.Group>
-                </Row>
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Do you require markers for this course? ⠀⠀⠀⠀⠀⠀⠀⠀⠀</Form.Label>
+                            <Form.Check
+                                type="switch"
+                                id="custom-switch-1"
+                                label=""
+                                checked={formData.requireMarkers}
+                                onChange={handleChange}
+                                name="requireMarkers"
+                            />
+                        </Form.Group>
+                    </Row>
 
-                <Row className="mb-3">
-                    <Form.Group as={Col} className="d-flex align-items-center">
-                        <Form.Label>Current number of enrolled students</Form.Label>
-                        <Form.Control
-                            name="enrolledStudents"
-                            value={formData.enrolledStudents}
-                            onChange={handleChange}
-                            type="number"
-                        />
-                    </Form.Group>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Current number of enrolled students</Form.Label>
+                            <Form.Control
+                                name="enrolledStudents"
+                                value={formData.enrolledStudents}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col} className="d-flex align-items-center">
-                        <Form.Label>Would you like to preassign markers if available?⠀⠀⠀</Form.Label>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch-2"
-                            label=""
-                            checked={formData.preassignMarkers}
-                            onChange={handleChange}
-                            name="preassignMarkers"
-                        />
-                    </Form.Group>
-                </Row>
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Would you like to preassign markers if available?⠀⠀⠀</Form.Label>
+                            <Form.Check
+                                type="switch"
+                                id="custom-switch-2"
+                                label=""
+                                checked={formData.preassignMarkers}
+                                onChange={handleChange}
+                                name="preassignMarkers"
+                            />
+                        </Form.Group>
+                    </Row>
 
-                <Row className="mb-3">
-                    <Form.Group as={Col} className="d-flex align-items-center">
-                        <Form.Label>Number of available marking hours</Form.Label>
-                        <Form.Control
-                            name="totalHours"
-                            value={formData.totalHours}
-                            onChange={handleChange}
-                            type="number"
-                        />
-                    </Form.Group>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Number of available marking hours</Form.Label>
+                            <Form.Control
+                                name="totalHours"
+                                value={formData.totalHours}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                    <Form.Group as={Col}>
-                        <Form.Label>Applicant minimum grade</Form.Label>
-                        <Form.Select
-                            name="minGrade"
-                            aria-label="Default select example"
-                            value={formData.minGrade}
-                            onChange={handleChange}
-                        >
-                            <option value="A+">A+</option>
-                            <option value="A">A</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B">B</option>
-                            <option value="B-">B-</option>
-                        </Form.Select>
-                    </Form.Group>
-                </Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Applicant minimum grade</Form.Label>
+                            <Form.Select
+                                name="minGrade"
+                                aria-label="Default select example"
+                                value={formData.minGrade}
+                                onChange={handleChange}
+                            >
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Row>
 
-                <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Label>A short description of what the course is about</Form.Label>
-                        <Form.Control
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
+                            <Form.Label>A short description of what the course is about</Form.Label>
+                            <Form.Control
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Row>
 
-                <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Label>A longer summary for applicants who want to find out more</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="summary"
-                            value={formData.summary}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                </Row>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-        </>
+                    <Row className="mb-3">
+                        <Form.Group as={Col}>
+                            <Form.Label>A longer summary for applicants who want to find out more</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                name="summary"
+                                value={formData.summary}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Please submit a thumbnail:</Form.Label>
+                            <Form.Control type="file" onChange={handleFileUpload} />
+                        </Form.Group>
+                    </Row>
+                    <Button variant="primary" type="submit">Submit</Button>
+                </Form>
+            </div>
+
+            <div id="form-template2">
+                <div id="preview" style={{ height: '100%' }}>
+                    <div className="p-2">
+                        <ReactCardFlip isFlipped={isFlipped}>
+                            <Card style={{ width: '18vw', height: '50vh' }} key="front">
+                            <Card.Img style={{ maxHeight: "30vh", maxWidth: "18vw", width: "100%", height: "auto" }} variant="top" src={uploadedFile || "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />                               <Card.Body>
+                                    <Card.Title>{formData.faculty + ' ' + formData.courseCode}</Card.Title>
+                                    <Card.Text>
+                                        {formData.coordinatorName}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        {formData.description}
+                                    </Card.Text>
+                                    <Button className="align-self-end" variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                                </Card.Body>
+                            </Card>
+
+                            <Card style={{ width: '18vw', height: '50vh' }} key="back">
+                                <Card.Body>
+                                    <Card.Text>
+                                        Minimum Grade: {formData.minGrade}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Estimated Hours: {formData.totalHours}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Taking Applications: {formData.appOpen ? 'Yes' : 'No'}
+                                    </Card.Text>
+                                    <Card.Text style={{ height: "60%", overflowY: "scroll" }}>
+                                        Description: <br />
+                                        {formData.summary}
+                                    </Card.Text>
+                                    <Button variant="secondary" className="align-self-end" onClick={() => setIsFlipped((prev) => !prev)}>Return</Button>{' '}
+                                </Card.Body>
+                            </Card>
+                        </ReactCardFlip>
+
+                    </div>
+                </div>
+
+            </div>
+        </div >
     );
 }
 

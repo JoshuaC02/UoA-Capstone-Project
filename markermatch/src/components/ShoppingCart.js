@@ -27,7 +27,7 @@ function ShoppingCart() {
             const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
                 for (let course in allCourses) {
-                    if (allCourses[course].faculty + ' ' + allCourses[course].courseCode == selectedCourses[element].trim()) {
+                    if (allCourses[course].name == selectedCourses[element].trim()) {
                         listOfCourses.push(allCourses[course]);
                     }
                 }
