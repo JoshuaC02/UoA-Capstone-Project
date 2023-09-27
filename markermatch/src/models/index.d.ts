@@ -89,6 +89,7 @@ type EagerCourse = {
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
   readonly name?: string | null;
+  readonly thumbnailId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -116,6 +117,7 @@ type LazyCourse = {
   readonly directorName?: string | null;
   readonly directorEmail?: string | null;
   readonly name?: string | null;
+  readonly thumbnailId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -2,3 +2,22 @@
     margin-left:10vh;
     margin-top:10vh;
 }
+
+#course-form-template {
+    height: 80%;
+    display: flex;
+    width:100%;
+}
+
+#form-template1,
+#form-template2 {
+    display: inline-block;
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    border: 1px solid black;
+}
+
+#form-template2 {
+    
+}
