@@ -7,7 +7,7 @@ import { Course } from '../models';
 import { useState } from 'react';
 import ReactCardFlip from "react-card-flip";
 import Card from 'react-bootstrap/Card';
-import { Amplify, Auth, Storage } from 'aws-amplify';
+import { Storage } from 'aws-amplify';
 
 
 function CourseForm() {
@@ -67,6 +67,7 @@ function CourseForm() {
         
         /* only recognise these ones lol */
         if (!(fileType === 'jpeg' || fileType === 'jpg' || fileType === 'png' || fileType === 'webp')) {
+            alert('Invalid media type.')
             return
         }
 
@@ -90,7 +91,7 @@ function CourseForm() {
             console.log("Error uploading thumbnail: ", error);
         }
         console.log(formData)
-        
+
     }
 
     const handleSubmit = async (e) => {
@@ -116,33 +117,34 @@ function CourseForm() {
         }
         
 
-        // try {
-        //     await DataStore.save(
-        //         new Course({
-        //             coordinatorName: formData.coordinatorName,
-        //             coordinatorEmail: formData.coordinatorEmail,
-        //             courseCode: formData.courseCode,
-        //             yearSemester: `${formData.year} Semester ${formData.semester}`,
-        //             faculty: formData.faculty,
-        //             preassignMarkers: formData.preassignMarkers,
-        //             requireMarkers: formData.requireMarkers,
-        //             estimatedStudents: formData.estimatedStudents,
-        //             enrolledStudents: formData.enrolledStudents,
-        //             summary: formData.summary,
-        //             minGrade: formData.minGrade,
-        //             totalHours: `${formData.totalHours}`,
-        //             appOpen: true,
-        //             description: formData.description,
-        //             directorName: formData.directorName,
-        //             directorEmail: formData.directorEmail,
-        //             name: `${formData.faculty} ${formData.courseCode}`
-        //         })
-        //     );
-        //     alert('Course successfully added.');
-        // } catch (error) {
-        //     console.error('Error adding course:', error);
-        //     alert('An error has occurred, please refer to console.');
-        // }
+        try {
+            await DataStore.save(
+                new Course({
+                    coordinatorName: formData.coordinatorName,
+                    coordinatorEmail: formData.coordinatorEmail,
+                    courseCode: formData.courseCode,
+                    yearSemester: `${formData.year} Semester ${formData.semester}`,
+                    faculty: formData.faculty,
+                    preassignMarkers: formData.preassignMarkers,
+                    requireMarkers: formData.requireMarkers,
+                    estimatedStudents: formData.estimatedStudents,
+                    enrolledStudents: formData.enrolledStudents,
+                    summary: formData.summary,
+                    minGrade: formData.minGrade,
+                    totalHours: `${formData.totalHours}`,
+                    appOpen: true,
+                    description: formData.description,
+                    directorName: formData.directorName,
+                    directorEmail: formData.directorEmail,
+                    name: `${formData.faculty} ${formData.courseCode}`,
+                    thumbnailId: formData.thumbnailId
+                })
+            );
+            alert('Course successfully added.');
+        } catch (error) {
+            console.error('Error adding course:', error);
+            alert('An error has occurred, please refer to console.');
+        }
     };
 
 
