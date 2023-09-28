@@ -42,8 +42,8 @@ function CourseData() {
     return (
       <div className="p-2" key={course.id}>
         <ReactCardFlip isFlipped={isFlipped}>
-          <Card style={{  width: '15vw', height:'48vh' }} key="front">
-            <Card.Img style={{ maxHeight: "30vh", maxWidth: "15vw", width: "100%", height: "auto" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
+          <Card style={{ height:"400px", width:"250px" }} key="front">
+            <Card.Img style={{ width: "248px", height: "248px" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
             <Card.Body>
               <Card.Title style={{ fontWeight:"bolder" }}>{course.name}</Card.Title>
               <Card.Subtitle style={{ fontStyle:"italic" }}>
@@ -57,7 +57,7 @@ function CourseData() {
             </Card.Body>
           </Card>
 
-          <Card style={{ width: '15vw', height:'48vh'}} key="back">
+          <Card style={{ height:'400px', width: '250px'}} key="back">
             <Card.Body>
               <Card.Text>
                 Minimum Grade: {course.minGrade}
@@ -68,11 +68,11 @@ function CourseData() {
               <Card.Text>
                 Taking Applications: {course.appOpen ? 'Yes' : 'No'}
               </Card.Text>
-              <Card.Text style={{ height:"11.8vw", overflowY: "scroll"}}>
+              <Card.Text style={{ height:"199px", overflowY: "scroll"}}>
                 Description: <br />
                 {course.summary}
               </Card.Text>
-              <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>Return</Button>{' '}
+              <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See Less</Button>{' '}
               <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
             </Card.Body>
           </Card>
