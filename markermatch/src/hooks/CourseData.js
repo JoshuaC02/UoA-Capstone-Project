@@ -45,11 +45,11 @@ function CourseData() {
           <Card style={{  width: '15vw', height:'48vh' }} key="front">
             <Card.Img style={{ maxHeight: "30vh", maxWidth: "15vw", width: "100%", height: "auto" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
             <Card.Body>
-              <Card.Title>{course.name}</Card.Title>
-              <Card.Text>
+              <Card.Title style={{ fontWeight:"bolder" }}>{course.name}</Card.Title>
+              <Card.Subtitle style={{ fontStyle:"italic" }}>
                 {course.coordinatorName}
-              </Card.Text>
-              <Card.Text>
+              </Card.Subtitle>
+              <Card.Text style={{ textOverflow:"ellipsis", whiteSpace:"nowrap", overflow:"hidden"}}>
                 {course.description}
               </Card.Text>
               <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
@@ -68,7 +68,7 @@ function CourseData() {
               <Card.Text>
                 Taking Applications: {course.appOpen ? 'Yes' : 'No'}
               </Card.Text>
-              <Card.Text style={{ height: "60%", overflowY: "scroll"}}>
+              <Card.Text style={{ height:"11.8vw", overflowY: "scroll"}}>
                 Description: <br />
                 {course.summary}
               </Card.Text>
@@ -89,4 +89,4 @@ function CourseData() {
   };
 }
 
-export default CourseData;
+export default CourseData; //"55.5%"

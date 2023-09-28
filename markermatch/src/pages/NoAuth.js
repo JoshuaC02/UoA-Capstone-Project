@@ -19,4 +19,4 @@ function NoAuth() {
 
 export default NoAuth
 
-// style={{display:'flex',justifyContent:'center', flexWrap: 'wrap', overflow:'scroll', margin:"0 10vw"}}
+// 

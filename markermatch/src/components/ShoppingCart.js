@@ -34,7 +34,6 @@ function ShoppingCart() {
 
             }
         }
-        
         return listOfCourses;
     }
     async function deleteUserSelectedCourse(courseId, userId) {
@@ -73,22 +72,22 @@ function ShoppingCart() {
         return (
           <div className="p-2" key={course.id}>
             <ReactCardFlip isFlipped={isFlipped}>
-              <Card style={{ width: '18rem'}} key="front">
-                <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
+              <Card style={{  width: '15vw', height:'48vh' }} key="front">
+                <Card.Img style={{ maxHeight: "30vh", maxWidth: "15vw", width: "100%", height: "auto" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
                 <Card.Body>
-                  <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
-                  <Card.Text>
+                  <Card.Title style={{ fontWeight:"bolder" }}>{course.name}</Card.Title>
+                  <Card.Subtitle style={{ fontStyle:"italic" }}>
                     {course.coordinatorName}
-                  </Card.Text>
-                  <Card.Text>
+                  </Card.Subtitle>
+                  <Card.Text style={{ textOverflow:"ellipsis", whiteSpace:"nowrap", overflow:"hidden"}}>
                     {course.description}
                   </Card.Text>
                   <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
                   <Button variant="primary" style={{ backgroundColor: "#FF0000" }} onClick={() => deleteUserSelectedCourse(course.faculty + " " + course.courseCode, user?.username)}>Remove from cart</Button>
                 </Card.Body>
               </Card>
-    
-              <Card style={{ width: '18rem'}} key="back">
+
+              <Card style={{ width: '15vw', height:'48vh'}} key="back">
                 <Card.Body>
                   <Card.Text>
                     Minimum Grade: {course.minGrade}
@@ -97,13 +96,13 @@ function ShoppingCart() {
                     Estimated Hours: {course.totalHours}
                   </Card.Text>
                   <Card.Text>
-                    Taking Applications: {course.appOpen}
+                    Taking Applications: {course.appOpen ? 'Yes' : 'No'}
                   </Card.Text>
-                  <Card.Text style={{height:"176px", overflow:"scroll"}}>
+                  <Card.Text style={{ height:"11.8vw", overflowY: "scroll"}}>
                     Description: <br />
                     {course.summary}
                   </Card.Text>
-                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>Return</Button>{' '}
                   <Button variant="primary" style={{ backgroundColor: "#FF0000" }} onClick={() => deleteUserSelectedCourse(course.faculty + " " + course.courseCode, user?.username)}>Remove from cart</Button>
                 </Card.Body>
               </Card>
@@ -125,6 +124,8 @@ function ShoppingCart() {
     const handleCartSubmission = () => {
         if (courses.length == 0){
             alert('There are no courses in your cart!')
+            navigate("/", { replace: true });
+            return;
         }
         navigate("/application-form", { replace: true });
     }
@@ -133,13 +134,19 @@ function ShoppingCart() {
         <>
             <div className="grid-container">
                 <div className="shopping-cart">
-                    <div className="courses">
-                        {courses.map(course => (
-                            <CourseCardCart course={course} user={user}/>
-                        ))}
-                    </div>
+                  {courses.length != 0 ? (
+                      <>
+                        <div className="courses">
+                          {courses.map(course => (
+                              <CourseCardCart course={course} user={user}/>
+                          ))}
+                        </div>
+                        
+                      </>
+                    ) : (<><h2>No Courses in Cart</h2><a href="/"><h4>Return Home</h4></a></>) }
                 </div>
-                <div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>
+                {courses.length != 0 ? (<div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>) : (null)}
+                
             </div>
         </>
     );

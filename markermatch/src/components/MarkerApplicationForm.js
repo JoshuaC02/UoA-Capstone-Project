@@ -6,6 +6,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { MarkerApplication } from '../models';
 import { useState, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router';
 import { Amplify, Auth, Storage } from 'aws-amplify';
 import CourseData from '../hooks/CourseData';
 import { Cart, Course, ApplicationStatus } from '../models';
@@ -21,6 +22,7 @@ function MarkerApplicationForm() {
     const { user } = useAuthenticator((context) => [context.user]);
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
+    const navigate = useNavigate();
 
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
@@ -29,100 +31,104 @@ function MarkerApplicationForm() {
         return (
           <div className="p-2" key={course.id}>
             <ReactCardFlip isFlipped={isFlipped}>
-              <Card style={{ width: '18rem'}} key="front">
-                <Card.Img style={{ height: "200px" }} variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png" />
-                <Card.Body>
-                  <Card.Title>{course.faculty + '' + course.courseCode}</Card.Title>
-                  <Card.Subtitle>
-                    {course.coordinatorName}
-                  </Card.Subtitle>
-                  <Card.Text style={{height:"49px", overflow:"scroll"}}>
-                    {course.description}
-                  </Card.Text>
-                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-                  <Card.Text>Preference?</Card.Text>
-                  <Form.Control
-                            name={course.faculty + course.courseCode + "_preference"}
-                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_preference"]}
-                            onChange={handlePreferenceChange}
-                            type="number"
-                            id="preference"
-                        />
-                  <Card.Text>Previous Grade</Card.Text>
-                  <Form.Control
-                            name={course.faculty + course.courseCode + "_previousGrade"}
-                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
-                            onChange={handleGradeChange}
-                            type="string"
-                            id="previousGrade"
-                        />
-                  <Card.Text>Previous Tutor?</Card.Text>
-                  <Form.Check
-                            name={course.faculty + course.courseCode + "_previousTutor"}
-                            type="checkbox"
-                            id="previousTutor"
-                            checked={formData.courseSpecifics[course.faculty + course.courseCode + "_previousTutor"]}
-                            onChange={handlePreviousMarkerChange}
-                        />
-                </Card.Body>
-              </Card>
-    
-              <Card style={{ width: '18rem'}} key="back">
-                <Card.Body>
-                  <Card.Text>
-                    Minimum Grade: {course.minGrade}
-                  </Card.Text>
-                  <Card.Text>
-                    Estimated Hours: {course.totalHours}
-                  </Card.Text>
-                  <Card.Text>
-                    Taking Applications: {course.appOpen}
-                  </Card.Text>
-                  <Card.Text style={{height:"176px", overflow:"scroll"}}>
-                    Description: <br />
-                    {course.summary}
-                  </Card.Text>
-                  <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-                  <Card.Text>Preference?</Card.Text>
-                  <Form.Control
-                            name={course.faculty + course.courseCode + "_preference"}
-                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_preference"]}
-                            onChange={handlePreferenceChange}
-                            type="number"
-                            id="preference"
-                        />
-                  <Card.Text>Previous Grade</Card.Text>
-                  <Form.Control
-                            name={course.faculty + course.courseCode + "_previousGrade"}
-                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
-                            onChange={handleGradeChange}
-                            type="string"
-                            id="previousGrade"
-                        />
-                  <Card.Text>Previous Tutor?</Card.Text>
-                  <Form.Check
-                            name={course.faculty + course.courseCode + "_previousTutor"}
-                            type="checkbox"
-                            id="previousTutor"
-                            checked={formData.courseSpecifics[course.faculty + course.courseCode + "_previousTutor"]}
-                            onChange={handlePreviousMarkerChange}
-                        />
-                  
-                </Card.Body>
-              </Card>
+                <Card style={{  width: '15vw', height:'71vh' }} key="front">
+                    <Card.Img style={{ maxHeight: "30vh", maxWidth: "15vw", width: "100%", height: "auto" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
+                    <Card.Body>
+                    <Card.Title style={{ fontWeight:"bolder" }}>{course.name}</Card.Title>
+                    <Card.Subtitle style={{ fontStyle:"italic" }}>
+                        {course.coordinatorName}
+                    </Card.Subtitle>
+                    <Card.Text style={{ textOverflow:"ellipsis", whiteSpace:"nowrap", overflow:"hidden"}}>
+                        {course.description}
+                    </Card.Text>
+                    <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+                    <Card.Text>Preference?</Card.Text>
+                    <Form.Control
+                                name={course.faculty + course.courseCode + "_preference"}
+                                value={formData.courseSpecifics[course.faculty + course.courseCode + "_preference"]}
+                                onChange={handlePreferenceChange}
+                                type="number"
+                                id="preference"
+                            />
+                    <Card.Text>Previous Grade</Card.Text>
+                    <Form.Control
+                                name={course.faculty + course.courseCode + "_previousGrade"}
+                                value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
+                                onChange={handleGradeChange}
+                                type="string"
+                                id="previousGrade"
+                            />
+                    <Card.Text>Previous Tutor?</Card.Text>
+                    <Form.Check
+                                name={course.faculty + course.courseCode + "_previousTutor"}
+                                type="checkbox"
+                                id="previousTutor"
+                                checked={formData.courseSpecifics[course.faculty + course.courseCode + "_previousTutor"]}
+                                onChange={handlePreviousMarkerChange}
+                            />
+                    </Card.Body>
+                </Card>
+
+                <Card style={{ width: '15vw', height:'48vh'}} key="back">
+                    <Card.Body>
+                    <Card.Text>
+                        Minimum Grade: {course.minGrade}
+                    </Card.Text>
+                    <Card.Text>
+                        Estimated Hours: {course.totalHours}
+                    </Card.Text>
+                    <Card.Text>
+                        Taking Applications: {course.appOpen ? 'Yes' : 'No'}
+                    </Card.Text>
+                    <Card.Text style={{ height:"11.8vw", overflowY: "scroll"}}>
+                        Description: <br />
+                        {course.summary}
+                    </Card.Text>
+                    <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>Return</Button>{' '}
+                    <Card.Text>Preference?</Card.Text>
+                    <Form.Control
+                                name={course.faculty + course.courseCode + "_preference"}
+                                value={formData.courseSpecifics[course.faculty + course.courseCode + "_preference"]}
+                                onChange={handlePreferenceChange}
+                                type="number"
+                                id="preference"
+                            />
+                    <Card.Text>Previous Grade</Card.Text>
+                    <Form.Control
+                                name={course.faculty + course.courseCode + "_previousGrade"}
+                                value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
+                                onChange={handleGradeChange}
+                                type="string"
+                                id="previousGrade"
+                            />
+                    <Card.Text>Previous Tutor?</Card.Text>
+                    <Form.Check
+                                name={course.faculty + course.courseCode + "_previousTutor"}
+                                type="checkbox"
+                                id="previousTutor"
+                                checked={formData.courseSpecifics[course.faculty + course.courseCode + "_previousTutor"]}
+                                onChange={handlePreviousMarkerChange}
+                            />
+                    </Card.Body>
+                </Card>
             </ReactCardFlip>
           </div>
         )
       }
 
-    async function getUserSelectedCourses() {
+      async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
         let listOfCourses = [];
+        console.log("testing-- " + userCart);
         if (userCart[0] !== undefined) {
             const selectedCourses = userCart[0].selectedCourses?.split(",");
             const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
                 for (let course in allCourses) {
+                    console.log("all courses -  " + allCourses[course].faculty + allCourses[course].courseCode);
+                    console.log("selected no trim -  " + selectedCourses[element]);
+                    console.log("selected -  " + selectedCourses[element].trim().replace(/\s+/g, ''));
+                    console.log(" ---------------- ");
                     if (allCourses[course].faculty + allCourses[course].courseCode === selectedCourses[element].trim().replace(/\s+/g, '')) {
                         listOfCourses.push(allCourses[course]);
                     }
@@ -264,6 +270,7 @@ function MarkerApplicationForm() {
             );
             addCheckOut(outCourses, user.username);
             alert('Application successfully submitted.');
+            navigate("/application-status", { replace: true })
         } catch (error) {
             console.error('Error submitting application:', error);
             alert(error)
