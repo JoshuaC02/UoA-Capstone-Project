@@ -198,8 +198,13 @@ function MarkerApplicationForm() {
 
     const handleCvChange = async (e) => {
         const file = e.target.files[0];
+        if (file.type != "application/pdf") {
+            alert("Your file has not been uploaded. This input only accepts '.pdf' file extensions.");
+            return;
+        }
         try {
             formData.cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
+            alert("File successfully uploaded!");
         } catch (error) {
             console.log("Error uploading cv: ", error);
         }
@@ -207,8 +212,13 @@ function MarkerApplicationForm() {
 
     const handleTranscriptChange = async (e) => {
         const file = e.target.files[0];
+        if (file.type != "application/pdf") {
+            alert("Your file has not been uploaded. This input only accepts '.pdf' file extensions.");
+            return;
+        }
         try {
             formData.transcriptId = (await Storage.put(file.name, file, {level: "protected"})).key;
+            alert("File successfully uploaded!");
         } catch (error) {
             console.log("Error uploading transcript: ", error);
         }
@@ -348,6 +358,7 @@ function MarkerApplicationForm() {
                                 type="file"
                                 name="transcript"
                                 onChange={handleTranscriptChange}
+                                accept="application/pdf"
                             />
                         </Form.Group>
 
@@ -357,6 +368,7 @@ function MarkerApplicationForm() {
                                 type="file" 
                                 name="cv"
                                 onChange={handleCvChange}
+                                accept="application/pdf"
                             />
                         </Form.Group>
                     </Row>
