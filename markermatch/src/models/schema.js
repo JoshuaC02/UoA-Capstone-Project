@@ -261,6 +261,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "thumbnailId": {
+                    "name": "thumbnailId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -425,6 +432,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "preferredMarker": {
+                    "name": "preferredMarker",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -471,5 +485,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "a77bed3f8ed1d33317f325a5b59f7dae"
+    "version": "a155cf998774f8d6354a97b171f584f5"
 };
