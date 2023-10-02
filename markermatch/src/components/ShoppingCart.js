@@ -98,7 +98,7 @@ function ShoppingCart() {
                   <Card.Text>
                     Taking Applications: {course.appOpen ? 'Yes' : 'No'}
                   </Card.Text>
-                  <Card.Text style={{ height:"199px", overflowY: "scroll"}}>
+                  <Card.Text style={{ height:"199px", overflowY: "auto"}}>
                     Description: <br />
                     {course.summary}
                   </Card.Text>
@@ -143,7 +143,7 @@ function ShoppingCart() {
                         </div>
                         
                       </>
-                    ) : (<><h2>No Courses in Cart</h2><a href="/"><h4>Return Home</h4></a></>) }
+                    ) : (<><h2>No Courses in Cart</h2><a href="/home"><h4>Return Home</h4></a></>) }
                 </div>
                 {courses.length != 0 ? (<div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>) : (null)}
                 

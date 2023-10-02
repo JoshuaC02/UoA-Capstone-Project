@@ -68,7 +68,7 @@ function CourseData() {
               <Card.Text>
                 Taking Applications: {course.appOpen ? 'Yes' : 'No'}
               </Card.Text>
-              <Card.Text style={{ height:"199px", overflowY: "scroll"}}>
+              <Card.Text style={{ height:"199px", overflowY: "auto"}}>
                 Description: <br />
                 {course.summary}
               </Card.Text>

@@ -268,6 +268,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "markersNeeded": {
+                    "name": "markersNeeded",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "markersAssigned": {
+                    "name": "markersAssigned",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -484,6 +498,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.3",
-    "version": "a155cf998774f8d6354a97b171f584f5"
+    "codegenVersion": "3.4.4",
+    "version": "0287fee9f4258503bfd1d9d28daa44ce"
 };

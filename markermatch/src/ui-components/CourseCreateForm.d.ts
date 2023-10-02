@@ -31,6 +31,8 @@ export declare type CourseCreateFormInputValues = {
     directorEmail?: string;
     name?: string;
     thumbnailId?: string;
+    markersNeeded?: number;
+    markersAssigned?: number;
 };
 export declare type CourseCreateFormValidationValues = {
     coordinatorName?: ValidationFunction<string>;
@@ -51,6 +53,8 @@ export declare type CourseCreateFormValidationValues = {
     directorEmail?: ValidationFunction<string>;
     name?: ValidationFunction<string>;
     thumbnailId?: ValidationFunction<string>;
+    markersNeeded?: ValidationFunction<number>;
+    markersAssigned?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CourseCreateFormOverridesProps = {
@@ -73,6 +77,8 @@ export declare type CourseCreateFormOverridesProps = {
     directorEmail?: PrimitiveOverrideProps<TextFieldProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     thumbnailId?: PrimitiveOverrideProps<TextFieldProps>;
+    markersNeeded?: PrimitiveOverrideProps<TextFieldProps>;
+    markersAssigned?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CourseCreateFormProps = React.PropsWithChildren<{
     overrides?: CourseCreateFormOverridesProps | undefined | null;

@@ -1,19 +1,19 @@
 import NavbarComp from "../components/NavbarComp";
 import Sidebar from "../components/Sidebar";
-import ApplicantsView from "../components/ApplicantsView";
+import AllApplicationsView from "../components/AllApplicationsView";
 
-function ApplicantsTable() {
+function AllApplicants() {
     return (
         <>
             <NavbarComp />
             <div className="homepage-container">
                 <div className="content-container">
                     <Sidebar/>
-                    <ApplicantsView/>
+                    <AllApplicationsView/>
                 </div>
             </div>
         </>
     );
 }
 
-export default ApplicantsTable
+export default AllApplicants
