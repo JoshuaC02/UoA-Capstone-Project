@@ -10,26 +10,18 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 function EditCourses() {
     const { user } = useAuthenticator((context) => [context.user]);
     const [courses, setCourses] = useState([]);
+    const [editingCourse, setEditingCourse] = useState(null);
 
     const userEmail = user?.getSignInUserSession()?.getIdToken()?.payload["email"];
-
-    // console.log(user?.getSignInUserSession()?.getIdToken()?.payload["email"])
 
     useEffect(() => {
         const fetchCourses = async () => {
             const courses = await DataStore.query(Course, (c) => c.coordinatorEmail.eq(userEmail));
-            // console.log(courses)
             setCourses(courses);
         };
 
         fetchCourses();
     }, []);
-
-
-
-    const fetchCoordCourses = () => {
-
-    }
 
 
     return (
@@ -38,19 +30,40 @@ function EditCourses() {
             <div className="homepage-container">
                 <div className="content-container">
                     <Sidebar />
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <h1 className="mb-4">Current courses you coordinate:</h1>
 
-
-                    {courses.map(course => (
-                        <div key={course.id}>
-       
-                            <p>{course.name}</p>
-   
+                                {courses.map(course => (
+                                    <div key={course.id}>
+                                        {editingCourse === course.id ? (
+                                            <CourseEdit course={course} />
+                                        ) : (
+                                            <div className="mb-3">
+                                                <div className="card">
+                                                    <div className="card-body d-flex justify-content-between">
+                                                        <div>
+                                                            <h5 className="card-title">{course.name}</h5>
+                                                        </div>
+                                                        <button className="btn btn-primary" onClick={() => setEditingCourse(course.id)}>Edit Course</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    ))}
                     </div>
+
+                </div>
             </div>
         </>
     );
 }
 
 export default EditCourses
+
+
+
