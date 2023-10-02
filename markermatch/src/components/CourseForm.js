@@ -97,19 +97,21 @@ function CourseForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // console.log(formData)
-        console.log(uploadFile);
+        if (uploadFile !== null){
+            try{
+                await handleFileUpload();
+            }
+            catch (error){
+                alert('Failed to upload thumbnail')
+            }
+        }
 
-        try{
-            
-            await handleFileUpload();
-        }
-        catch (error){
-            alert('Failed uploading Transcript')
-        }
+
+        
 
 
         for (const key in formData) {
-            if (formData[key] === '') {
+            if (formData[key] === '' && key !== 'thumbnailId') {
                 alert(`Please fill in all fields (no empty fields are allowed).`);
                 return;
             }
