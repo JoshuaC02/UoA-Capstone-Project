@@ -48,6 +48,8 @@ export default function CourseUpdateForm(props) {
     directorEmail: "",
     name: "",
     thumbnailId: "",
+    markersNeeded: "",
+    markersAssigned: "",
   };
   const [coordinatorName, setCoordinatorName] = React.useState(
     initialValues.coordinatorName
@@ -89,6 +91,12 @@ export default function CourseUpdateForm(props) {
   const [thumbnailId, setThumbnailId] = React.useState(
     initialValues.thumbnailId
   );
+  const [markersNeeded, setMarkersNeeded] = React.useState(
+    initialValues.markersNeeded
+  );
+  const [markersAssigned, setMarkersAssigned] = React.useState(
+    initialValues.markersAssigned
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = courseRecord
@@ -112,6 +120,8 @@ export default function CourseUpdateForm(props) {
     setDirectorEmail(cleanValues.directorEmail);
     setName(cleanValues.name);
     setThumbnailId(cleanValues.thumbnailId);
+    setMarkersNeeded(cleanValues.markersNeeded);
+    setMarkersAssigned(cleanValues.markersAssigned);
     setErrors({});
   };
   const [courseRecord, setCourseRecord] = React.useState(courseModelProp);
@@ -144,6 +154,8 @@ export default function CourseUpdateForm(props) {
     directorEmail: [],
     name: [],
     thumbnailId: [],
+    markersNeeded: [],
+    markersAssigned: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -189,6 +201,8 @@ export default function CourseUpdateForm(props) {
           directorEmail,
           name,
           thumbnailId,
+          markersNeeded,
+          markersAssigned,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -214,8 +228,8 @@ export default function CourseUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
           await DataStore.save(
@@ -262,6 +276,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.coordinatorName ?? value;
@@ -303,6 +319,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.coordinatorEmail ?? value;
@@ -344,6 +362,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.courseCode ?? value;
@@ -385,6 +405,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.yearSemester ?? value;
@@ -426,6 +448,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.faculty ?? value;
@@ -467,6 +491,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.preassignMarkers ?? value;
@@ -508,6 +534,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.requireMarkers ?? value;
@@ -549,6 +577,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.estimatedStudents ?? value;
@@ -592,6 +622,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.enrolledStudents ?? value;
@@ -633,6 +665,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.summary ?? value;
@@ -674,6 +708,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.minGrade ?? value;
@@ -715,6 +751,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.totalHours ?? value;
@@ -756,6 +794,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.appOpen ?? value;
@@ -797,6 +837,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -838,6 +880,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.directorName ?? value;
@@ -879,6 +923,8 @@ export default function CourseUpdateForm(props) {
               directorEmail: value,
               name,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.directorEmail ?? value;
@@ -920,6 +966,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name: value,
               thumbnailId,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -961,6 +1009,8 @@ export default function CourseUpdateForm(props) {
               directorEmail,
               name,
               thumbnailId: value,
+              markersNeeded,
+              markersAssigned,
             };
             const result = onChange(modelFields);
             value = result?.thumbnailId ?? value;
@@ -974,6 +1024,100 @@ export default function CourseUpdateForm(props) {
         errorMessage={errors.thumbnailId?.errorMessage}
         hasError={errors.thumbnailId?.hasError}
         {...getOverrideProps(overrides, "thumbnailId")}
+      ></TextField>
+      <TextField
+        label="Markers needed"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={markersNeeded}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              coordinatorName,
+              coordinatorEmail,
+              courseCode,
+              yearSemester,
+              faculty,
+              preassignMarkers,
+              requireMarkers,
+              estimatedStudents,
+              enrolledStudents,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+              description,
+              directorName,
+              directorEmail,
+              name,
+              thumbnailId,
+              markersNeeded: value,
+              markersAssigned,
+            };
+            const result = onChange(modelFields);
+            value = result?.markersNeeded ?? value;
+          }
+          if (errors.markersNeeded?.hasError) {
+            runValidationTasks("markersNeeded", value);
+          }
+          setMarkersNeeded(value);
+        }}
+        onBlur={() => runValidationTasks("markersNeeded", markersNeeded)}
+        errorMessage={errors.markersNeeded?.errorMessage}
+        hasError={errors.markersNeeded?.hasError}
+        {...getOverrideProps(overrides, "markersNeeded")}
+      ></TextField>
+      <TextField
+        label="Markers assigned"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={markersAssigned}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              coordinatorName,
+              coordinatorEmail,
+              courseCode,
+              yearSemester,
+              faculty,
+              preassignMarkers,
+              requireMarkers,
+              estimatedStudents,
+              enrolledStudents,
+              summary,
+              minGrade,
+              totalHours,
+              appOpen,
+              description,
+              directorName,
+              directorEmail,
+              name,
+              thumbnailId,
+              markersNeeded,
+              markersAssigned: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.markersAssigned ?? value;
+          }
+          if (errors.markersAssigned?.hasError) {
+            runValidationTasks("markersAssigned", value);
+          }
+          setMarkersAssigned(value);
+        }}
+        onBlur={() => runValidationTasks("markersAssigned", markersAssigned)}
+        errorMessage={errors.markersAssigned?.errorMessage}
+        hasError={errors.markersAssigned?.hasError}
+        {...getOverrideProps(overrides, "markersAssigned")}
       ></TextField>
       <Flex
         justifyContent="space-between"

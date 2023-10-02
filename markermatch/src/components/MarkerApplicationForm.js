@@ -80,7 +80,7 @@ function MarkerApplicationForm() {
                     <Card.Text>
                         Taking Applications: {course.appOpen ? 'Yes' : 'No'}
                     </Card.Text>
-                    <Card.Text style={{ height:"199px", overflowY: "scroll"}}>
+                    <Card.Text style={{ height:"199px", overflowY: "auto"}}>
                         Description: <br />
                         {course.summary}
                     </Card.Text>
@@ -225,36 +225,22 @@ function MarkerApplicationForm() {
     }
 //
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        for (const key in formData) {
-            if (formData[key] === '') {
-                alert(`Please fill in all fields (no empty fields are allowed).`);
-                return;
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            // Rest of your form data handling code...
+        
+            // Reformat the courseSpecifics data
+            const reformattedCourseSpecifics = {};
+            for (const key in formData.courseSpecifics) {
+            const [courseCode, property] = key.split('_');
+            if (!reformattedCourseSpecifics[courseCode]) {
+                reformattedCourseSpecifics[courseCode] = [];
             }
-            else if (key === "courseSpecifics") {
-                for (const subKey in formData.courseSpecifics) {
-                    if (formData.courseSpecifics[subKey] === "") {
-                        alert(`Please fill in all fields (no empty fields are allowed). test`);
-                        return;
-                    }
-                }
+            reformattedCourseSpecifics[courseCode].push({
+                property: property,
+                value: formData.courseSpecifics[key],
+            });
             }
-        }
-        for (const aKey in formData.courseSpecifics) {
-            if (aKey.includes("_preference")) {
-                if (formData.courseSpecifics >= courses.length) {
-                    alert("Preferences must be unique and valid")
-                    return;
-                }
-                for (const bKey in formData.courseSpecifics) {
-                    if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
-                        alert("Preferences must be unique and valid")
-                        return;
-                    }
-                }
-            }
-        }
 
         try {
 
@@ -275,7 +261,7 @@ function MarkerApplicationForm() {
                     maxHours: parseInt(formData.maxHours),
                     transcriptId: formData.transcriptId, 
                     cvId: formData.cvId, 
-                    courseSpecifics: JSON.stringify(formData.courseSpecifics)
+                    courseSpecifics: JSON.stringify(reformattedCourseSpecifics)
                 })
             );
             addCheckOut(outCourses, user.username);
