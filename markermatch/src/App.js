@@ -20,7 +20,7 @@ import { RequireAuthMarkerCoord } from './components/RequireAuthMarkerCoord';
 import { RequireAuthCourseAndMarkCo } from './components/RequireAuthCourseAndMarkCo.js';
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate  } from 'react-router-dom';
 import { Authenticator } from '@aws-amplify/ui-react';
 import Statuspage from './pages/Studentpage';
 import ApplicantsPage from './pages/ApplicantsPage';
@@ -32,10 +32,11 @@ import EditCourses from './pages/EditCourses';
 
 
 function App() {
-return (
+  return (
     <Router>
       <Authenticator.Provider>
         <Routes>
+          <Route path="/" element={<Navigate to="/home"/>}/>          
           <Route path="/home" element={<Homepage />} />
           <Route path="/auth" element={<Authentication />} />
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
