@@ -24,6 +24,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import Statuspage from './pages/Studentpage';
 
 import { Amplify, Storage } from 'aws-amplify';
+import EditCourses from './pages/EditCourses';
 
 
 function App() {
@@ -37,6 +38,7 @@ return (
           <Route path="/application-status" element={<RequireAuthUser><Statuspage/></RequireAuthUser>}  />
           <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
           <Route path="/addcourses" element={<RequireAuthCourseCoord><AddCourses /></RequireAuthCourseCoord>} />
+          <Route path="/edit-courses" element={<RequireAuthCourseCoord><EditCourses /></RequireAuthCourseCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />
           <Route path="/application-form" element={<RequireAuthUser><ApplicationPage /></RequireAuthUser>} />
         </Routes>

@@ -17,7 +17,7 @@ function CourseData() {
   useEffect(() => {
     const fetchCourses = async () => {
       const fetchedCourses = await getCourseData();
-      console.log(fetchedCourses)
+
       setCourses(fetchedCourses);
       setAllCourses(fetchedCourses);
     };
