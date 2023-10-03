@@ -1,9 +1,12 @@
 .content-container {
     display: flex;
-    height: calc(100vh - 88px);
+    height: 100%;
     overflow: auto;
 }
 
+.homepage-container{
+    height:100%;
+}
 .courses {
     display: flex;
     flex-wrap: wrap;
