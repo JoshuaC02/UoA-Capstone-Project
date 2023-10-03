@@ -4,9 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { DataStore } from '@aws-amplify/datastore';
 import { useState } from 'react';
-import ReactCardFlip from "react-card-flip";
-import Card from 'react-bootstrap/Card';
-import { Storage } from 'aws-amplify';
+
 import { Course } from '../models';
 
 function CourseEdit({ course }) {

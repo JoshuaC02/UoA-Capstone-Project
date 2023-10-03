@@ -1,12 +1,13 @@
 .student-container {
     display: flex;
-    max-height: calc(100vh - 88px);
     overflow: hidden;
+    height:100%;
 } 
 
 
 .student-table{
     width: 100%;
+    height:100%;
     padding: 20px; 
     overflow: hidden;
 } 

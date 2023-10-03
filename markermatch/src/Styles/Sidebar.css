@@ -1,9 +1,14 @@
+html, body, #root {
+  height: 100%
+}
+
+
 .sidebar-btn-wrapper{
     padding: 30px 5px;
 }
 .sidebox {
     flex: 0 0 auto;
-    height: calc(100vh - 88px);
+    height:100%;
     position: sticky;
     z-index: 1; 
 }
