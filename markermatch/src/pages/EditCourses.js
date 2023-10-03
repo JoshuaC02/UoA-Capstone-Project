@@ -42,11 +42,13 @@ function EditCourses() {
                 <div className="content-container">
                     <Sidebar />
                     <div className="container" style={{ height: "100%", overflow: "auto" }}>
-                        <div className="row">
+                        <div className="row" style={{paddingTop: "2vh"}}>
                             <div className="col">
-                                <h1 className="mb-4 text-center">Current courses you coordinate:</h1>
+                                
 
-                                {type !== "CourseCoordinators" && (
+                                {type !== "CourseCoordinators" ? (
+                                    <>
+                                    <h1>All courses</h1>
                                     <div className="mb-4">
                                         <input
                                             type="text"
@@ -56,7 +58,13 @@ function EditCourses() {
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                         />
                                     </div>
+                                    </>
+                                ):(
+                                    <>
+                                    <h1>Current courses you coordinate</h1>
+                                    </>
                                 )}
+
 
                                 {filteredCourses.length === 0 && type === "CourseCoordinators" && (
                                     <div className="mb-3 text-center">
@@ -73,7 +81,7 @@ function EditCourses() {
                                     .map(course => (
                                         <div key={course.id}>
                                             {editingCourse === course.id ? (
-                                                <CourseEdit course={course} />
+                                                <CourseEdit course={course} userType = {type} />
                                             ) : (
                                                 <div className="mb-3">
                                                     <div className="card">
@@ -91,7 +99,7 @@ function EditCourses() {
                                 }
 
                                 {type === 'MarkerCoordinator' && (
-                                    courses.length > 10 && filteredCourses.length > 1 ? (
+                                    courses.length > 10 && filteredCourses.length > 0 ? (
                                         <div className="mb-3 text-center">
                                             <div>
                                                 <p>As you are the coordinator of more than 10 courses, we've limited the number of results shown. <br></br>More results will appear once you search for them.</p>

@@ -7,7 +7,10 @@ import { useState } from 'react';
 
 import { Course } from '../models';
 
-function CourseEdit({ course }) {
+function CourseEdit({ course, userType }) {
+    console.log(userType)
+
+    const userBool = userType !== "MarkerCoordinator"
     const [isFlipped, setIsFlipped] = useState(false);
     const [previewFile, setPreviewFile] = useState(null);
     const [uploadFile, setUploadFile] = useState(null);
@@ -78,6 +81,7 @@ function CourseEdit({ course }) {
                         updated.description = formData.description;
                         updated.summary = formData.summary;
                         updated.thumbnailId = formData.thumbnailId;
+                        updated.name = `${formData.faculty} ${formData.courseCode}`;
                 })
             );
         }
@@ -101,7 +105,8 @@ function CourseEdit({ course }) {
                         name="faculty"
                         placeholder="e.g. COMPSCI"
                         value={formData.faculty}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
 
                     />
                 </Form.Group>
@@ -112,7 +117,8 @@ function CourseEdit({ course }) {
                         name="courseCode"
                         placeholder="e.g. 225"
                         value={formData.courseCode}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                         type="number"
                     />
                 </Form.Group>
@@ -123,7 +129,8 @@ function CourseEdit({ course }) {
                         name="coordinatorName"
                         placeholder="Name"
                         value={formData.coordinatorName}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                     />
                 </Form.Group>
 
@@ -133,7 +140,8 @@ function CourseEdit({ course }) {
                         name="coordinatorEmail"
                         placeholder="Email"
                         value={formData.coordinatorEmail}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                     />
                 </Form.Group>
             </Row>
@@ -145,7 +153,8 @@ function CourseEdit({ course }) {
                         name="year"
                         defaultValue="2023"
                         value={formData.year}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                         type="number"
                     />
                 </Form.Group>
@@ -156,7 +165,8 @@ function CourseEdit({ course }) {
                         name="semester"
                         aria-label="Default select example"
                         value={formData.semester}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                     >
                         <option value="Semester 1">Semester 1</option>
                         <option value="Semester 2">Semester 2</option>
@@ -169,7 +179,8 @@ function CourseEdit({ course }) {
                         name="directorName"
                         placeholder="Name"
                         value={formData.directorName}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                     />
                 </Form.Group>
 
@@ -179,7 +190,8 @@ function CourseEdit({ course }) {
                         name="directorEmail"
                         placeholder="Email"
                         value={formData.directorEmail}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                     />
                 </Form.Group>
             </Row>
@@ -223,7 +235,8 @@ function CourseEdit({ course }) {
                         name="minGrade"
                         aria-label="Default select example"
                         value={formData.minGrade}
-                        disabled={true}
+                        disabled={userBool}
+                        onChange={handleChange}
                         className="mx-2"
                     >
                         <option value="A+">A+</option>
