@@ -9,7 +9,7 @@ function NoAuth() {
           <div className="content-container">
             <Sidebar />
             <h2>Not Authorised</h2>
-            <a href="/"><h4>Return Home</h4></a>
+            <a href="/home"><h4>Return Home</h4></a>
           </div>
         </div>
           

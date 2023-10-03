@@ -30,6 +30,8 @@ type Course @model @auth(rules: [{allow: public}]) {
   directorEmail: String
   name: String
   thumbnailId: String
+  markersNeeded: Int
+  markersAssigned: Int
 }
 
 type MarkerApplication @model @auth(rules: [{allow: public}]) {

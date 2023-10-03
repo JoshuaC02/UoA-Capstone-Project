@@ -381,7 +381,7 @@ function CourseForm() {
                                     <Card.Text>
                                         Taking Applications: {formData.appOpen ? 'Yes' : 'No'}
                                     </Card.Text>
-                                    <Card.Text style={{ height: "60%", overflowY: "scroll" }}>
+                                    <Card.Text style={{ height: "60%", overflowY: "auto" }}>
                                         Description: <br />
                                         {formData.summary}
                                     </Card.Text>

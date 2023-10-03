@@ -2,11 +2,13 @@
 
 export function getSideLinks(user){
   const isCourseCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "CourseCoordinators";
+  const isMarkerCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "MarkerCoordinator";
+  // console.log(user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "MarkerCoordinator");
 
   const pathRoutes = [
     {
       icon: "home",
-      path: "/",
+      path: "/home",
       label: "Home",
     },
     {
@@ -18,13 +20,19 @@ export function getSideLinks(user){
       icon: "edit",
       path: "/addcourses",
       label: "Add Courses",
-      show: isCourseCo,
+      show: isMarkerCo,
     },
     {
       icon: "edit",
       path: "/edit-courses",
       label: "Edit Courses",
-      show: isCourseCo,
+      show: isMarkerCo || isCourseCo,
+    },
+    {
+      icon: "edit",
+      path: "/all-applicantions",
+      label: "All Applications",
+      show: isMarkerCo || isCourseCo,
     },
     {
       icon: "edit",

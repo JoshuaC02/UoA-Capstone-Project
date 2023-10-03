@@ -18,7 +18,7 @@ import {
     const isCourseCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "CourseCoordinators";
     const navigate = useNavigate(); 
     const location = useLocation();
-    const isPathActive = (path) => location.pathname === path;
+    const isPathActive = (path) => location.pathname.includes(path);
     const pathRoutes = getSideLinks(user);
       return (
         <>
@@ -34,9 +34,9 @@ import {
                         key={index}
                         icon={link.icon}
                         onClick={() => {                  
-                            if (!isPathActive(link.path)) {
+                             
                             navigate(link.path);
-                          }
+                          
                         }}
                         className={isPathActive(link.path) ? 'activeClicked' : ''}
                         disabled={isPathActive(link.path)}
