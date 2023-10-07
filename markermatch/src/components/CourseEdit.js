@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Course } from '../models';
 
 function CourseEdit({ course, userType }) {
-    console.log(userType)
+    console.log(course)
 
     const userBool = userType !== "MarkerCoordinator"
     const [isFlipped, setIsFlipped] = useState(false);
