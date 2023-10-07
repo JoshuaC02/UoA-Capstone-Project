@@ -13,7 +13,6 @@ function ApplicantsView() {
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
     const selectedCourse = location.pathname.split("/")[2].replace("-", "");
-
     const columns = useMemo(() => [
         {
             accessorKey: 'id',
@@ -168,7 +167,9 @@ function ApplicantsView() {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
                     updated.courseSpecifics = updateCourseSpecifics(applicant, updatedValue);
                 }));
-                    
+                const updatedData = [...data];
+                updatedData[row.index].hoursAssigned = updatedValue;
+                setdata(updatedData);
             } catch {
                 console.log("opss")
             }
