@@ -10,7 +10,7 @@ import ModalPopUp from './ModalPopUp';
 function NavbarComp() {
   const { user, signOut } = useAuthenticator((context) => [context.user, context.signOut]);
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   function logOut() {
     signOut();
