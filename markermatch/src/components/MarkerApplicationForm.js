@@ -19,7 +19,7 @@ import Sidebar from '../components/Sidebar';
 
 
 function MarkerApplicationForm() {
-    const { user } = useAuthenticator((context) => [context.user]);
+    const { user } = useAuthenticator((context) => [context.user]); 
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
     const navigate = useNavigate();
@@ -105,13 +105,24 @@ function MarkerApplicationForm() {
                                     id="preference"
                                 />
                         <Card.Text>Previous Grade</Card.Text>
-                        <Form.Control
-                                    name={course.faculty + course.courseCode + "_previousGrade"}
-                                    value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
-                                    onChange={handleGradeChange}
-                                    type="string"
-                                    id="previousGrade"
-                                />
+                        <Form.Select
+                            name={course.faculty + course.courseCode + "_previousGrade"}
+                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
+                            onChange={handleGradeChange}
+                            id="previousGrade"
+                            required
+                        >
+                            <option value="">Select Grade</option>
+                            <option value="A+">A+</option>
+                            <option value="A">A</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B">B</option>
+                            <option value="B-">B-</option>
+                            <option value="C+">C+</option>
+                            <option value="C">C</option>
+                            <option value="C-">C-</option>
+                        </Form.Select>
                         <Card.Text>Previous Tutor?</Card.Text>
                         <Form.Check
                                     name={course.faculty + course.courseCode + "_previousTutor"}

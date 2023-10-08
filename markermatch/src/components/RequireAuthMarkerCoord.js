@@ -10,6 +10,8 @@ export function RequireAuthMarkerCoord({ children }) {
   const { user } = useAuthenticator((context) => [context.user]);
   if (route !== 'authenticated') {
     return <Navigate to="/auth" state={{ from: location }} replace />;
+  } else if (user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"] === undefined) {
+    return <Navigate to="/notauthorised" state={{ from: location }} replace />;
   } else if (user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] !== "MarkerCoordinator") {
     return <Navigate to="/notauthorised" state={{ from: location }} replace />;
   }

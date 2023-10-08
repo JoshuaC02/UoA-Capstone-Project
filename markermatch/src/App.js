@@ -11,6 +11,7 @@ import Cart from './pages/Cart'
 import AddCourses from './pages/AddCourses';
 import Studentpage from './pages/Studentpage';
 import ApplicationPage from './pages/ApplicationPage';
+import MarkerSignUp from './pages/MarkerSignUp';
 
 import NavbarComp from './components/NavbarComp';
 import Sidebar from './components/Sidebar';
@@ -44,10 +45,10 @@ function App() {
           <Route path="/all-applicantions/:id" element={<RequireAuthCourseAndMarkCo><ApplicantsPage/></RequireAuthCourseAndMarkCo>} />
           <Route path="/all-applicantions" element={<RequireAuthCourseAndMarkCo><AllApplicationsPage/></RequireAuthCourseAndMarkCo>} />
           <Route path="/edit-courses" element={<RequireAuthCourseAndMarkCo><EditCourses/></RequireAuthCourseAndMarkCo>} />
-          <Route path="/test" element={<RequireAuthCourseCoord><Testpage /></RequireAuthCourseCoord>} />
           <Route path="/addcourses" element={<RequireAuthMarkerCoord><AddCourses /></RequireAuthMarkerCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />
           <Route path="/application-form" element={<RequireAuthUser><ApplicationPage /></RequireAuthUser>} />
+          <Route path="/markersignup" element={<RequireAuthMarkerCoord><MarkerSignUp /></RequireAuthMarkerCoord>} />
         </Routes>
       </Authenticator.Provider>
     </Router>
