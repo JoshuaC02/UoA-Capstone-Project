@@ -103,6 +103,7 @@ function MarkerApplicationForm() {
                                     onChange={handlePreferenceChange}
                                     type="number"
                                     id="preference"
+                                    required
                                 />
                         <Card.Text>Previous Grade</Card.Text>
                         <Form.Control
@@ -186,15 +187,33 @@ function MarkerApplicationForm() {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
+        if (name === 'maxHours') {
+            const numericValue = parseInt(value);
+            if (!isNaN(numericValue) && numericValue >= 0) {
+              setFormData((prevData) => ({
+                ...prevData,
+                [name]: numericValue,
+              }));
+            }
+          } else {
+            setFormData((prevData) => ({
+              ...prevData,
+              [name]: type === 'checkbox' ? checked : value,
+            }));
+          }
+        };
 
     const handlePreferenceChange = async (e) => { 
         const { name, value } = e.target;
-        formData.courseSpecifics[name] = parseInt(value);
+
+        const numb = parseInt(value);
+        if(!isNaN(numb) && numb <= 0){
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: numb,
+            }));
+        }
+        //formData.courseSpecifics[name] = parseInt(value);
     }
 
     const handleGradeChange = async (e) => {
@@ -505,6 +524,8 @@ function MarkerApplicationForm() {
                             value={formData.maxHours}
                             onChange={handleChange}
                             type="number"
+                            required
+                            min="0" 
                         />
                     </Form.Group>
 
