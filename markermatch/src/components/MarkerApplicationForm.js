@@ -230,36 +230,41 @@ function MarkerApplicationForm() {
                 property: 'assignedHours',
                 value: formData.maxHours,
             });
+            reform[course].push({
+                property: 'status',
+                value: 'PENDING',
+            });
+
         }        
 
-        // for (const key in formData) {
-        //     if (formData[key] === '') {
-        //         alert(`Please fill in all fields (no empty fields are allowed).`);
-        //         return;
-        //     }
-        //     else if (key === "courseSpecifics") {
-        //         for (const subKey in formData.courseSpecifics) {
-        //             if (formData.courseSpecifics[subKey] === "") {
-        //                 alert(`Please fill in all fields (no empty fields are allowed). test`);
-        //                 return;
-        //             }
-        //         }
-        //     }
-        // }
-        // for (const aKey in formData.courseSpecifics) {
-        //     if (aKey.includes("_preference")) {
-        //         if (formData.courseSpecifics >= courses.length) {
-        //             alert("Preferences must be unique and valid")
-        //             return;
-        //         }
-        //         for (const bKey in formData.courseSpecifics) {
-        //             if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
-        //                 alert("Preferences must be unique and valid")
-        //                 return;
-        //             }
-        //         }
-        //     }
-        // }
+        for (const key in formData) {
+            if (formData[key] === '') {
+                alert(`Please fill in all fields (no empty fields are allowed).`);
+                return;
+            }
+            else if (key === "courseSpecifics") {
+                for (const subKey in formData.courseSpecifics) {
+                    if (formData.courseSpecifics[subKey] === "") {
+                        alert(`Please fill in all fields (no empty fields are allowed). test`);
+                        return;
+                    }
+                }
+            }
+        }
+        for (const aKey in formData.courseSpecifics) {
+            if (aKey.includes("_preference")) {
+                if (formData.courseSpecifics >= courses.length) {
+                    alert("Preferences must be unique and valid")
+                    return;
+                }
+                for (const bKey in formData.courseSpecifics) {
+                    if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
+                        alert("Preferences must be unique and valid")
+                        return;
+                    }
+                }
+            }
+        }
 
 
        try {

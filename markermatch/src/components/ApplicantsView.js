@@ -74,7 +74,7 @@ function ApplicantsView() {
             const fetchApplicants = await getAllApplicants();
             let count = 0;
             const newRecord = fetchApplicants.map( (record) => {
-                const hoursAssigned = getJsonData(record.courseSpecifics, count);
+                const properties = getJsonData(record.courseSpecifics, count);
                 count+=1;
                 return {
                   id: record.auid,
@@ -84,8 +84,8 @@ function ApplicantsView() {
                   qualification: record.underPostGrad,
                   availability: record.maxHours,
                   pref: 'need to implement',
-                  hoursAssigned: hoursAssigned,
-                  status: 'ACCEPTED',
+                  hoursAssigned: properties[0],
+                  status: properties[1],
                 };
               });
             setdata(newRecord);
@@ -130,26 +130,33 @@ function ApplicantsView() {
             window.removeEventListener('resize', handleResize);
         };
     });
-    function getJsonData(jSonData, count)
+    function getJsonData(jSonData, count, check)
        {
-           const jsonObject = JSON.parse(jSonData);
-           const firstKey = Object.keys(jsonObject)[count];
-           let val = 0;
-           jsonObject[firstKey].forEach(item => {
-               if (item.property === "assignedHours") {
-                 val = item.value;
-               }
-             });
-   
-           return val + ""
+            const myData = []    
+            const jsonObject = JSON.parse(jSonData);
+            const firstKey = Object.keys(jsonObject)[count];
+            let val = 0;
+            jsonObject[firstKey].forEach(item => {
+                if (item.property === "assignedHours") {
+                    myData.push(item.value + "");
+                }
+                else if (item.property === "status") {
+                    myData.push(item.value + "");
+                }
+                });
+
+            return myData
        }
-    function updateCourseSpecifics(applicant, value){
+    function updateCourseSpecifics(applicant, value, check){
         const jsonObject = JSON.parse(applicant.courseSpecifics);
         const myCourse = Object.keys(jsonObject).find(key => key === selectedCourse);
 
         if (myCourse) {
             jsonObject[myCourse].forEach(item => {
-                if (item.property === "assignedHours") {
+                if (item.property === "assignedHours" && check === 0) {
+                    item.value = value;
+                }
+                if (item.property === "status" && check === 1) {
                     item.value = value;
                 }
             
@@ -158,17 +165,31 @@ function ApplicantsView() {
         return JSON.stringify(jsonObject);
       
     }
-    const updateCell = async ({ exitEditingMode, row, values }) => {
-        const updatedValue = window.prompt('Edit Hours Assigned:');
-        row.original.hoursAssigned = "190"
-        if (!isNaN(updatedValue) && parseInt(updatedValue) > 0) {
+    const updateCell = async ({ row }, check, myStatus) => {
+        if (check === 0){
+            const updatedValue = window.prompt('Assign Hours');
+            if(!isNaN(updatedValue) && parseInt(updatedValue) >= 0) {
+                const applicant = await getApplicant(row.original.id);        
+                try {
+                    await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
+                        updated.courseSpecifics = updateCourseSpecifics(applicant, updatedValue, 0);
+                    }));
+                    const updatedData = [...data];
+                    updatedData[row.index].hoursAssigned = updatedValue;
+                    setdata(updatedData);
+                } catch {
+                    console.log("opss")
+                }
+            }
+        }
+        else if (check === 1) {
             const applicant = await getApplicant(row.original.id);        
             try {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                    updated.courseSpecifics = updateCourseSpecifics(applicant, updatedValue);
+                    updated.courseSpecifics = updateCourseSpecifics(applicant, myStatus, 1);
                 }));
                 const updatedData = [...data];
-                updatedData[row.index].hoursAssigned = updatedValue;
+                updatedData[row.index].status = myStatus;
                 setdata(updatedData);
             } catch {
                 console.log("opss")
@@ -189,9 +210,9 @@ function ApplicantsView() {
                 onRowSelectionChange={setRowSelection}
                 isEditable={(column) => column.isEditable}
                 enableRowActions
-                renderRowActionMenuItems={({ row, exitEditingMode }) => [
-                    <MenuItem key="edit" onClick={() => updateCell({ row, exitEditingMode })}>
-                      Edit
+                renderRowActionMenuItems={({ row }) => [
+                    <MenuItem key="edit" onClick={() => updateCell({row}, 0, "")}>
+                      Assign Hours
                     </MenuItem>,
                 ]}
                 onEditingRowSave={updateCell}
@@ -199,22 +220,17 @@ function ApplicantsView() {
                 renderBottomToolbarCustomActions={({ table }) => {
                     const handleDeactivate = () => {
                       table.getSelectedRowModel().flatRows.map((row) => {
-                        alert('deactivating ' + row.getValue('name'));
+                        alert('deactivating ');
+                        updateCell({row}, 1, "ACCEPTED")
                       });
                     };
             
                     const handleActivate = () => {
                       table.getSelectedRowModel().flatRows.map((row) => {
                         alert('activating ' + row.getValue('name'));
+                        updateCell({row}, 1, "PENDING")
                       });
                     };
-            
-                    const handleContact = () => {
-                      table.getSelectedRowModel().flatRows.map((row) => {
-                        alert('contact ' + row.getValue('name'));
-                      });
-                    };
-            
                     return (
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <Button
@@ -226,17 +242,9 @@ function ApplicantsView() {
                           ACCEPT
                         </Button>
                         <Button
-                          color="info"
-                          disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                          onClick={handleActivate}
-                          variant="contained"
-                        >
-                          PENDING
-                        </Button>
-                        <Button
                           color="error"
                           disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                          onClick={handleContact}
+                          onClick={handleActivate}
                           variant="contained"
                         >
                           DECLINE
