@@ -10,8 +10,6 @@ export function RequireAuthCourseAndMarkCo({ children }) {
   const { user } = useAuthenticator((context) => [context.user]);
   const checkUser = (user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"]?.[0] === "CourseCoordinators" ||
     user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"]?.[0] === "MarkerCoordinator");
-
-
   if (route !== 'authenticated') {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   } else if (!checkUser) {

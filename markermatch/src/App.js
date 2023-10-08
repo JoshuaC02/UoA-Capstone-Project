@@ -20,7 +20,7 @@ import { RequireAuthMarkerCoord } from './components/RequireAuthMarkerCoord';
 import { RequireAuthCourseAndMarkCo } from './components/RequireAuthCourseAndMarkCo.js';
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate  } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Authenticator } from '@aws-amplify/ui-react';
 import Statuspage from './pages/Studentpage';
 import ApplicantsPage from './pages/ApplicantsPage';

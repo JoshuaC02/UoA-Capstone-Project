@@ -9,7 +9,7 @@ function AddCourses() {
             <div className="homepage-container">
                 <div className="content-container">
                     <Sidebar />
-                        <CourseForm />
+                    <CourseForm />
                     </div>
                 </div>
         </>
