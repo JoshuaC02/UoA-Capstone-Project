@@ -1,8 +1,12 @@
 // Helper function to show the available links and their routes based on authentication. 
 
 export function getSideLinks(user){
-  const isCourseCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "CourseCoordinators";
-  const isMarkerCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "MarkerCoordinator";
+  let isCourseCo = false;
+  let isMarkerCo = false;
+  if (user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"] != undefined) {
+    isCourseCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "CourseCoordinators";
+    isMarkerCo = user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "MarkerCoordinator";
+  }
   // console.log(user?.getSignInUserSession()?.getAccessToken()?.payload["cognito:groups"][0] === "MarkerCoordinator");
 
   const pathRoutes = [
@@ -33,6 +37,12 @@ export function getSideLinks(user){
       path: "/all-applicantions",
       label: "All Applications",
       show: isMarkerCo || isCourseCo,
+    },
+    {
+      icon: "edit",
+      path: "/markersignup",
+      label: "Manage Users",
+      show: isMarkerCo,
     },
     {
       icon: "edit",

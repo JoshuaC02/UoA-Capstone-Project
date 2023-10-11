@@ -19,7 +19,7 @@ import Sidebar from '../components/Sidebar';
 
 
 function MarkerApplicationForm() {
-    const { user } = useAuthenticator((context) => [context.user]);
+    const { user } = useAuthenticator((context) => [context.user]); 
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
     const navigate = useNavigate();
@@ -103,15 +103,27 @@ function MarkerApplicationForm() {
                                     onChange={handlePreferenceChange}
                                     type="number"
                                     id="preference"
+                                    required
                                 />
                         <Card.Text>Previous Grade</Card.Text>
-                        <Form.Control
-                                    name={course.faculty + course.courseCode + "_previousGrade"}
-                                    value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
-                                    onChange={handleGradeChange}
-                                    type="string"
-                                    id="previousGrade"
-                                />
+                        <Form.Select
+                            name={course.faculty + course.courseCode + "_previousGrade"}
+                            value={formData.courseSpecifics[course.faculty + course.courseCode + "_previousGrade"]}
+                            onChange={handleGradeChange}
+                            id="previousGrade"
+                            required
+                        >
+                            <option value="">Select Grade</option>
+                            <option value="A+">A+</option>
+                            <option value="A">A</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B">B</option>
+                            <option value="B-">B-</option>
+                            <option value="C+">C+</option>
+                            <option value="C">C</option>
+                            <option value="C-">C-</option>
+                        </Form.Select>
                         <Card.Text>Previous Tutor?</Card.Text>
                         <Form.Check
                                     name={course.faculty + course.courseCode + "_previousTutor"}
@@ -130,16 +142,11 @@ function MarkerApplicationForm() {
       async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
         let listOfCourses = [];
-        console.log("testing-- " + userCart);
         if (userCart[0] !== undefined) {
             const selectedCourses = userCart[0].selectedCourses?.split(",");
             const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
                 for (let course in allCourses) {
-                    console.log("all courses -  " + allCourses[course].faculty + allCourses[course].courseCode);
-                    console.log("selected no trim -  " + selectedCourses[element]);
-                    console.log("selected -  " + selectedCourses[element].trim().replace(/\s+/g, ''));
-                    console.log(" ---------------- ");
                     if (allCourses[course].faculty + allCourses[course].courseCode === selectedCourses[element].trim().replace(/\s+/g, '')) {
                         listOfCourses.push(allCourses[course]);
                     }
@@ -171,37 +178,47 @@ function MarkerApplicationForm() {
     useEffect(() => {
         const fetchCourses = async () => {
             const fetchedCourses = await getUserSelectedCourses();
-            /* 
-            for (let course in fetchedCourses) {
-                formData.courseSpecifics[fetchedCourses[course].faculty + fetchedCourses[course].courseCode + "_preference"] = "";
-                formData.courseSpecifics[fetchedCourses[course].faculty + fetchedCourses[course].courseCode + "_previousGrade"] = "";
-                formData.courseSpecifics[fetchedCourses[course].faculty + fetchedCourses[course].courseCode + "_previousTutor"] = false;
-            }
-            */
             setCourses(fetchedCourses);
         };
 
         fetchCourses();
     }, []);
-
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
+        if (name === 'maxHours') {
+            const numericValue = parseInt(value);
+            if (!isNaN(numericValue) && numericValue >= 0) {
+              setFormData((prevData) => ({
+                ...prevData,
+                [name]: numericValue,
+              }));
+            }
+          } else {
+            setFormData((prevData) => ({
+              ...prevData,
+              [name]: type === 'checkbox' ? checked : value,
+            }));
+          }
+        };
 
     const handlePreferenceChange = async (e) => { 
         const { name, value } = e.target;
-        formData.courseSpecifics[name] = parseInt(value);
+
+        const numb = parseInt(value);
+        if(!isNaN(numb) && numb <= 0){
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: numb,
+            }));
+        }
+        //formData.courseSpecifics[name] = parseInt(value);
     }
 
     const handleGradeChange = async (e) => {
         const { name, value } = e.target;
         formData.courseSpecifics[name] = value
     }
-
+    
     const handlePreviousMarkerChange = async (e) => {
         const { name, value } = e.target;
         formData.courseSpecifics[name] = value
@@ -236,29 +253,67 @@ function MarkerApplicationForm() {
     }
 //
 
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            // Rest of your form data handling code...
-        
-            // Reformat the courseSpecifics data
-            const reformattedCourseSpecifics = {};
-            for (const key in formData.courseSpecifics) {
-            const [courseCode, property] = key.split('_');
-            if (!reformattedCourseSpecifics[courseCode]) {
-                reformattedCourseSpecifics[courseCode] = [];
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const reform = {};
+        for (const key in formData.courseSpecifics) {
+            const [course, property] = key.split('_');
+            if (!reform[course]) {
+                reform[course] = [];
             }
-            reformattedCourseSpecifics[courseCode].push({
+            reform[course].push({
                 property: property,
                 value: formData.courseSpecifics[key],
             });
-            }
+        }
+        for (const course in reform) {
+            reform[course].push({
+                property: 'assignedHours',
+                value: formData.maxHours,
+            });
+            reform[course].push({
+                property: 'status',
+                value: 'PENDING',
+            });
 
-        try {
+        }        
+
+        for (const key in formData) {
+            if (formData[key] === '') {
+                alert(`Please fill in all fields (no empty fields are allowed).`);
+                return;
+            }
+            else if (key === "courseSpecifics") {
+                for (const subKey in formData.courseSpecifics) {
+                    if (formData.courseSpecifics[subKey] === "") {
+                        alert(`Please fill in all fields (no empty fields are allowed). test`);
+                        return;
+                    }
+                }
+            }
+        }
+        for (const aKey in formData.courseSpecifics) {
+            if (aKey.includes("_preference")) {
+                if (formData.courseSpecifics >= courses.length) {
+                    alert("Preferences must be unique and valid")
+                    return;
+                }
+                for (const bKey in formData.courseSpecifics) {
+                    if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
+                        alert("Preferences must be unique and valid")
+                        return;
+                    }
+                }
+            }
+        }
+
+
+       try {
 
             await DataStore.save(
                 new MarkerApplication({
                     givenName: formData.givenName,
-                    familyName: formData.familyName,
+                     familyName: formData.familyName,
                     userId: user?.username,
                     auid: formData.auid,
                     upi: formData.upi,
@@ -272,7 +327,7 @@ function MarkerApplicationForm() {
                     maxHours: parseInt(formData.maxHours),
                     transcriptId: formData.transcriptId, 
                     cvId: formData.cvId, 
-                    courseSpecifics: JSON.stringify(reformattedCourseSpecifics)
+                    courseSpecifics: JSON.stringify(reform)
                 })
             );
             addCheckOut(outCourses, user.username);
@@ -339,11 +394,11 @@ function MarkerApplicationForm() {
 
     return (
         <>
-        <div className="page-container">
         <NavbarComp />
-        <div className="content">
+        <div className="homepage-container">
+        <div className="content-container">
             <Sidebar />
-            <Form className="p-4 rounded" style={{ fontWeight: 600, width: '100%', height: '100%' }} onSubmit={handleSubmit}>
+            <Form className="p-4 rounded" style={{ fontWeight: 600, width: '100%', height: '100%', overflowY: 'scroll'}} onSubmit={handleSubmit}>
             <MultiStepProgressBar step={step.toString()} onPageNumberClick={nextPageNumber} />
                 {step === 1 && (
                 <div>
@@ -499,12 +554,14 @@ function MarkerApplicationForm() {
 
                 <Row className="mb-3">
                     <Form.Group as={Col} className="d-flex align-items-center">
-                        <Form.Label>How many hours can you work this Semester?</Form.Label>
+                        <Form.Label>Availability (hours) per course each week?</Form.Label>
                         <Form.Control
                             name="maxHours"
                             value={formData.maxHours}
                             onChange={handleChange}
                             type="number"
+                            required
+                            min="0" 
                         />
                     </Form.Group>
 

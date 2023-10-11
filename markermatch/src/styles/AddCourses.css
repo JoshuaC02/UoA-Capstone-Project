@@ -11,12 +11,11 @@
 #form-template1,
 #form-template2 {
     display: inline-block;
-    height: 100%;
+    height: calc(100vh - 88px);
     box-sizing: border-box;
     width:100%;
 }
 
 .poop {
-
     display: inline-block;
 }
