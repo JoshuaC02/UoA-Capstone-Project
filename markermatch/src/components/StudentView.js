@@ -4,7 +4,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { ApplicationStatus } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
-function ApplicationStatuss() {
+function UserApplicationStatus() {
     const [data, setdata] = useState([]);
     const { user } = useAuthenticator((context) => [context.user]);
     const columns = useMemo(() => [
@@ -13,17 +13,18 @@ function ApplicationStatuss() {
             header: 'CourseNo',
         },
         {
-            accessorKey: 'courseName',
-            header: 'Course Name',
+            accessorKey: 'hoursRequested',
+            header: 'Hours Requested',
+        },
+        {
+            accessorKey: 'hoursAssigned',
+            header: 'Hours Assigned',
         },
         {
             accessorKey: 'status',
             header: 'Status',
         },
-        {
-            accessorKey: 'hoursAssigned',
-            header: 'Hours Assigned',
-        },],[]);
+    ],[]);
 
     useEffect(() => {
         const fetchdata = async () => {
@@ -32,9 +33,9 @@ function ApplicationStatuss() {
             const records = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(user.username));
             const newRecord = records.map((record) => ({
                 courseNo: record.appliedCourses,
-                courseName: 'NEED TO IMPLEMENT',
-                status: 'NEED TO IMPLEMENT',
-                hoursAssigned:  'NEED TO IMPLEMENT',
+                hoursRequested:  record.hoursRequested,
+                hoursAssigned:  record.hoursAssigned,
+                status: record.status,
             }));
             setdata(newRecord);
         } catch (e) {
@@ -73,4 +74,4 @@ function ApplicationStatuss() {
         </div>
     );
 }
-export default ApplicationStatuss;
+export default UserApplicationStatus;

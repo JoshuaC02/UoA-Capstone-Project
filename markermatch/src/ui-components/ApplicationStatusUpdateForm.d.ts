@@ -16,16 +16,25 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type ApplicationStatusUpdateFormInputValues = {
     userId?: string;
     appliedCourses?: string;
+    hoursAssigned?: string;
+    status?: string;
+    hoursRequested?: string;
 };
 export declare type ApplicationStatusUpdateFormValidationValues = {
     userId?: ValidationFunction<string>;
     appliedCourses?: ValidationFunction<string>;
+    hoursAssigned?: ValidationFunction<string>;
+    status?: ValidationFunction<string>;
+    hoursRequested?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ApplicationStatusUpdateFormOverridesProps = {
     ApplicationStatusUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     userId?: PrimitiveOverrideProps<TextFieldProps>;
     appliedCourses?: PrimitiveOverrideProps<TextFieldProps>;
+    hoursAssigned?: PrimitiveOverrideProps<TextFieldProps>;
+    status?: PrimitiveOverrideProps<TextFieldProps>;
+    hoursRequested?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ApplicationStatusUpdateFormProps = React.PropsWithChildren<{
     overrides?: ApplicationStatusUpdateFormOverridesProps | undefined | null;

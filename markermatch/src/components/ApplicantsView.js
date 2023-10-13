@@ -83,9 +83,9 @@ function ApplicantsView() {
                       prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
-                      pref: 'need to implement',
-                      hoursAssigned: properties[0],
-                      status: properties[1],
+                      pref: properties[0],
+                      hoursAssigned: properties[1],
+                      status: properties[2],
                     };
                 });
                 setdata(newRecord);
@@ -102,14 +102,15 @@ function ApplicantsView() {
        {
             const myData = []    
             const jsonObject = JSON.parse(jSonData);
-            const firstKey = Object.keys(jsonObject)[count];
-            let val = 0;
-            jsonObject[firstKey].forEach(item => {
+            jsonObject[selectedCourse].forEach(item => {
                 if (item.property === "assignedHours") {
                     myData.push(item.value + "");
                 }
                 else if (item.property === "status") {
                     myData.push(item.value + "");
+                }
+                else if(item.property === "preference"){
+                    myData.push(item.value + "")    
                 }
                 });
 

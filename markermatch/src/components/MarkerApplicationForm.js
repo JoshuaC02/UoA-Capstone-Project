@@ -237,34 +237,34 @@ function MarkerApplicationForm() {
 
         }        
 
-        for (const key in formData) {
-            if (formData[key] === '') {
-                alert(`Please fill in all fields (no empty fields are allowed).`);
-                return;
-            }
-            else if (key === "courseSpecifics") {
-                for (const subKey in formData.courseSpecifics) {
-                    if (formData.courseSpecifics[subKey] === "") {
-                        alert(`Please fill in all fields (no empty fields are allowed). test`);
-                        return;
-                    }
-                }
-            }
-        }
-        for (const aKey in formData.courseSpecifics) {
-            if (aKey.includes("_preference")) {
-                if (formData.courseSpecifics >= courses.length) {
-                    alert("Preferences must be unique and valid")
-                    return;
-                }
-                for (const bKey in formData.courseSpecifics) {
-                    if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
-                        alert("Preferences must be unique and valid")
-                        return;
-                    }
-                }
-            }
-        }
+        // for (const key in formData) {
+        //     if (formData[key] === '') {
+        //         alert(`Please fill in all fields (no empty fields are allowed).`);
+        //         return;
+        //     }
+        //     else if (key === "courseSpecifics") {
+        //         for (const subKey in formData.courseSpecifics) {
+        //             if (formData.courseSpecifics[subKey] === "") {
+        //                 alert(`Please fill in all fields (no empty fields are allowed). test`);
+        //                 return;
+        //             }
+        //         }
+        //     }
+        // }
+        // for (const aKey in formData.courseSpecifics) {
+        //     if (aKey.includes("_preference")) {
+        //         if (formData.courseSpecifics >= courses.length) {
+        //             alert("Preferences must be unique and valid")
+        //             return;
+        //         }
+        //         for (const bKey in formData.courseSpecifics) {
+        //             if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
+        //                 alert("Preferences must be unique and valid")
+        //                 return;
+        //             }
+        //         }
+        //     }
+        // }
 
 
        try {
@@ -289,7 +289,7 @@ function MarkerApplicationForm() {
                     courseSpecifics: JSON.stringify(reform)
                 })
             );
-            addCheckOut(outCourses, user.username);
+            addCheckOut(outCourses, user.username, parseInt(formData.maxHours));
             alert('Application successfully submitted.');
             navigate("/application-status", { replace: true })
         } catch (error) {
@@ -318,15 +318,18 @@ function MarkerApplicationForm() {
       const handlePrevious = () => {
         setStep(step - 1);
       };
-    async function addCheckOut(outCourses, userId) {
+    async function addCheckOut(outCourses, userId, hours) {
         let flag = true;
         if (outCourses.length !== 0) {
             try {
                 for (const course of outCourses) {
-                await DataStore.save(new ApplicationStatus({
-                    userId: userId,
-                    appliedCourses: course.faculty + " " + course.courseCode,
-                }));
+                    await DataStore.save(new ApplicationStatus({
+                        userId: userId,
+                        appliedCourses: course.faculty + " " + course.courseCode,
+                        hoursRequested: hours + "",
+                        hoursAssigned: "0",
+                        status: "PENDING"
+                    }));
             }
             } catch (error) {
                 flag = false;
