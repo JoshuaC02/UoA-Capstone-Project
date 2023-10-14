@@ -5,6 +5,7 @@ import { ApplicationStatus, MarkerApplication } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { json, useLocation } from 'react-router-dom';
 import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
+import emailjs from "@emailjs/browser";
 
 function ApplicantsView() {
     const [data, setdata] = useState([]);
@@ -13,6 +14,8 @@ function ApplicantsView() {
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
     const selectedCourse = location.pathname.split("/")[2].replace("-", "");
+
+    
     const columns = useMemo(() => [
         {
             accessorKey: 'id',
@@ -66,6 +69,7 @@ function ApplicantsView() {
               </Box>
             ),
         },],[]);
+    useEffect(() => emailjs.init("2pleAgaYx5r4wvmHv"), []);
 
     useEffect(() => {
         const fetchdata = async () => {
@@ -167,8 +171,40 @@ function ApplicantsView() {
         return JSON.stringify(jsonObject);
       
     }
+
+    const sendEmail = async (useremail, username, myStatus) => {
+
+        console.log(useremail,username)
+
+        const serviceId = "service_mroqh3a"
+
+        let templateId = "template_eqxqmrb";
+        
+        if (myStatus==="DECLINED"){
+            templateId = "template_tkg84ui"
+        }
+        
+        try {
+          await emailjs.send(serviceId, templateId, {
+           name: username,
+            recipient: useremail,
+            course_name: selectedCourse,
+          });
+          alert("Email sent to applicant.")
+        } catch (error) {
+          console.log(error);
+        } 
+
+        window.location.reload();
+
+      };
+
+
     const updateCell = async ({ row }, check, myStatus) => {
+        
+
         if (check === 0){
+
             const updatedValue = window.prompt('Assign Hours');
             if(!isNaN(updatedValue) && parseInt(updatedValue) >= 0) {
                 const applicant = await getApplicant(row.original.id);        
@@ -185,8 +221,13 @@ function ApplicantsView() {
             }
             
         }
+
         else if (check === 1) {
+
+            
             const applicant = await getApplicant(row.original.id);        
+            sendEmail(applicant.preferredEmail, applicant.givenName, myStatus);
+            console.log(applicant)
             try {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
                     updated.courseSpecifics = updateCourseSpecifics(applicant, myStatus, 1);
@@ -194,8 +235,7 @@ function ApplicantsView() {
             } catch {
                 console.log("opss")
             }
-            window.location.reload();
-
+            
         }
       };
       
