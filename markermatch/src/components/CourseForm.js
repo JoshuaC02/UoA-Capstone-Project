@@ -15,7 +15,6 @@ function CourseForm() {
     const [previewFile, setPreviewFile] = useState(null);
     const [uploadFile, setUploadFile] = useState(null);
     const [requiredMarkers, setRequiredMarkers] = useState(false);
-
     const [formData, setFormData] = useState({
         faculty: 'COMPSCI',
         courseCode: '391',
@@ -83,7 +82,7 @@ function CourseForm() {
             result += characters[randomIndex];
         }
         result = result + '.' + fileType;
-        console.log(result)
+
 
         const updatedFormData = { ...formData, thumbnailId: result };
         setFormData(updatedFormData);
@@ -124,9 +123,10 @@ function CourseForm() {
         
 
         try {
-
+            console.log(`${formData.faculty} ${formData.courseCode}`)
             const courses = await DataStore.query(Course, (c) => c.name.eq(`${formData.faculty} ${formData.courseCode}`))
-            if (courses){
+            console.log(courses)
+            if (courses.length > 0){
                 alert('Error, a course with this name already exists.')
                 return;
             }
@@ -427,7 +427,7 @@ function CourseForm() {
 
                 <Row className="mb-3">
                     <Form.Group as={Col}>
-                        <Form.Label>A longer summary for applicants who want to find out more</Form.Label>
+                        <Form.Label>Please list the number and type of assessments that markers would have to do throughout the semester.</Form.Label>
                         <Form.Control
                             as="textarea"
                             name="summary"

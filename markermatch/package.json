@@ -7,6 +7,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.427.0",
     "@aws-sdk/client-sts": "^3.427.0",
     "@aws-sdk/credential-providers": "^3.427.0",
+    "@emailjs/browser": "^3.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",

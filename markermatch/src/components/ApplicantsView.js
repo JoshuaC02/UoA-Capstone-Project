@@ -5,6 +5,7 @@ import { ApplicationStatus, MarkerApplication } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { json, useLocation } from 'react-router-dom';
 import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
+import emailjs from "@emailjs/browser";
 
 function ApplicantsView() {
     const [data, setdata] = useState([]);
@@ -13,6 +14,8 @@ function ApplicantsView() {
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
     const selectedCourse = location.pathname.split("/")[2].replace("-", "");
+
+    
     const columns = useMemo(() => [
         {
             accessorKey: 'id',
@@ -66,47 +69,67 @@ function ApplicantsView() {
               </Box>
             ),
         },],[]);
+    useEffect(() => emailjs.init("2pleAgaYx5r4wvmHv"), []);
 
     useEffect(() => {
         const fetchdata = async () => {
         try 
         {
-            const fetchApplicants = await getAllApplicants();
-            let count = 0;
-            const newRecord = fetchApplicants.map( (record) => {
-                const properties = getJsonData(record.courseSpecifics, count);
-                count+=1;
-                return {
-                  id: record.auid,
-                  fullName: record.givenName + ' ' + record.familyName,
-                  overseas: record.overseas === true ? 'Yes' : 'No',
-                  prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
-                  qualification: record.underPostGrad,
-                  availability: record.maxHours,
-                  pref: 'need to implement',
-                  hoursAssigned: properties[0],
-                  status: properties[1],
-                };
-              });
-            setdata(newRecord);
+            getAllApplicants(selectedCourse).then(fetchApplicants=> {
+                let count = 0;
+                const newRecord = fetchApplicants.map( (record) => {
+                    let properties = getJsonData(fetchApplicants[count].courseSpecifics, 0);
+                    count+=1;
+                    return {
+                      id: record.auid,
+                      fullName: record.givenName + ' ' + record.familyName,
+                      overseas: record.overseas === true ? 'Yes' : 'No',
+                      prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
+                      qualification: record.underPostGrad,
+                      availability: record.maxHours,
+                      pref: 'need to implement',
+                      hoursAssigned: properties[0],
+                      status: properties[1],
+                    };
+                });
+                setdata(newRecord);
+                
+            });
         } catch (e) {
-            alert('Error fetching data:', e);
-            }
-        };
+            console.log('Error fetching data:', e);
+        }
+    };
         fetchdata();
     }, [user.username]);
+    
+    function getJsonData(jSonData, count, check)
+       {
+            const myData = []    
+            const jsonObject = JSON.parse(jSonData);
+            const firstKey = Object.keys(jsonObject)[count];
+            let val = 0;
+            jsonObject[firstKey].forEach(item => {
+                if (item.property === "assignedHours") {
+                    myData.push(item.value + "");
+                }
+                else if (item.property === "status") {
+                    myData.push(item.value + "");
+                }
+                });
 
+            return myData
+       }
     const [myHeight, setMaxHeight] = useState(getMaxHeight());
 
-    
-    async function getAllApplicants() {
-        const allMarkers = await DataStore.query(MarkerApplication);
-        const applicants = allMarkers.filter((marker) =>
-          marker.courseSpecifics.includes(selectedCourse)
-        );
-      
-        return applicants;
-    }
+
+    function getAllApplicants(selectedCourse) {
+        return DataStore.query(MarkerApplication).then(allMarkers => {
+            const applicants = allMarkers.filter(marker =>
+                marker.courseSpecifics.includes(selectedCourse)
+                );
+                return applicants;
+            });
+      }
     async function getApplicant(id) {
         const marker = await DataStore.query(MarkerApplication, (m) => m.auid.eq(id));
         return marker[0];
@@ -130,23 +153,6 @@ function ApplicantsView() {
             window.removeEventListener('resize', handleResize);
         };
     });
-    function getJsonData(jSonData, count, check)
-       {
-            const myData = []    
-            const jsonObject = JSON.parse(jSonData);
-            const firstKey = Object.keys(jsonObject)[count];
-            let val = 0;
-            jsonObject[firstKey].forEach(item => {
-                if (item.property === "assignedHours") {
-                    myData.push(item.value + "");
-                }
-                else if (item.property === "status") {
-                    myData.push(item.value + "");
-                }
-                });
-
-            return myData
-       }
     function updateCourseSpecifics(applicant, value, check){
         const jsonObject = JSON.parse(applicant.courseSpecifics);
         const myCourse = Object.keys(jsonObject).find(key => key === selectedCourse);
@@ -165,8 +171,40 @@ function ApplicantsView() {
         return JSON.stringify(jsonObject);
       
     }
+
+    const sendEmail = async (useremail, username, myStatus) => {
+
+        console.log(useremail,username)
+
+        const serviceId = "service_mroqh3a"
+
+        let templateId = "template_eqxqmrb";
+        
+        if (myStatus==="DECLINED"){
+            templateId = "template_tkg84ui"
+        }
+        
+        try {
+          await emailjs.send(serviceId, templateId, {
+           name: username,
+            recipient: useremail,
+            course_name: selectedCourse,
+          });
+          alert("Email sent to applicant.")
+        } catch (error) {
+          console.log(error);
+        } 
+
+        window.location.reload();
+
+      };
+
+
     const updateCell = async ({ row }, check, myStatus) => {
+        
+
         if (check === 0){
+
             const updatedValue = window.prompt('Assign Hours');
             if(!isNaN(updatedValue) && parseInt(updatedValue) >= 0) {
                 const applicant = await getApplicant(row.original.id);        
@@ -181,19 +219,23 @@ function ApplicantsView() {
                     console.log("opss")
                 }
             }
+            
         }
+
         else if (check === 1) {
+
+            
             const applicant = await getApplicant(row.original.id);        
+            sendEmail(applicant.preferredEmail, applicant.givenName, myStatus);
+            console.log(applicant)
             try {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
                     updated.courseSpecifics = updateCourseSpecifics(applicant, myStatus, 1);
                 }));
-                const updatedData = [...data];
-                updatedData[row.index].status = myStatus;
-                setdata(updatedData);
             } catch {
                 console.log("opss")
             }
+            
         }
       };
       

@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { DataStore } from '@aws-amplify/datastore';
 import { useState } from 'react';
-
+import Collapse from 'react-bootstrap/Collapse';
 import { Course } from '../models';
 
 function CourseEdit({ course, userType }) {
@@ -14,6 +14,7 @@ function CourseEdit({ course, userType }) {
     const [isFlipped, setIsFlipped] = useState(false);
     const [previewFile, setPreviewFile] = useState(null);
     const [uploadFile, setUploadFile] = useState(null);
+    const [requiredMarkers, setRequiredMarkers] = useState(course.requireMarkers);
 
     const [formData, setFormData] = useState({
         faculty: course.faculty,
@@ -27,12 +28,14 @@ function CourseEdit({ course, userType }) {
         estimatedStudents: course.estimatedStudents,
         requireMarkers: course.requireMarkers,
         enrolledStudents: course.enrolledStudents,
+        markersNeeded: course.markersNeeded,
         preassignMarkers: course.preassignMarkers,
         totalHours: course.totalHours,
         minGrade: course.minGrade,
         description: course.description,
         summary: course.summary,
         thumbnailId: course.thumbnailId,
+        markersAssigned: course.markersAssigned
     });
 
     const handleChange = (e) => {
@@ -61,10 +64,10 @@ function CourseEdit({ course, userType }) {
         try {
             const original = await DataStore.query(Course, course.id);
 
-        if (original) {
-            await DataStore.save(
-                Course.copyOf(original, updated => {
-                    updated.faculty = formData.faculty;
+            if (original) {
+                await DataStore.save(
+                    Course.copyOf(original, updated => {
+                        updated.faculty = formData.faculty;
                         updated.courseCode = formData.courseCode;
                         updated.coordinatorName = formData.coordinatorName;
                         updated.coordinatorEmail = formData.coordinatorEmail;
@@ -82,9 +85,11 @@ function CourseEdit({ course, userType }) {
                         updated.summary = formData.summary;
                         updated.thumbnailId = formData.thumbnailId;
                         updated.name = `${formData.faculty} ${formData.courseCode}`;
-                })
-            );
-        }
+                        updated.markersNeeded = formData.markersNeeded;
+                        updated.markersAssigned = formData.markersAssigned;
+                    })
+                );
+            }
 
             alert('Course successfully edited.');
         } catch (error) {
@@ -201,24 +206,11 @@ function CourseEdit({ course, userType }) {
                     <Form.Control
                         name="estimatedStudents"
                         value={formData.estimatedStudents}
+                        disabled={userBool}
                         onChange={handleChange}
                         type="number"
                     />
                 </Form.Group>
-
-                <Form.Group as={Col} className="d-flex align-items-center">
-                    <Form.Label>Number of available marking hours</Form.Label>
-                    <Form.Control
-                        name="totalHours"
-                        value={formData.totalHours}
-                        onChange={handleChange}
-                        type="number"
-                    />
-                </Form.Group>
-
-            </Row>
-
-            <Row className="mb-3">
                 <Form.Group as={Col} className="d-flex align-items-center">
                     <Form.Label>Current number of enrolled students</Form.Label>
                     <Form.Control
@@ -228,33 +220,89 @@ function CourseEdit({ course, userType }) {
                         type="number"
                     />
                 </Form.Group>
-
-                <Form.Group as={Col} className="d-flex align-items-center">
-                    <Form.Label className='mx-2'>Applicant minimum grade</Form.Label>
-                    <Form.Select
-                        name="minGrade"
-                        aria-label="Default select example"
-                        value={formData.minGrade}
-                        disabled={userBool}
-                        onChange={handleChange}
-                        className="mx-2"
-                    >
-                        <option value="A+">A+</option>
-                        <option value="A">A</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B">B</option>
-                        <option value="B-">B-</option>
-                    </Form.Select>
-                </Form.Group>
-
             </Row>
 
             <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Label>Do you require markers for this course? ⠀⠀⠀⠀⠀⠀⠀⠀⠀</Form.Label>
+                        <Form.Check
+                            type="switch"
+                            id="custom-switch-1"
+                            label=""
+                            checked={formData.requireMarkers}
+                            onChange={(e) => {
+                                handleChange(e);
+                                setRequiredMarkers(e.target.checked);
 
-
-
+                            }}
+                            disabled={userBool}
+                            aria-controls="collapse-text"
+                            aria-expanded={requiredMarkers}
+                            name="requireMarkers"
+                        />
+                    </Form.Group>
             </Row>
+
+            <Collapse in={requiredMarkers}>
+                    <div id="collapse-text" style={{ padding: 0 }}>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} className="d-flex align-items-center">
+                                <Form.Label>How many markers would be needed for this course?</Form.Label>
+                                <Form.Control
+                                    name="enrolledStudents"
+                                    value={formData.markersNeeded}
+                                    onChange={handleChange}
+                                    type="number"
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} className="d-flex align-items-center">
+                                <Form.Label>Would you like to preassign markers if available?⠀⠀⠀</Form.Label>
+                                <Form.Check
+                                    type="switch"
+                                    id="custom-switch-2"
+                                    label=""
+                                    checked={formData.preassignMarkers}
+                                    disabled={userBool}
+                                    onChange={handleChange}
+                                    name="preassignMarkers"
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} className="d-flex align-items-center">
+                                <Form.Label>Number of marking hours per week</Form.Label>
+                                <Form.Control
+                                    name="totalHours"
+                                    value={formData.totalHours}
+                                    onChange={handleChange}
+                                    type="number"
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} className="d-flex align-items-center">
+                                <Form.Label className='mx-2'>Applicant minimum grade</Form.Label>
+                                <Form.Select
+                                    name="minGrade"
+                                    aria-label="Default select example"
+                                    value={formData.minGrade}
+                                    disabled={userBool}
+                                    onChange={handleChange}
+                                >
+                                    <option value="A+">A+</option>
+                                    <option value="A">A</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B">B</option>
+                                    <option value="B-">B-</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Row>
+                    </div>
+
+
+                </Collapse>
 
             <Row className="mb-3">
                 <Form.Group as={Col}>
@@ -269,7 +317,7 @@ function CourseEdit({ course, userType }) {
 
             <Row className="mb-3">
                 <Form.Group as={Col}>
-                    <Form.Label>A longer summary for applicants who want to find out more</Form.Label>
+                    <Form.Label>Please list the number and type of assessments that markers would have to do throughout the semester.</Form.Label>
                     <Form.Control
                         as="textarea"
                         name="summary"
