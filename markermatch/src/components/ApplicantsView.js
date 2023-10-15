@@ -4,6 +4,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { ApplicationStatus, MarkerApplication } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useLocation } from 'react-router-dom';
+import ModalPopUp from './ModalPopUp';
 
 function ApplicantsView() {
     const [data, setdata] = useState([]);
@@ -11,6 +12,12 @@ function ApplicantsView() {
     const [rowSelection, setRowSelection] = useState({});
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
+    const [showModal, setShowModal] = useState(false);
+
+    function closeModal() {
+        setShowModal(false);
+      }
+
     const selectedCourse = location.pathname.split("/")[2].replace("-", "");
     const columns = useMemo(() => [
         {
@@ -69,7 +76,7 @@ function ApplicantsView() {
             }));
             setdata(newRecord);
         } catch (e) {
-            alert('Error fetching data:', e);
+            setShowModal(true);
             }
         };
         fetchdata();
@@ -107,6 +114,18 @@ function ApplicantsView() {
     return (
 
         <div className='student-table'>
+
+            {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title="Error"
+                    body="Error fetching data."
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
+
             <h1>All Courses &gt; Application for {selectedCourse}</h1>
             <MaterialReactTable
                 columns = {columns}
