@@ -168,6 +168,25 @@ function ApplicantsView() {
         return JSON.stringify(jsonObject);
       
     }
+    function updateApplicationStatus(applicant){
+        const jsonObject = JSON.parse(applicant.courseSpecifics);
+        const myCourse = Object.keys(jsonObject).find(key => key === selectedCourse);
+        let assignedHours = 0;
+        let status = ""
+        if (myCourse) {
+            jsonObject[myCourse].forEach(item => {
+                if (item.property === "assignedHours") {
+                    assignedHours = item.value;
+                }
+                if (item.property === "status") {
+                    status = item.value;
+                }
+            
+            });
+        }
+        return [assignedHours, status];
+      
+    }
     const updateCell = async ({ row }, check, myStatus) => {
         if (check === 0){
             const updatedValue = window.prompt('Assign Hours');
@@ -192,8 +211,21 @@ function ApplicantsView() {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
                     updated.courseSpecifics = updateCourseSpecifics(applicant, myStatus, 1);
                 }));
-            } catch {
-                console.log("opss")
+                
+                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(applicant.userId));
+                for(const myObject of data){
+                    let course = myObject.appliedCourses;
+                    course = course.replace(" ","");
+                    if(course === selectedCourse){
+                        const [assignedHours, status] = updateApplicationStatus(applicant);
+                        await DataStore.save(ApplicationStatus.copyOf(myObject, updated => {
+                            updated.hoursAssigned = assignedHours;
+                            updated.status = status;
+                        }));
+                    }
+                }
+            } catch(e) {
+                alert(e);
             }
             window.location.reload();
 
