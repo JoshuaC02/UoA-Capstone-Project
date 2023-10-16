@@ -16,6 +16,7 @@ import '../styles/MarkerApplicationForm.css';
 import MultiStepProgressBar from "./MultiStepProgressBar/MultiStepProgressBar";
 import NavbarComp from '../components/NavbarComp';
 import Sidebar from '../components/Sidebar';
+import ModalPopUp from './ModalPopUp';
 
 
 function MarkerApplicationForm() {
@@ -23,6 +24,14 @@ function MarkerApplicationForm() {
     const { courses } = CourseData();
     const [outCourses, setCourses] = useState([]);
     const navigate = useNavigate();
+
+    const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+
+    function closeModal() {
+        setShowModal(false);
+      }
 
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
@@ -227,12 +236,22 @@ function MarkerApplicationForm() {
     const handleCvChange = async (e) => {
         const file = e.target.files[0];
         if (file.type != "application/pdf") {
-            alert("Your file has not been uploaded. This input only accepts '.pdf' file extensions.");
+            const title = 'Error';
+            const body = "Your file has not been uploaded. This input only accepts '.pdf' file extensions.";
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
             return;
         }
         try {
             formData.cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
-            alert("File successfully uploaded!");
+            const title = 'Success';
+            const body = "File successfully uploaded!";
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         } catch (error) {
             console.log("Error uploading cv: ", error);
         }
@@ -241,12 +260,22 @@ function MarkerApplicationForm() {
     const handleTranscriptChange = async (e) => {
         const file = e.target.files[0];
         if (file.type != "application/pdf") {
-            alert("Your file has not been uploaded. This input only accepts '.pdf' file extensions.");
+            const title = 'Error';
+            const body = "Your file has not been uploaded. This input only accepts '.pdf' file extensions.";
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
             return;
         }
         try {
             formData.transcriptId = (await Storage.put(file.name, file, {level: "protected"})).key;
-            alert("File successfully uploaded!");
+            const title = 'Success';
+            const body = "File successfully uploaded!";
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         } catch (error) {
             console.log("Error uploading transcript: ", error);
         }
@@ -331,12 +360,21 @@ function MarkerApplicationForm() {
                 })
             );
             addCheckOut(outCourses, user.username, parseInt(formData.maxHours));
-            alert('Application successfully submitted.');
+            const title = 'Success';
+            const body = "Application successfully uploaded!";
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
             navigate("/application-status", { replace: true })
         } catch (error) {
             console.error('Error submitting application:', error);
-            alert(error)
-            alert('An error has occurred, please refer to console.');
+            const title = 'Error';
+            const body = 'An error has occurred, please refer to console.';
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         }
     };
 
@@ -380,7 +418,12 @@ function MarkerApplicationForm() {
             deleteAllSelectedCourses();
         }
         else{
-            alert("Error Submitting the form");
+            const title = 'Error';
+            const body = 'Error submitting the form';
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         }
     }
     async function deleteAllSelectedCourses (){
@@ -390,7 +433,12 @@ function MarkerApplicationForm() {
         try{
             await DataStore.delete(userCart[0]);
         }catch(e){
-            alert("Error removing selected courses from cart")
+            const title = 'Error';
+            const body = "Error removing selected courses from cart";
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         }
     }
 
@@ -592,6 +640,16 @@ function MarkerApplicationForm() {
                 )}
             </Form>
             </div>
+            {showModal && (
+            <ModalPopUp
+                show={showModal}
+                onHide={closeModal}
+                title={modalTitle}
+                body={modalBody}  
+                primaryButtonLabel="Close"
+                onPrimaryButtonClick={closeModal}
+            />
+        )}
             </div>
         </>
     );

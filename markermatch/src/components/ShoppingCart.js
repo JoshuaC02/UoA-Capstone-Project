@@ -11,12 +11,20 @@ import { useNavigate } from 'react-router';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
+import ModalPopUp from './ModalPopUp';
 
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
     const { user } = useAuthenticator((context) => [context.user]);
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+
+    function closeModal() {
+        setShowModal(false);
+      }
     
     async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
@@ -61,7 +69,12 @@ function ShoppingCart() {
         );
 
         const newCourses = courses.filter(course => course.name !== courseRemoved);
-        alert(courseRemoved + ' has been removed from your cart.')
+        const title = 'Course Removed';
+        const body = `${courseRemoved} has been removed from your cart.`;
+
+        setModalTitle(title);
+        setModalBody(body);
+        setShowModal(true);
         setCourses(newCourses);
     }
 
@@ -123,7 +136,12 @@ function ShoppingCart() {
 
     const handleCartSubmission = () => {
         if (courses.length == 0){
-            alert('There are no courses in your cart!')
+            const title = 'Empty Cart';
+            const body = `There are no courses in your cart!`;
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
             navigate("/", { replace: true });
             return;
         }
@@ -148,6 +166,17 @@ function ShoppingCart() {
                 {courses.length != 0 ? (<div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>) : (null)}
                 
             </div>
+
+            {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title={modalTitle}
+                    body={modalBody}  
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
         </>
     );
 }

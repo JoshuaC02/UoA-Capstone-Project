@@ -1,6 +1,9 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
 import { Course } from '../models';
+import React, { useState } from 'react';
+import ModalPopUp from '../components/ModalPopUp';
+
 
 export async function getCourseData() {
   
@@ -24,7 +27,9 @@ export function filterCourses(allCourses, term) {
     return filteredCourses;
 }
 
-export async function addToCart(courseId, userId, callBack) { 
+export async function AddToCart(courseId, userId, callBack) {
+
+  console.log(courseId, userId)
 
   if (userId === undefined) {
     callBack("/auth", { replace: true });
@@ -35,7 +40,7 @@ export async function addToCart(courseId, userId, callBack) {
         userId: userId,
         selectedCourses: courseId
       }))
-      alert("Added " + courseId + " to cart!");
+      alert("Added " + courseId + " to cart!"); 
     }else {
       let flag = false;
       const list = models[0].selectedCourses.split(",")
@@ -58,4 +63,24 @@ export async function addToCart(courseId, userId, callBack) {
       }
     }
   }
+}
+export function ModalComponent(show){
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalBody, setModalBody] = useState('');
+
+  function closeModal() {
+      setShowModal(false);
+    };
+return 
+  {showModal && (
+    <ModalPopUp
+        show={showModal}
+        onHide={closeModal}
+        title={modalTitle}
+        body={modalBody}  
+        primaryButtonLabel="Close"
+        onPrimaryButtonClick={closeModal}
+    />
+)}
 }

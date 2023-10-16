@@ -6,12 +6,19 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { json, useLocation } from 'react-router-dom';
 import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
 import emailjs from "@emailjs/browser";
+import ModalPopUp from './ModalPopUp';
 
 function ApplicantsView() {
     const [data, setdata] = useState([]);
     const [rowSelection, setRowSelection] = useState({});
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
+    const [showModal, setShowModal] = useState(false);
+
+    function closeModal() {
+        setShowModal(false);
+      }
+
     const selectedCourse = location.pathname.split("/")[2].replace("-", "");
 
     
@@ -95,9 +102,9 @@ function ApplicantsView() {
                 
             });
         } catch (e) {
-            console.log('Error fetching data:', e);
-        }
-    };
+            setShowModal(true);
+            }
+        };
         fetchdata();
     }, [user.username]);
     
@@ -273,6 +280,17 @@ function ApplicantsView() {
       
 return (
         <div className="student-table">
+            {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title="Error"
+                    body="Error fetching data."
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
+
             <h1>All Courses &gt; Application for {selectedCourse}</h1>
             <MaterialReactTable
                 columns={columns}

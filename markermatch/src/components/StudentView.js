@@ -4,10 +4,17 @@ import { DataStore } from '@aws-amplify/datastore';
 import { ApplicationStatus } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Box } from '@mui/material';
+import ModalPopUp from './ModalPopUp';
 
 function UserApplicationStatus() {
     const [data, setdata] = useState([]);
     const { user } = useAuthenticator((context) => [context.user]);
+    const [showModal, setShowModal] = useState(false);
+
+    function closeModal() {
+        setShowModal(false);
+      }
+
     const columns = useMemo(() => [
         {
             accessorKey: 'courseNo',
@@ -53,7 +60,7 @@ function UserApplicationStatus() {
             }));
             setdata(newRecord);
         } catch (e) {
-            alert('Error fetching data:', e);
+            setShowModal(true);
             }
         };
         fetchdata();
@@ -82,6 +89,17 @@ function UserApplicationStatus() {
     return (
 
         <div className='student-table'>
+
+            {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title="Error"
+                    body="Error fetching data."
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
             <MaterialReactTable columns={columns} data={data}
             muiTableContainerProps={{ sx: { maxHeight: `${m}px` } }}
             />

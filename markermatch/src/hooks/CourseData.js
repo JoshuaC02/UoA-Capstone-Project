@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCourseData, filterCourses, addToCart } from '../helperFunctions/HorizontalHelper';
+import { getCourseData, filterCourses, AddToCart } from '../helperFunctions/HorizontalHelper';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -31,7 +31,7 @@ function CourseData() {
   }
 
   const addCourseToCart = (courseId, userId) => {
-    addToCart(courseId, userId, navigate)
+    AddToCart(courseId, userId, navigate)
   }
 
   const CourseCard = ({ course, user }) => {
