@@ -14,6 +14,9 @@ type EagerApplicationStatus = {
   readonly id: string;
   readonly userId?: string | null;
   readonly appliedCourses?: string | null;
+  readonly hoursAssigned?: string | null;
+  readonly status?: string | null;
+  readonly hoursRequested?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -26,6 +29,9 @@ type LazyApplicationStatus = {
   readonly id: string;
   readonly userId?: string | null;
   readonly appliedCourses?: string | null;
+  readonly hoursAssigned?: string | null;
+  readonly status?: string | null;
+  readonly hoursRequested?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

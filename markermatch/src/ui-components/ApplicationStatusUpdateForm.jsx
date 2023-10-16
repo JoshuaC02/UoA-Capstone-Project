@@ -26,10 +26,20 @@ export default function ApplicationStatusUpdateForm(props) {
   const initialValues = {
     userId: "",
     appliedCourses: "",
+    hoursAssigned: "",
+    status: "",
+    hoursRequested: "",
   };
   const [userId, setUserId] = React.useState(initialValues.userId);
   const [appliedCourses, setAppliedCourses] = React.useState(
     initialValues.appliedCourses
+  );
+  const [hoursAssigned, setHoursAssigned] = React.useState(
+    initialValues.hoursAssigned
+  );
+  const [status, setStatus] = React.useState(initialValues.status);
+  const [hoursRequested, setHoursRequested] = React.useState(
+    initialValues.hoursRequested
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -38,6 +48,9 @@ export default function ApplicationStatusUpdateForm(props) {
       : initialValues;
     setUserId(cleanValues.userId);
     setAppliedCourses(cleanValues.appliedCourses);
+    setHoursAssigned(cleanValues.hoursAssigned);
+    setStatus(cleanValues.status);
+    setHoursRequested(cleanValues.hoursRequested);
     setErrors({});
   };
   const [applicationStatusRecord, setApplicationStatusRecord] = React.useState(
@@ -56,6 +69,9 @@ export default function ApplicationStatusUpdateForm(props) {
   const validations = {
     userId: [],
     appliedCourses: [],
+    hoursAssigned: [],
+    status: [],
+    hoursRequested: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -85,6 +101,9 @@ export default function ApplicationStatusUpdateForm(props) {
         let modelFields = {
           userId,
           appliedCourses,
+          hoursAssigned,
+          status,
+          hoursRequested,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -110,8 +129,8 @@ export default function ApplicationStatusUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value === "") {
-              modelFields[key] = null;
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
             }
           });
           await DataStore.save(
@@ -142,6 +161,9 @@ export default function ApplicationStatusUpdateForm(props) {
             const modelFields = {
               userId: value,
               appliedCourses,
+              hoursAssigned,
+              status,
+              hoursRequested,
             };
             const result = onChange(modelFields);
             value = result?.userId ?? value;
@@ -167,6 +189,9 @@ export default function ApplicationStatusUpdateForm(props) {
             const modelFields = {
               userId,
               appliedCourses: value,
+              hoursAssigned,
+              status,
+              hoursRequested,
             };
             const result = onChange(modelFields);
             value = result?.appliedCourses ?? value;
@@ -180,6 +205,90 @@ export default function ApplicationStatusUpdateForm(props) {
         errorMessage={errors.appliedCourses?.errorMessage}
         hasError={errors.appliedCourses?.hasError}
         {...getOverrideProps(overrides, "appliedCourses")}
+      ></TextField>
+      <TextField
+        label="Hours assigned"
+        isRequired={false}
+        isReadOnly={false}
+        value={hoursAssigned}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              appliedCourses,
+              hoursAssigned: value,
+              status,
+              hoursRequested,
+            };
+            const result = onChange(modelFields);
+            value = result?.hoursAssigned ?? value;
+          }
+          if (errors.hoursAssigned?.hasError) {
+            runValidationTasks("hoursAssigned", value);
+          }
+          setHoursAssigned(value);
+        }}
+        onBlur={() => runValidationTasks("hoursAssigned", hoursAssigned)}
+        errorMessage={errors.hoursAssigned?.errorMessage}
+        hasError={errors.hoursAssigned?.hasError}
+        {...getOverrideProps(overrides, "hoursAssigned")}
+      ></TextField>
+      <TextField
+        label="Status"
+        isRequired={false}
+        isReadOnly={false}
+        value={status}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              appliedCourses,
+              hoursAssigned,
+              status: value,
+              hoursRequested,
+            };
+            const result = onChange(modelFields);
+            value = result?.status ?? value;
+          }
+          if (errors.status?.hasError) {
+            runValidationTasks("status", value);
+          }
+          setStatus(value);
+        }}
+        onBlur={() => runValidationTasks("status", status)}
+        errorMessage={errors.status?.errorMessage}
+        hasError={errors.status?.hasError}
+        {...getOverrideProps(overrides, "status")}
+      ></TextField>
+      <TextField
+        label="Hours requested"
+        isRequired={false}
+        isReadOnly={false}
+        value={hoursRequested}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              userId,
+              appliedCourses,
+              hoursAssigned,
+              status,
+              hoursRequested: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.hoursRequested ?? value;
+          }
+          if (errors.hoursRequested?.hasError) {
+            runValidationTasks("hoursRequested", value);
+          }
+          setHoursRequested(value);
+        }}
+        onBlur={() => runValidationTasks("hoursRequested", hoursRequested)}
+        errorMessage={errors.hoursRequested?.errorMessage}
+        hasError={errors.hoursRequested?.hasError}
+        {...getOverrideProps(overrides, "hoursRequested")}
       ></TextField>
       <Flex
         justifyContent="space-between"
