@@ -3,12 +3,11 @@ import MaterialReactTable from 'material-react-table';
 import { DataStore } from '@aws-amplify/datastore';
 import { ApplicationStatus, MarkerApplication } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { json, useLocation } from 'react-router-dom';
-import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import { Box, Button, MenuItem} from '@mui/material';
 
 function ApplicantsView() {
     const [data, setdata] = useState([]);
-    const [getApplicants, setApplicants] = useState([]);
     const [rowSelection, setRowSelection] = useState({});
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
@@ -54,12 +53,12 @@ function ApplicantsView() {
             Cell: ({ cell }) => (
                 <Box
                 component="span"
-                sx={(theme) => ({
-                  backgroundColor: cell.getValue() === "ACCEPTED"? "green": cell.getValue() === "DECLINED" ? "red" : "orange",
-                  borderRadius: '0.25rem',
-                  color: '#fff',
-                  maxWidth: '9ch',
-                  p: '0.25rem',
+                sx={() => ({
+                    backgroundColor: cell.getValue() === "ACCEPTED"? "green": cell.getValue() === "DECLINED" ? "red" : "orange",
+                    borderRadius: '0.25rem',
+                    color: '#fff',
+                    maxWidth: '8.7ch',
+                    p: '0.25rem',
                 })}
               >
                 {cell.getValue()}
@@ -150,17 +149,17 @@ function ApplicantsView() {
             window.removeEventListener('resize', handleResize);
         };
     });
-    function updateCourseSpecifics(applicant, value, check){
+    function updateCourseSpecifics(applicant, value, status, check){
         const jsonObject = JSON.parse(applicant.courseSpecifics);
         const myCourse = Object.keys(jsonObject).find(key => key === selectedCourse);
 
         if (myCourse) {
             jsonObject[myCourse].forEach(item => {
-                if (item.property === "assignedHours" && check === 0) {
+                if (item.property === "assignedHours") {
                     item.value = value;
                 }
-                if (item.property === "status" && check === 1) {
-                    item.value = value;
+                if (item.property === "status") {
+                    item.value = status;
                 }
             
             });
@@ -191,11 +190,7 @@ function ApplicantsView() {
         if (check === 0){
             const updatedValue = window.prompt('Assign Hours');
             if(!isNaN(updatedValue) && parseInt(updatedValue) >= 0) {
-                const applicant = await getApplicant(row.original.id);        
                 try {
-                    await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                        updated.courseSpecifics = updateCourseSpecifics(applicant, updatedValue, 0);
-                    }));
                     const updatedData = [...data];
                     updatedData[row.index].hoursAssigned = updatedValue;
                     setdata(updatedData);
@@ -209,7 +204,7 @@ function ApplicantsView() {
             const applicant = await getApplicant(row.original.id);        
             try {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                    updated.courseSpecifics = updateCourseSpecifics(applicant, myStatus, 1);
+                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
                 }));
                 
                 const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(applicant.userId));
@@ -219,7 +214,12 @@ function ApplicantsView() {
                     if(course === selectedCourse){
                         const [assignedHours, status] = updateApplicationStatus(applicant);
                         await DataStore.save(ApplicationStatus.copyOf(myObject, updated => {
-                            updated.hoursAssigned = assignedHours;
+                            if(status === "DECLINED"){
+                                updated.hoursAssigned = "0";
+                            }
+                            else{
+                                updated.hoursAssigned = assignedHours;
+                            }
                             updated.status = status;
                         }));
                     }
@@ -227,14 +227,11 @@ function ApplicantsView() {
             } catch(e) {
                 alert(e);
             }
-            window.location.reload();
-
         }
-      };
+    };
       
-    return (
-
-        <div className='student-table'>
+return (
+        <div className="student-table">
             <h1>All Courses &gt; Application for {selectedCourse}</h1>
             <MaterialReactTable
                 columns={columns}
@@ -246,43 +243,49 @@ function ApplicantsView() {
                 isEditable={(column) => column.isEditable}
                 enableRowActions
                 renderRowActionMenuItems={({ row }) => [
-                    <MenuItem key="edit" onClick={() => updateCell({row}, 0, "")}>
-                      Assign Hours
+                    <MenuItem key="edit" onClick={() => updateCell({ row }, 0, "")}>
+                        Assign Hours
                     </MenuItem>,
                 ]}
                 onEditingRowSave={updateCell}
-                enableRowSelection                            
+                enableRowSelection
                 renderBottomToolbarCustomActions={({ table }) => {
-                    const handleAccepted = () => {
-                      table.getSelectedRowModel().flatRows.map((row) => {
-                        updateCell({row}, 1, "ACCEPTED")
-                      });
+                    const handleAccepted = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await updateCell({ row }, 1, "ACCEPTED");
+                            await updateCell({ row }, 1, "ACCEPTED").then(()=>{
+                                window.location.reload();
+                            });                       
+                         });
                     };
-            
-                    const handleDeclined = () => {
-                      table.getSelectedRowModel().flatRows.map((row) => {
-                        updateCell({row}, 1, "DECLINED")
-                      });
+
+                    const handleDeclined = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await updateCell({ row }, 1, "DECLINED");
+                            await updateCell({ row }, 1, "DECLINED").then(()=>{
+                                window.location.reload();
+                            });
+                        });
                     };
                     return (
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
-                          color="success"
-                          disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                          onClick={handleAccepted}
-                          variant="contained"
-                        >
-                          ACCEPT
-                        </Button>
-                        <Button
-                          color="error"
-                          disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                          onClick={handleDeclined}
-                          variant="contained"
-                        >
-                          DECLINE
-                        </Button>
-                      </div>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <Button
+                                color="success"
+                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleAccepted}
+                                variant="contained"
+                            >
+                                ACCEPT
+                            </Button>
+                            <Button
+                                color="error"
+                                disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleDeclined}
+                                variant="contained"
+                            >
+                                DECLINE
+                            </Button>
+                        </div>
                     );
                 }}
             />

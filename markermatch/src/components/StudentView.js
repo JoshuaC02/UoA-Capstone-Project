@@ -3,6 +3,7 @@ import MaterialReactTable from 'material-react-table';
 import { DataStore } from '@aws-amplify/datastore';
 import { ApplicationStatus } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { Box } from '@mui/material';
 
 function UserApplicationStatus() {
     const [data, setdata] = useState([]);
@@ -23,8 +24,21 @@ function UserApplicationStatus() {
         {
             accessorKey: 'status',
             header: 'Status',
-        },
-    ],[]);
+            Cell: ({ cell }) => (
+                <Box
+                component="span"
+                sx={() => ({
+                    backgroundColor: cell.getValue() === "ACCEPTED"? "green": cell.getValue() === "DECLINED" ? "red" : "orange",
+                    borderRadius: '0.25rem',
+                    color: '#fff',
+                    maxWidth: '8.7ch',
+                    p: '0.25rem',
+                })}
+              >
+                {cell.getValue()}
+              </Box>
+            ),
+        },],[]);
 
     useEffect(() => {
         const fetchdata = async () => {
