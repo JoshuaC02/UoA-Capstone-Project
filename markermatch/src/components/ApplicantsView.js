@@ -9,7 +9,6 @@ import emailjs from "@emailjs/browser";
 
 function ApplicantsView() {
     const [data, setdata] = useState([]);
-    const [getApplicants, setApplicants] = useState([]);
     const [rowSelection, setRowSelection] = useState({});
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
@@ -57,12 +56,12 @@ function ApplicantsView() {
             Cell: ({ cell }) => (
                 <Box
                 component="span"
-                sx={(theme) => ({
-                  backgroundColor: cell.getValue() === "ACCEPTED"? "green": cell.getValue() === "DECLINED" ? "red" : "orange",
-                  borderRadius: '0.25rem',
-                  color: '#fff',
-                  maxWidth: '9ch',
-                  p: '0.25rem',
+                sx={() => ({
+                    backgroundColor: cell.getValue() === "ACCEPTED"? "green": cell.getValue() === "DECLINED" ? "red" : "orange",
+                    borderRadius: '0.25rem',
+                    color: '#fff',
+                    maxWidth: '8.7ch',
+                    p: '0.25rem',
                 })}
               >
                 {cell.getValue()}
@@ -87,9 +86,9 @@ function ApplicantsView() {
                       prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
-                      pref: 'need to implement',
-                      hoursAssigned: properties[0],
-                      status: properties[1],
+                      pref: properties[0],
+                      hoursAssigned: properties[1],
+                      status: properties[2],
                     };
                 });
                 setdata(newRecord);
@@ -106,14 +105,15 @@ function ApplicantsView() {
        {
             const myData = []    
             const jsonObject = JSON.parse(jSonData);
-            const firstKey = Object.keys(jsonObject)[count];
-            let val = 0;
-            jsonObject[firstKey].forEach(item => {
+            jsonObject[selectedCourse].forEach(item => {
                 if (item.property === "assignedHours") {
                     myData.push(item.value + "");
                 }
                 else if (item.property === "status") {
                     myData.push(item.value + "");
+                }
+                else if(item.property === "preference"){
+                    myData.push(item.value + "")    
                 }
                 });
 
@@ -153,17 +153,17 @@ function ApplicantsView() {
             window.removeEventListener('resize', handleResize);
         };
     });
-    function updateCourseSpecifics(applicant, value, check){
+    function updateCourseSpecifics(applicant, value, status, check){
         const jsonObject = JSON.parse(applicant.courseSpecifics);
         const myCourse = Object.keys(jsonObject).find(key => key === selectedCourse);
 
         if (myCourse) {
             jsonObject[myCourse].forEach(item => {
-                if (item.property === "assignedHours" && check === 0) {
+                if (item.property === "assignedHours") {
                     item.value = value;
                 }
-                if (item.property === "status" && check === 1) {
-                    item.value = value;
+                if (item.property === "status") {
+                    item.value = status;
                 }
             
             });
@@ -200,6 +200,25 @@ function ApplicantsView() {
       };
 
 
+    function updateApplicationStatus(applicant){
+        const jsonObject = JSON.parse(applicant.courseSpecifics);
+        const myCourse = Object.keys(jsonObject).find(key => key === selectedCourse);
+        let assignedHours = 0;
+        let status = ""
+        if (myCourse) {
+            jsonObject[myCourse].forEach(item => {
+                if (item.property === "assignedHours") {
+                    assignedHours = item.value;
+                }
+                if (item.property === "status") {
+                    status = item.value;
+                }
+            
+            });
+        }
+        return [assignedHours, status];
+      
+    }
     const updateCell = async ({ row }, check, myStatus) => {
         
 
@@ -207,11 +226,7 @@ function ApplicantsView() {
 
             const updatedValue = window.prompt('Assign Hours');
             if(!isNaN(updatedValue) && parseInt(updatedValue) >= 0) {
-                const applicant = await getApplicant(row.original.id);        
                 try {
-                    await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                        updated.courseSpecifics = updateCourseSpecifics(applicant, updatedValue, 0);
-                    }));
                     const updatedData = [...data];
                     updatedData[row.index].hoursAssigned = updatedValue;
                     setdata(updatedData);
@@ -230,18 +245,34 @@ function ApplicantsView() {
             console.log(applicant)
             try {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                    updated.courseSpecifics = updateCourseSpecifics(applicant, myStatus, 1);
+                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
                 }));
-            } catch {
-                console.log("opss")
+                
+                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(applicant.userId));
+                for(const myObject of data){
+                    let course = myObject.appliedCourses;
+                    course = course.replace(" ","");
+                    if(course === selectedCourse){
+                        const [assignedHours, status] = updateApplicationStatus(applicant);
+                        await DataStore.save(ApplicationStatus.copyOf(myObject, updated => {
+                            if(status === "DECLINED"){
+                                updated.hoursAssigned = "0";
+                            }
+                            else{
+                                updated.hoursAssigned = assignedHours;
+                            }
+                            updated.status = status;
+                        }));
+                    }
+                }
+            } catch(e) {
+                alert(e);
             }
-            
         }
-      };
+    };
       
-    return (
-
-        <div className='student-table'>
+return (
+        <div className="student-table">
             <h1>All Courses &gt; Application for {selectedCourse}</h1>
             <MaterialReactTable
                 columns={columns}
@@ -253,43 +284,49 @@ function ApplicantsView() {
                 isEditable={(column) => column.isEditable}
                 enableRowActions
                 renderRowActionMenuItems={({ row }) => [
-                    <MenuItem key="edit" onClick={() => updateCell({row}, 0, "")}>
-                      Assign Hours
+                    <MenuItem key="edit" onClick={() => updateCell({ row }, 0, "")}>
+                        Assign Hours
                     </MenuItem>,
                 ]}
                 onEditingRowSave={updateCell}
-                enableRowSelection                            
+                enableRowSelection
                 renderBottomToolbarCustomActions={({ table }) => {
-                    const handleAccepted = () => {
-                      table.getSelectedRowModel().flatRows.map((row) => {
-                        updateCell({row}, 1, "ACCEPTED")
-                      });
+                    const handleAccepted = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await updateCell({ row }, 1, "ACCEPTED");
+                            await updateCell({ row }, 1, "ACCEPTED").then(()=>{
+                                window.location.reload();
+                            });                       
+                         });
                     };
-            
-                    const handleDeclined = () => {
-                      table.getSelectedRowModel().flatRows.map((row) => {
-                        updateCell({row}, 1, "DECLINED")
-                      });
+
+                    const handleDeclined = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await updateCell({ row }, 1, "DECLINED");
+                            await updateCell({ row }, 1, "DECLINED").then(()=>{
+                                window.location.reload();
+                            });
+                        });
                     };
                     return (
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
-                          color="success"
-                          disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                          onClick={handleAccepted}
-                          variant="contained"
-                        >
-                          ACCEPT
-                        </Button>
-                        <Button
-                          color="error"
-                          disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                          onClick={handleDeclined}
-                          variant="contained"
-                        >
-                          DECLINE
-                        </Button>
-                      </div>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <Button
+                                color="success"
+                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleAccepted}
+                                variant="contained"
+                            >
+                                ACCEPT
+                            </Button>
+                            <Button
+                                color="error"
+                                disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleDeclined}
+                                variant="contained"
+                            >
+                                DECLINE
+                            </Button>
+                        </div>
                     );
                 }}
             />

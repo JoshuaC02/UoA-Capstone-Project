@@ -3,8 +3,9 @@ import MaterialReactTable from 'material-react-table';
 import { DataStore } from '@aws-amplify/datastore';
 import { ApplicationStatus } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { Box } from '@mui/material';
 
-function ApplicationStatuss() {
+function UserApplicationStatus() {
     const [data, setdata] = useState([]);
     const { user } = useAuthenticator((context) => [context.user]);
     const columns = useMemo(() => [
@@ -13,16 +14,30 @@ function ApplicationStatuss() {
             header: 'CourseNo',
         },
         {
-            accessorKey: 'courseName',
-            header: 'Course Name',
-        },
-        {
-            accessorKey: 'status',
-            header: 'Status',
+            accessorKey: 'hoursRequested',
+            header: 'Hours Requested',
         },
         {
             accessorKey: 'hoursAssigned',
             header: 'Hours Assigned',
+        },
+        {
+            accessorKey: 'status',
+            header: 'Status',
+            Cell: ({ cell }) => (
+                <Box
+                component="span"
+                sx={() => ({
+                    backgroundColor: cell.getValue() === "ACCEPTED"? "green": cell.getValue() === "DECLINED" ? "red" : "orange",
+                    borderRadius: '0.25rem',
+                    color: '#fff',
+                    maxWidth: '8.7ch',
+                    p: '0.25rem',
+                })}
+              >
+                {cell.getValue()}
+              </Box>
+            ),
         },],[]);
 
     useEffect(() => {
@@ -32,9 +47,9 @@ function ApplicationStatuss() {
             const records = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(user.username));
             const newRecord = records.map((record) => ({
                 courseNo: record.appliedCourses,
-                courseName: 'NEED TO IMPLEMENT',
-                status: 'NEED TO IMPLEMENT',
-                hoursAssigned:  'NEED TO IMPLEMENT',
+                hoursRequested:  record.hoursRequested,
+                hoursAssigned:  record.hoursAssigned,
+                status: record.status,
             }));
             setdata(newRecord);
         } catch (e) {
@@ -73,4 +88,4 @@ function ApplicationStatuss() {
         </div>
     );
 }
-export default ApplicationStatuss;
+export default UserApplicationStatus;

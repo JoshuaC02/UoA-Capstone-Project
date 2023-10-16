@@ -24,6 +24,27 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "hoursAssigned": {
+                    "name": "hoursAssigned",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "hoursRequested": {
+                    "name": "hoursRequested",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -498,6 +519,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.3",
-    "version": "0287fee9f4258503bfd1d9d28daa44ce"
+    "codegenVersion": "3.4.4",
+    "version": "a7be89aed02041471f1040d9b6de7f41"
 };
