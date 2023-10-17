@@ -5,13 +5,16 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import { DataStore } from '@aws-amplify/datastore';
-
-
+import ModalPopUp from '../components/ModalPopUp';
 
 function CourseData() {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [allCourses, setAllCourses] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +27,10 @@ function CourseData() {
     fetchCourses();
   }, []);
 
+  function closeModal() {
+    setShowModal(false);
+  }
+
   const handleSearch = (term) => {
     setSearchTerm(term);
     const filteredCourses = filterCourses(allCourses, term);
@@ -31,7 +38,23 @@ function CourseData() {
   }
 
   const addCourseToCart = (courseId, userId) => {
-    AddToCart(courseId, userId, navigate)
+    const response = AddToCart(courseId, userId, navigate);
+    let message = ''
+    response.then(response => {
+      message = response;
+
+      console.log(message)
+      const title = 'Course';
+      setModalTitle(title);
+      setModalBody(message);
+      setShowModal(true);
+      
+    }).catch(error => {
+      console.error(error);
+    });
+
+    
+    
   }
 
   const CourseCard = ({ course, user }) => {
@@ -39,6 +62,7 @@ function CourseData() {
     let appStatus = "No"
     if (course.appOpen) { appStatus = "Yes" }
     return (
+      <>
       <div className="p-2" key={course.id}>
         <ReactCardFlip isFlipped={isFlipped}>
           <Card style={{ height:"400px", width:"250px" }} key="front">
@@ -77,6 +101,18 @@ function CourseData() {
           </Card>
         </ReactCardFlip>
       </div>
+
+      {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title={modalTitle}
+                    body={modalBody}  
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
+      </>
     )
   }
 
