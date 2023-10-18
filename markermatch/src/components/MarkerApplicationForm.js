@@ -31,7 +31,19 @@ function MarkerApplicationForm() {
 
     function closeModal() {
         setShowModal(false);
-      }
+      } 
+    const handlePreferenceChange = async (e) => { 
+        const { name, value } = e.target;
+
+        const numb = parseInt(value);
+        if(!isNaN(numb) && numb <= 0){
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: numb,
+            }));
+        }
+        //formData.courseSpecifics[name] = parseInt(value);
+    }
 
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
@@ -210,18 +222,7 @@ function MarkerApplicationForm() {
           }
         };
 
-    const handlePreferenceChange = async (e) => { 
-        const { name, value } = e.target;
 
-        const numb = parseInt(value);
-        if(!isNaN(numb) && numb <= 0){
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: numb,
-            }));
-        }
-        //formData.courseSpecifics[name] = parseInt(value);
-    }
 
     const handleGradeChange = async (e) => {
         const { name, value } = e.target;
@@ -306,36 +307,6 @@ function MarkerApplicationForm() {
             });
 
         }        
-
-        // for (const key in formData) {
-        //     if (formData[key] === '') {
-        //         alert(`Please fill in all fields (no empty fields are allowed).`);
-        //         return;
-        //     }
-        //     else if (key === "courseSpecifics") {
-        //         for (const subKey in formData.courseSpecifics) {
-        //             if (formData.courseSpecifics[subKey] === "") {
-        //                 alert(`Please fill in all fields (no empty fields are allowed). test`);
-        //                 return;
-        //             }
-        //         }
-        //     }
-        // }
-        // for (const aKey in formData.courseSpecifics) {
-        //     if (aKey.includes("_preference")) {
-        //         if (formData.courseSpecifics >= courses.length) {
-        //             alert("Preferences must be unique and valid")
-        //             return;
-        //         }
-        //         for (const bKey in formData.courseSpecifics) {
-        //             if (aKey != bKey && formData.courseSpecifics[aKey] === formData.courseSpecifics[bKey]) {
-        //                 alert("Preferences must be unique and valid")
-        //                 return;
-        //             }
-        //         }
-        //     }
-        // }
-
 
        try {
 

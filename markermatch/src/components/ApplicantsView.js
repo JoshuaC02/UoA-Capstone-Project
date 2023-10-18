@@ -84,8 +84,10 @@ function ApplicantsView() {
             getAllApplicants(selectedCourse).then(fetchApplicants=> {
                 let count = 0;
                 const newRecord = fetchApplicants.map( (record) => {
+                    console.log(fetchApplicants[count])
                     let properties = getJsonData(fetchApplicants[count].courseSpecifics, 0);
                     count+=1;
+                    console.log(properties)
                     return {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
@@ -98,6 +100,7 @@ function ApplicantsView() {
                       status: properties[2],
                     };
                 });
+                console.log(newRecord)
                 setdata(newRecord);
                 
             });
@@ -109,7 +112,8 @@ function ApplicantsView() {
     }, [user.username]);
     
     function getJsonData(jSonData, count, check)
-       {
+       {    
+        console.log(jSonData)
             const myData = []    
             const jsonObject = JSON.parse(jSonData);
             jsonObject[selectedCourse].forEach(item => {
