@@ -245,7 +245,7 @@ function MarkerApplicationForm() {
             return;
         }
         try {
-            formData.cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
+            formData.cvId = (await Storage.put('cv.pdf', file, {level: "protected"})).key;
             const title = 'Success';
             const body = "File successfully uploaded!";
 
@@ -269,7 +269,7 @@ function MarkerApplicationForm() {
             return;
         }
         try {
-            formData.transcriptId = (await Storage.put(file.name, file, {level: "protected"})).key;
+            formData.transcriptId = (await Storage.put('transcript.pdf', file, {level: "protected"})).key;
             const title = 'Success';
             const body = "File successfully uploaded!";
 

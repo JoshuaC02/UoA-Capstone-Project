@@ -1,5 +1,3 @@
-//https://docs.amplify.aws/lib/datastore/data-access/q/platform/js/#query-data
-
 import React, { useState, useEffect } from 'react';
 import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
@@ -12,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import ModalPopUp from './ModalPopUp';
-
+import { Amplify, Auth, Storage } from 'aws-amplify';
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
@@ -134,6 +132,38 @@ function ShoppingCart() {
         fetchCourses();
     }, []);
 
+    const testGetProtected = () => { 
+      console.log(Storage.get('cv.png'))
+
+
+    }
+
+    
+    // const handleCvChange = async (e) => {
+    //     const file = e.target.files[0];
+    //     if (file.type != "application/pdf") {
+    //         const title = 'Error';
+    //         const body = "Your file has not been uploaded. This input only accepts '.pdf' file extensions.";
+
+    //         setModalTitle(title);
+    //         setModalBody(body);
+    //         setShowModal(true);
+    //         return;
+    //     }
+    //     try {
+    //         const cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
+    //         const title = 'Success';
+    //         const body = "File successfully uploaded!";
+
+    //         setModalTitle(title);
+    //         setModalBody(body);
+    //         setShowModal(true);
+    //     } catch (error) {
+    //         console.log("Error uploading cv: ", error);
+    //     }
+    // }
+    
+
     const handleCartSubmission = () => {
         if (courses.length == 0){
             const title = 'Empty Cart';
@@ -163,6 +193,7 @@ function ShoppingCart() {
                       </>
                     ) : (<><h2>No Courses in Cart</h2><a href="/home"><h4>Return Home</h4></a></>) }
                 </div>
+                {testGetProtected()}
                 {courses.length != 0 ? (<div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>) : (null)}
                 
             </div>
