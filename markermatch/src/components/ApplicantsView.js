@@ -35,14 +35,14 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Total Availability h/w',
+            header: 'Total Availability hours per week',
         },
         {
             accessorKey: 'hoursAssigned',
             header: 'Hours Assigned',
         },
         {
-            accessorKey: 'prevMakrer',
+            accessorKey: 'prevMarker',
             header: 'Previous Tutor',
         },
         {
@@ -92,7 +92,7 @@ function ApplicantsView() {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
                       overseas: record.overseas === true ? 'Yes' : 'No',
-                      prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
+                      prevMarker: record.currentTutor === true ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
                       pref: properties[0],

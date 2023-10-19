@@ -281,7 +281,7 @@ function MarkerApplicationForm() {
         for (const course in reform) {
             reform[course].push({
                 property: 'assignedHours',
-                value: formData.maxHours,
+                value:  "0",
             });
             reform[course].push({
                 property: 'status',
@@ -312,7 +312,7 @@ function MarkerApplicationForm() {
                     courseSpecifics: JSON.stringify(reform)
                 })
             );
-            addCheckOut(outCourses, user.username);
+            addCheckOut(outCourses, user.username, parseInt(formData.maxHours));
             const title = 'Success';
             const body = "Application successfully uploaded!";
 
@@ -350,7 +350,7 @@ function MarkerApplicationForm() {
       const handlePrevious = () => {
         setStep(step - 1);
       };
-    async function addCheckOut(outCourses, userId) {
+    async function addCheckOut(outCourses, userId, hours) {
         let flag = true;
         if (outCourses.length !== 0) {
             try {
@@ -358,6 +358,9 @@ function MarkerApplicationForm() {
                 await DataStore.save(new ApplicationStatus({
                     userId: userId,
                     appliedCourses: course.faculty + " " + course.courseCode,
+                    hoursRequested: hours + "",
+                    hoursAssigned: "0",
+                    status: "PENDING"
                 }));
             }
             } catch (error) {
