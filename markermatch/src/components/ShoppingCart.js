@@ -1,5 +1,3 @@
-//https://docs.amplify.aws/lib/datastore/data-access/q/platform/js/#query-data
-
 import React, { useState, useEffect } from 'react';
 import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
@@ -12,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import ModalPopUp from './ModalPopUp';
-
+import { Amplify, Auth, Storage } from 'aws-amplify';
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
@@ -21,11 +19,19 @@ function ShoppingCart() {
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [modalBody, setModalBody] = useState('');
-
+    const [imagePro, setImagePro] = useState('');
+    let identityId = '';
     function closeModal() {
         setShowModal(false);
       }
-    
+
+
+    async function getId(){
+    const credentials = await Auth.currentUserCredentials();
+    identityId=credentials.identityId;
+  }
+  getId();
+
     async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
 
@@ -126,6 +132,11 @@ function ShoppingCart() {
 
     useEffect(() => {
         const fetchCourses = async () => {
+          const result = await Storage.get('cv.pdf', {
+            level: 'protected',
+            identityId: identityId
+          });
+            console.log(result)
             const fetchedCourses = await getUserSelectedCourses();
 
             setCourses(fetchedCourses);
@@ -133,6 +144,33 @@ function ShoppingCart() {
 
         fetchCourses();
     }, []);
+
+
+    
+    // const handleCvChange = async (e) => {
+    //     const file = e.target.files[0];
+    //     if (file.type != "application/pdf") {
+    //         const title = 'Error';
+    //         const body = "Your file has not been uploaded. This input only accepts '.pdf' file extensions.";
+
+    //         setModalTitle(title);
+    //         setModalBody(body);
+    //         setShowModal(true);
+    //         return;
+    //     }
+    //     try {
+    //         const cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
+    //         const title = 'Success';
+    //         const body = "File successfully uploaded!";
+
+    //         setModalTitle(title);
+    //         setModalBody(body);
+    //         setShowModal(true);
+    //     } catch (error) {
+    //         console.log("Error uploading cv: ", error);
+    //     }
+    // }
+    
 
     const handleCartSubmission = () => {
         if (courses.length == 0){
@@ -163,6 +201,7 @@ function ShoppingCart() {
                       </>
                     ) : (<><h2>No Courses in Cart</h2><a href="/home"><h4>Return Home</h4></a></>) }
                 </div>
+
                 {courses.length != 0 ? (<div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>) : (null)}
                 
             </div>
@@ -177,6 +216,10 @@ function ShoppingCart() {
                     onPrimaryButtonClick={closeModal}
                 />
             )}
+            <div>
+              {/* <button onClick={testGetProtected()}>s</button> */}
+            {imagePro}
+            </div>
         </>
     );
 }

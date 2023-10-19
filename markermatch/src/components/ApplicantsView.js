@@ -7,9 +7,10 @@ import { json, useLocation } from 'react-router-dom';
 import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
 import emailjs from "@emailjs/browser";
 import ModalPopUp from './ModalPopUp';
+import { BiWindows } from 'react-icons/bi';
 
 function ApplicantsView() {
-    const [data, setdata] = useState([]);
+    const [data, setData] = useState([]);
     const [rowSelection, setRowSelection] = useState({});
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
@@ -35,14 +36,14 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Total Availability h/w',
+            header: 'Total Availability hours per week',
         },
         {
             accessorKey: 'hoursAssigned',
             header: 'Hours Assigned',
         },
         {
-            accessorKey: 'prevMakrer',
+            accessorKey: 'prevMarker',
             header: 'Previous Tutor',
         },
         {
@@ -84,13 +85,15 @@ function ApplicantsView() {
             getAllApplicants(selectedCourse).then(fetchApplicants=> {
                 let count = 0;
                 const newRecord = fetchApplicants.map( (record) => {
+
                     let properties = getJsonData(fetchApplicants[count].courseSpecifics, 0);
                     count+=1;
+
                     return {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
                       overseas: record.overseas === true ? 'Yes' : 'No',
-                      prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
+                      prevMarker: record.currentTutor === true ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
                       pref: properties[0],
@@ -98,7 +101,8 @@ function ApplicantsView() {
                       status: properties[2],
                     };
                 });
-                setdata(newRecord);
+
+                setData(newRecord);
                 
             });
         } catch (e) {
@@ -109,7 +113,8 @@ function ApplicantsView() {
     }, [user.username]);
     
     function getJsonData(jSonData, count, check)
-       {
+       {    
+
             const myData = []    
             const jsonObject = JSON.parse(jSonData);
             jsonObject[selectedCourse].forEach(item => {
@@ -179,9 +184,11 @@ function ApplicantsView() {
       
     }
 
-    const sendEmail = async (useremail, username, myStatus) => {
+    const sendEmail = async ({ row }, myStatus) => {
+        const applicant = await getApplicant(row.original.id);     
 
-        console.log(useremail,username)
+        let username = applicant.givenName;
+        let useremail = applicant.preferredEmail;
 
         const serviceId = "service_mroqh3a"
 
@@ -201,8 +208,8 @@ function ApplicantsView() {
         } catch (error) {
           console.log(error);
         } 
-
         window.location.reload();
+
 
       };
 
@@ -236,20 +243,23 @@ function ApplicantsView() {
                 try {
                     const updatedData = [...data];
                     updatedData[row.index].hoursAssigned = updatedValue;
-                    setdata(updatedData);
-                } catch {
-                    console.log("opss")
+                    setData(updatedData);
+                } catch (e) {
+                    console.log(e)
                 }
             }
             
         }
 
         else if (check === 1) {
-
             
             const applicant = await getApplicant(row.original.id);        
-            sendEmail(applicant.preferredEmail, applicant.givenName, myStatus);
-            console.log(applicant)
+
+            if (row.original.hoursAssigned === "0" && myStatus !== "DECLINED"){
+                return "Invalid";
+            }
+            
+            
             try {
                 await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
                     updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
@@ -260,6 +270,8 @@ function ApplicantsView() {
                     let course = myObject.appliedCourses;
                     course = course.replace(" ","");
                     if(course === selectedCourse){
+
+
                         const [assignedHours, status] = updateApplicationStatus(applicant);
                         await DataStore.save(ApplicationStatus.copyOf(myObject, updated => {
                             if(status === "DECLINED"){
@@ -275,6 +287,8 @@ function ApplicantsView() {
             } catch(e) {
                 alert(e);
             }
+            
+
         }
     };
       
@@ -311,19 +325,23 @@ return (
                 renderBottomToolbarCustomActions={({ table }) => {
                     const handleAccepted = async () => {
                         table.getSelectedRowModel().flatRows.map(async (row) => {
-                            await updateCell({ row }, 1, "ACCEPTED");
-                            await updateCell({ row }, 1, "ACCEPTED").then(()=>{
-                                window.location.reload();
-                            });                       
+                            let val = await updateCell({ row }, 1, "ACCEPTED");
+                            val = await updateCell({ row }, 1, "ACCEPTED");
+
+                            if (val === "Invalid"){
+                                alert("Please assign hours to this student before accepting their application.");
+                            } else{
+                                await sendEmail({ row }, "ACCEPTED");
+                            }
+                            
                          });
                     };
 
                     const handleDeclined = async () => {
                         table.getSelectedRowModel().flatRows.map(async (row) => {
                             await updateCell({ row }, 1, "DECLINED");
-                            await updateCell({ row }, 1, "DECLINED").then(()=>{
-                                window.location.reload();
-                            });
+                            await updateCell({ row }, 1, "DECLINED");
+                            await sendEmail({ row }, "DECLINED");
                         });
                     };
                     return (
