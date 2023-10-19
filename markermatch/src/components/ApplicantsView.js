@@ -8,6 +8,7 @@ import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
 import emailjs from "@emailjs/browser";
 import ModalPopUp from './ModalPopUp';
 import { BiWindows } from 'react-icons/bi';
+import { Amplify, Auth, Storage } from 'aws-amplify';
 
 function ApplicantsView() {
     const [data, setData] = useState([]);
@@ -29,6 +30,7 @@ function ApplicantsView() {
             header: 'AUID',
             isEditable: true,
         },
+        
         {
             accessorKey: 'fullName',
             header: 'Name',
@@ -85,8 +87,10 @@ function ApplicantsView() {
             getAllApplicants(selectedCourse).then(fetchApplicants=> {
                 let count = 0;
                 const newRecord = fetchApplicants.map( (record) => {
-
+            
                     let properties = getJsonData(fetchApplicants[count].courseSpecifics, 0);
+                    let id = record.userId.split(' ');
+
                     count+=1;
 
                     return {
@@ -99,6 +103,7 @@ function ApplicantsView() {
                       pref: properties[0],
                       hoursAssigned: properties[1],
                       status: properties[2],
+                      identityId: id[1]
                     };
                 });
 
@@ -291,6 +296,36 @@ function ApplicantsView() {
 
         }
     };
+
+    const downloadTranscript = async ({ row }) => {
+
+        const result = await Storage.get('transcript.pdf', {
+            level: 'protected',
+            identityId: row.original.identityId
+          });
+
+        const link = document.createElement('a');
+        link.href = result;
+        link.download = row.original.id + 'transcript.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    }
+
+    const downloadCV = async ({ row }) => {
+        const result = await Storage.get('cv.pdf', {
+            level: 'protected',
+            identityId: row.original.identityId
+          });
+
+        const link = document.createElement('a');
+        link.href = result;
+        link.download = row.original.id + 'cv.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
       
 return (
         <div className="student-table">
@@ -336,7 +371,17 @@ return (
                             
                          });
                     };
+                    const handleDownloadTranscript = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await downloadTranscript({ row });
+                        });
+                    }
 
+                    const handleDownloadCV = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await downloadCV({ row });
+                        });
+                    }
                     const handleDeclined = async () => {
                         table.getSelectedRowModel().flatRows.map(async (row) => {
                             await updateCell({ row }, 1, "DECLINED");
@@ -346,6 +391,24 @@ return (
                     };
                     return (
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <Button
+                                color="success"
+                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleDownloadTranscript}
+                                variant="contained"
+                            >
+                                DOWNLOAD TRANSCRIPT
+                            </Button>
+
+                            <Button
+                                color="success"
+                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleDownloadCV}
+                                variant="contained"
+                            >
+                                DOWNLOAD CV
+                            </Button>
+
                             <Button
                                 color="success"
                                   disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}

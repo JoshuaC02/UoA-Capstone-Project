@@ -9,7 +9,6 @@ import ModalPopUp from './ModalPopUp';
 import { Course } from '../models';
 
 function CourseEdit({ course, userType }) {
-    console.log(course)
 
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');

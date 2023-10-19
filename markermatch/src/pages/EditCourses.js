@@ -33,7 +33,7 @@ function EditCourses() {
     const filteredCourses = courses.filter(course =>
         !searchTerm || course.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    console.log(filteredCourses)
+
 
     return (
         <>

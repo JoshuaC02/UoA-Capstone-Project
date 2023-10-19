@@ -31,7 +31,17 @@ function MarkerApplicationForm() {
 
     function closeModal() {
         setShowModal(false);
-      }
+    }
+
+    let identityId = '';
+    async function getId() {
+      const credentials = await Auth.currentUserCredentials();
+      identityId = credentials.identityId;
+      console.log(identityId)
+    }
+    getId();
+    
+    
 
     const ApplicationCard = ({course}) => {
         const [isFlipped, setIsFlipped] = useState(false);
@@ -139,16 +149,13 @@ function MarkerApplicationForm() {
       async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
         let listOfCourses = [];
-        console.log("testing-- " + userCart);
+
         if (userCart[0] !== undefined) {
             const selectedCourses = userCart[0].selectedCourses?.split(",");
             const allCourses = await DataStore.query(Course)
             for (let element in selectedCourses) {
                 for (let course in allCourses) {
-                    console.log("all courses -  " + allCourses[course].faculty + allCourses[course].courseCode);
-                    console.log("selected no trim -  " + selectedCourses[element]);
-                    console.log("selected -  " + selectedCourses[element].trim().replace(/\s+/g, ''));
-                    console.log(" ---------------- ");
+
                     if (allCourses[course].faculty + allCourses[course].courseCode === selectedCourses[element].trim().replace(/\s+/g, '')) {
                         listOfCourses.push(allCourses[course]);
                     }
@@ -228,9 +235,9 @@ function MarkerApplicationForm() {
             return;
         }
         try {
-            formData.cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
+            formData.cvId = (await Storage.put("cv.pdf", file, {level: "protected"})).key;
             const title = 'Success';
-            const body = "File successfully uploaded!";
+            const body = "CV successfully uploaded!";
 
             setModalTitle(title);
             setModalBody(body);
@@ -252,7 +259,7 @@ function MarkerApplicationForm() {
             return;
         }
         try {
-            formData.transcriptId = (await Storage.put(file.name, file, {level: "protected"})).key;
+            formData.transcriptId = (await Storage.put("transcript.pdf", file, {level: "protected"})).key;
             const title = 'Success';
             const body = "File successfully uploaded!";
 
@@ -296,7 +303,7 @@ function MarkerApplicationForm() {
                 new MarkerApplication({
                     givenName: formData.givenName,
                     familyName: formData.familyName,
-                    userId: user?.username,
+                    userId: user?.username + ' ' + identityId,
                     auid: formData.auid,
                     upi: formData.upi,
                     preferredEmail: formData.preferredEmail,
@@ -309,7 +316,8 @@ function MarkerApplicationForm() {
                     maxHours: parseInt(formData.maxHours),
                     transcriptId: formData.transcriptId, 
                     cvId: formData.cvId, 
-                    courseSpecifics: JSON.stringify(reform)
+                    courseSpecifics: JSON.stringify(reform),
+                    bucketVal: identityId
                 })
             );
             addCheckOut(outCourses, user.username, parseInt(formData.maxHours));
@@ -319,7 +327,7 @@ function MarkerApplicationForm() {
             setModalTitle(title);
             setModalBody(body);
             setShowModal(true);
-            // navigate("/application-status", { replace: true })
+
         } catch (error) {
             console.error('Error submitting application:', error);
             const title = 'Error';
@@ -350,17 +358,26 @@ function MarkerApplicationForm() {
       const handlePrevious = () => {
         setStep(step - 1);
       };
+
+ 
+
     async function addCheckOut(outCourses, userId, hours) {
         let flag = true;
+        
         if (outCourses.length !== 0) {
+            
             try {
+
+                
                 for (const course of outCourses) {
                 await DataStore.save(new ApplicationStatus({
-                    userId: userId,
+                    userId: userId + ' ' + identityId,
                     appliedCourses: course.faculty + " " + course.courseCode,
                     hoursRequested: hours + "",
                     hoursAssigned: "0",
-                    status: "PENDING"
+                    status: "PENDING",
+   
+                    
                 }));
             }
             } catch (error) {

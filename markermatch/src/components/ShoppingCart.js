@@ -20,17 +20,18 @@ function ShoppingCart() {
     const [modalTitle, setModalTitle] = useState('');
     const [modalBody, setModalBody] = useState('');
     const [imagePro, setImagePro] = useState('');
-    let identityId = '';
+    
     function closeModal() {
         setShowModal(false);
       }
 
+    let identityId = '';
+    async function getId() {
+      const credentials = await Auth.currentUserCredentials();
+      identityId = credentials.identityId;
 
-    async function getId(){
-    const credentials = await Auth.currentUserCredentials();
-    identityId=credentials.identityId;
-  }
-  getId();
+    }
+    getId();
 
     async function getUserSelectedCourses() {
         const userCart = await DataStore.query(Cart, (c) => c.userId.eq(user.username));
@@ -146,31 +147,6 @@ function ShoppingCart() {
     }, []);
 
 
-    
-    // const handleCvChange = async (e) => {
-    //     const file = e.target.files[0];
-    //     if (file.type != "application/pdf") {
-    //         const title = 'Error';
-    //         const body = "Your file has not been uploaded. This input only accepts '.pdf' file extensions.";
-
-    //         setModalTitle(title);
-    //         setModalBody(body);
-    //         setShowModal(true);
-    //         return;
-    //     }
-    //     try {
-    //         const cvId = (await Storage.put(file.name, file, {level: "protected"})).key;
-    //         const title = 'Success';
-    //         const body = "File successfully uploaded!";
-
-    //         setModalTitle(title);
-    //         setModalBody(body);
-    //         setShowModal(true);
-    //     } catch (error) {
-    //         console.log("Error uploading cv: ", error);
-    //     }
-    // }
-    
 
     const handleCartSubmission = () => {
         if (courses.length == 0){
