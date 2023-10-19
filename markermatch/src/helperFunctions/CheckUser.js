@@ -34,7 +34,7 @@ export function getSideLinks(user){
     },
     {
       icon: "edit",
-      path: "/all-applicantions",
+      path: "/all-applications",
       label: "All Applications",
       show: isMarkerCo || isCourseCo,
     },

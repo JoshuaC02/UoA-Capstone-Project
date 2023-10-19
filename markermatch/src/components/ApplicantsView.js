@@ -9,6 +9,7 @@ import emailjs from "@emailjs/browser";
 import ModalPopUp from './ModalPopUp';
 import { BiWindows } from 'react-icons/bi';
 import { Amplify, Auth, Storage } from 'aws-amplify';
+import { Document, Page } from 'react-pdf';
 
 function ApplicantsView() {
     const [data, setData] = useState([]);
@@ -16,7 +17,9 @@ function ApplicantsView() {
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
     const [showModal, setShowModal] = useState(false);
-
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+    
     function closeModal() {
         setShowModal(false);
       }
@@ -303,7 +306,7 @@ function ApplicantsView() {
             level: 'protected',
             identityId: row.original.identityId
           });
-
+        console.log(result)
         const link = document.createElement('a');
         link.href = result;
         link.download = row.original.id + 'transcript.pdf';
@@ -326,6 +329,7 @@ function ApplicantsView() {
         link.click();
         document.body.removeChild(link);
     }
+
       
 return (
         <div className="student-table">
@@ -429,6 +433,7 @@ return (
                     );
                 }}
             />
+
         </div>
     );
 }

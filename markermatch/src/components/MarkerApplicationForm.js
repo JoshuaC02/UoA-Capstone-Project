@@ -371,7 +371,7 @@ function MarkerApplicationForm() {
                 
                 for (const course of outCourses) {
                 await DataStore.save(new ApplicationStatus({
-                    userId: userId + ' ' + identityId,
+                    userId: userId,
                     appliedCourses: course.faculty + " " + course.courseCode,
                     hoursRequested: hours + "",
                     hoursAssigned: "0",

@@ -50,7 +50,8 @@ function UserApplicationStatus() {
     useEffect(() => {
         const fetchdata = async () => {
         try 
-        {
+        {   
+            console.log(user)
             const records = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(user.username));
             const newRecord = records.map((record) => ({
                 courseNo: record.appliedCourses,
@@ -58,6 +59,7 @@ function UserApplicationStatus() {
                 hoursAssigned:  record.hoursAssigned,
                 status: record.status,
             }));
+            console.log(newRecord)
             setdata(newRecord);
         } catch (e) {
             setShowModal(true);
