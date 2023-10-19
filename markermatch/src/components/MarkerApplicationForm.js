@@ -25,6 +25,29 @@ function MarkerApplicationForm() {
     const [outCourses, setCourses] = useState([]);
     const navigate = useNavigate();
 
+    const [step1Valid, setStep1Valid] = useState(false);
+    const [step2Valid, setStep2Valid] = useState(false);
+    
+    const validateStep1 = () => {
+        const isStep1Valid = formData.transcriptId !== '' && formData.cvId !== '';
+        setStep1Valid(isStep1Valid);
+      };
+
+    const validateStep2 = () => {
+        const isStep2Valid = (
+          formData.givenName !== '' &&
+          formData.familyName !== '' &&
+          formData.auid !== '' &&
+          formData.upi !== '' &&
+          formData.preferredEmail !== '' &&
+          formData.degree !== '' &&
+          formData.yearsOfStudy !== '' &&
+          formData.maxHours !== ''
+        );
+        setStep2Valid(isStep2Valid);
+      };
+
+
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [modalBody, setModalBody] = useState('');
@@ -274,6 +297,16 @@ function MarkerApplicationForm() {
 
         const handleSubmit = async (e) => {
             e.preventDefault();
+
+            if (!validateStep1() || !validateStep2()) {
+                const title = 'Error';
+                const body = 'Please complete all required fields in step 1 and step 2 before submitting.';
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
+                return; // Stop the submission
+              }
+        
         const reform = {};
         for (const key in formData.courseSpecifics) {
             const [course, property] = key.split('_');
