@@ -474,6 +474,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "bucketVal": {
+                    "name": "bucketVal",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -520,5 +527,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "a7be89aed02041471f1040d9b6de7f41"
+    "version": "b87ddef86bda23c6247d4875ab624086"
 };

@@ -16,6 +16,7 @@ function NavbarComp() {
     alert("Sign out successful.")
 
   }
+
   return (
     <Navbar expand="sm" className="my-navbar" style={{padding: '0px'}}>
         <Navbar.Brand href="#home" className="logo ">

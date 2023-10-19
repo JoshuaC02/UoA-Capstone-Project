@@ -9,81 +9,92 @@ import { Box, Button, MenuItem} from '@mui/material';
 
 function AllApplicationsView() {
     const [data, setData] = useState([]);
-    const [getCourses, setCourses] = useState([]);
+    const [getSize, setSize] = useState(0);
     const { user } = useAuthenticator((context) => [context.user]);
     const navigate = useNavigate();
+    const [columns, setColumns] = useState([]);
+
     const handleRowClick = (row) => {
-        navigate(`/all-applicantions/${row.original.course.replace(/\s+/g, '-')}`);
+        navigate(`/all-applications/${row.original.course.replace(/\s+/g, '-')}`);
       };
-    const columns = useMemo(() => [
-        {
-            accessorKey: 'course',
-            header: 'Course',
-        },
-        {
-            accessorKey: 'semester',
-            header: 'Semester',
-        },
-        {
-            accessorKey: 'markersNeeded',
-            header: 'Markers Wanted',
-        },
-        {
-            accessorKey: 'markersAssigned',
-            header: 'Markers Assigned',
-        },
-        {
-            accessorKey: 'hoursAllocated',
-            header: 'Hours Allocated',
-        },
-        {
-            accessorKey: 'status',
-            header: 'Status',
-            Cell: ({ cell }) => (
-                <Box
-                    component="span"
-                    sx={() => ({
-                        backgroundColor: cell.getValue() === "FULFILLED"? "green": "red",
-                        borderRadius: '0.25rem',
-                        color: '#fff',
-                        maxWidth: '8.7ch',
-                    p: '0.25rem',   
-                    })}
-                >
-                    {cell.getValue()}
-                </Box>
-            ),
-        },],[]);
-    
-        const fetchdata = async () => {
-            try {
-                const fetchCourses = await getAllCourses();
-                let count = 0;
-                const newRecord = [];
-                for (const record of fetchCourses) {
-                    const [markers, hours] = await getAllApplicants(record.name);
-                    count += 1;
-                    newRecord.push({
-                        course: record.name,
-                        semester: record.yearSemester.split(' ')[1] + ' ' + record.yearSemester.split(' ')[2],
-                        markersNeeded: record.markersNeeded || 0,
-                        markersAssigned: markers || 0,
-                        hoursAllocated: hours + '/' + record.totalHours,
-                        status: (parseInt(record.totalHours) || 0) - (parseInt(hours) || 0)  <= 0 ? 'FULFILLED' : 'UNFULFILLED',
-                    });
-                }
-                newRecord.sort((a, b) => {
-                    const sortByStatus = b.status.localeCompare(a.status);
-                    if (sortByStatus !== 0) {
-                        return sortByStatus;
-                    }
-                    return b.course.localeCompare(a.course);
-                });
-                setData(newRecord);
-            } catch (e) {
-                alert(e);
+    const fetchdata = async () => {
+        let totalSize = 0;
+        try {
+            const fetchCourses = await getAllCourses();
+            let count = 0;
+
+            const newRecord = [];
+            for (const record of fetchCourses) {
+                const [markers, hours, c] = await getAllApplicants(record.name);
+                totalSize += c;
+                count += 1;
+                newRecord.push({
+                    course: record.name,
+                    semester: record.yearSemester.split(' ')[1] + ' ' + record.yearSemester.split(' ')[2],
+                    markersNeeded: record.markersNeeded || 0,
+                    markersAssigned: markers || 0,
+                    markersApplied: c,
+                    hoursAllocated: hours + '/' + record.totalHours,
+                    status: (parseInt(record.totalHours) || 0) - (parseInt(hours) || 0)  <= 0 ? 'FULFILLED' : 'UNFULFILLED',
+                }); 
             }
-        };
+            newRecord.sort((a, b) => {
+                const sortByStatus = b.status.localeCompare(a.status);
+                if (sortByStatus !== 0) {
+                    return sortByStatus;
+                }
+                return b.course.localeCompare(a.course);
+            });
+            setData(newRecord);
+            setSize(totalSize);
+        } catch (e) {
+            alert(e);
+        }
+        setColumns([
+            {
+                accessorKey: 'course',
+                header: 'Course',
+            },
+            {
+                accessorKey: 'semester',
+                header: 'Semester',
+            },
+            {
+                accessorKey: 'markersNeeded',
+                header: 'Markers Wanted',
+            },
+            {
+                accessorKey: 'markersApplied',
+                header: `Markers Applied (${totalSize})`,
+            },
+            {
+                accessorKey: 'markersAssigned',
+                header: 'Markers Assigned',
+            },
+            {
+                accessorKey: 'hoursAllocated',
+                header: 'Hours Allocated',
+            },
+            {
+                accessorKey: 'status',
+                header: 'Status',
+                Cell: ({ cell }) => (
+                    <Box
+                        component="span"
+                        sx={() => ({
+                            backgroundColor: cell.getValue() === 'FULFILLED' ? 'green' : 'red',
+                            borderRadius: '0.25rem',
+                            color: '#fff',
+                            maxWidth: '8.7ch',
+                            p: '0.25rem',
+                        })}
+                    >
+                        {cell.getValue()}
+                    </Box>
+                ),
+            },
+        ]);
+    };
         
     useEffect(() => {
         fetchdata();
@@ -112,12 +123,20 @@ function AllApplicationsView() {
         
         return[assignedMarkers, assignedHours];
     }
-    async function getAllApplicants(courseName){
-        const allApplicants = await await DataStore.query(ApplicationStatus, (a) => a.appliedCourses.eq(courseName));
-        const [markers, hours] = getHoursAssigned(allApplicants, courseName);
-        return [markers, hours];
+    async function getAllApplicants(courseName) {
+        try {
+            const applicationStatusData = await DataStore.query(ApplicationStatus, (a) => a.appliedCourses.eq(courseName));
+            const [markers, hours] = getHoursAssigned(applicationStatusData, courseName);
+            const allMarkers = await DataStore.query(MarkerApplication);
+            
+            const filteredMarkers = allMarkers.filter(marker => marker.courseSpecifics.includes(courseName.replace(" ", "")));
+            return [markers, hours, filteredMarkers.length];
+        } catch (error) {
+            console.error("Error in getAllApplicants:", error);
+            return error;
+        }
     }
-
+    
     function getMaxHeight() {
         const viewportHeight = window.innerHeight;
         const subtractedHeight = 300;
