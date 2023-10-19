@@ -252,10 +252,10 @@ function ApplicantsView() {
         }
 
         else if (check === 1) {
+            
             const applicant = await getApplicant(row.original.id);        
 
-
-            if (row.original.hoursAssigned === "0"){
+            if (row.original.hoursAssigned === "0" && myStatus !== "DECLINED"){
                 return "Invalid";
             }
             
