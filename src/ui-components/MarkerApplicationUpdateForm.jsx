@@ -47,6 +47,7 @@ export default function MarkerApplicationUpdateForm(props) {
     overseas: false,
     courseSpecifics: "",
     preferredMarker: false,
+    bucketVal: "",
   };
   const [givenName, setGivenName] = React.useState(initialValues.givenName);
   const [familyName, setFamilyName] = React.useState(initialValues.familyName);
@@ -81,6 +82,7 @@ export default function MarkerApplicationUpdateForm(props) {
   const [preferredMarker, setPreferredMarker] = React.useState(
     initialValues.preferredMarker
   );
+  const [bucketVal, setBucketVal] = React.useState(initialValues.bucketVal);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = markerApplicationRecord
@@ -103,6 +105,7 @@ export default function MarkerApplicationUpdateForm(props) {
     setOverseas(cleanValues.overseas);
     setCourseSpecifics(cleanValues.courseSpecifics);
     setPreferredMarker(cleanValues.preferredMarker);
+    setBucketVal(cleanValues.bucketVal);
     setErrors({});
   };
   const [markerApplicationRecord, setMarkerApplicationRecord] = React.useState(
@@ -136,6 +139,7 @@ export default function MarkerApplicationUpdateForm(props) {
     overseas: [],
     courseSpecifics: [],
     preferredMarker: [],
+    bucketVal: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -180,6 +184,7 @@ export default function MarkerApplicationUpdateForm(props) {
           overseas,
           courseSpecifics,
           preferredMarker,
+          bucketVal,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -252,6 +257,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.givenName ?? value;
@@ -292,6 +298,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.familyName ?? value;
@@ -332,6 +339,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.upi ?? value;
@@ -372,6 +380,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.auid ?? value;
@@ -412,6 +421,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.preferredEmail ?? value;
@@ -452,6 +462,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.validNzWorkPermit ?? value;
@@ -494,6 +505,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.degree ?? value;
@@ -534,6 +546,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.yearsOfStudy ?? value;
@@ -574,6 +587,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.underPostGrad ?? value;
@@ -614,6 +628,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.currentTutor ?? value;
@@ -658,6 +673,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.maxHours ?? value;
@@ -698,6 +714,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.transcriptId ?? value;
@@ -738,6 +755,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.cvId ?? value;
@@ -778,6 +796,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.userId ?? value;
@@ -818,6 +837,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas: value,
               courseSpecifics,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.overseas ?? value;
@@ -858,6 +878,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics: value,
               preferredMarker,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.courseSpecifics ?? value;
@@ -898,6 +919,7 @@ export default function MarkerApplicationUpdateForm(props) {
               overseas,
               courseSpecifics,
               preferredMarker: value,
+              bucketVal,
             };
             const result = onChange(modelFields);
             value = result?.preferredMarker ?? value;
@@ -912,6 +934,47 @@ export default function MarkerApplicationUpdateForm(props) {
         hasError={errors.preferredMarker?.hasError}
         {...getOverrideProps(overrides, "preferredMarker")}
       ></SwitchField>
+      <TextField
+        label="Bucket val"
+        isRequired={false}
+        isReadOnly={false}
+        value={bucketVal}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              givenName,
+              familyName,
+              upi,
+              auid,
+              preferredEmail,
+              validNzWorkPermit,
+              degree,
+              yearsOfStudy,
+              underPostGrad,
+              currentTutor,
+              maxHours,
+              transcriptId,
+              cvId,
+              userId,
+              overseas,
+              courseSpecifics,
+              preferredMarker,
+              bucketVal: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.bucketVal ?? value;
+          }
+          if (errors.bucketVal?.hasError) {
+            runValidationTasks("bucketVal", value);
+          }
+          setBucketVal(value);
+        }}
+        onBlur={() => runValidationTasks("bucketVal", bucketVal)}
+        errorMessage={errors.bucketVal?.errorMessage}
+        hasError={errors.bucketVal?.hasError}
+        {...getOverrideProps(overrides, "bucketVal")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
