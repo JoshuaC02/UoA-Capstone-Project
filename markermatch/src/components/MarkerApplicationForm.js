@@ -263,7 +263,7 @@ function MarkerApplicationForm() {
             console.log("Error uploading transcript: ", error);
         }
     }
-//
+
 
         const handleSubmit = async (e) => {
             e.preventDefault();
