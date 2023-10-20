@@ -5,10 +5,18 @@ import Button from 'react-bootstrap/Button';
 import { DataStore } from '@aws-amplify/datastore';
 import { useState } from 'react';
 import Collapse from 'react-bootstrap/Collapse';
+import ModalPopUp from './ModalPopUp';
 import { Course } from '../models';
 
 function CourseEdit({ course, userType }) {
-    console.log(course)
+
+    const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+
+    function closeModal() {
+        setShowModal(false);
+      }
 
     const userBool = userType !== "MarkerCoordinator"
     const [isFlipped, setIsFlipped] = useState(false);
@@ -54,7 +62,12 @@ function CourseEdit({ course, userType }) {
 
         for (const key in formData) {
             if (formData[key] === '' && key !== 'thumbnailId') {
-                alert(`Please fill in all fields (no empty fields are allowed).`);
+                const title = 'Error';
+                const body = `Please fill in all fields (no empty fields are allowed).`;
+
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
                 return;
             }
 
@@ -91,10 +104,20 @@ function CourseEdit({ course, userType }) {
                 );
             }
 
-            alert('Course successfully edited.');
+            const title = 'Success';
+            const body = 'Course successfully edited.';
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         } catch (error) {
             console.error('Error editing course:', error);
-            alert('An error has occurred, please refer to console.');
+            const title = 'Error';
+            const body = 'An error has occurred, please refer to console.';
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         }
     };
 
@@ -328,6 +351,16 @@ function CourseEdit({ course, userType }) {
             </Row>
 
             <Button variant="primary" type="submit">Confirm Changes</Button>
+            {showModal && (
+            <ModalPopUp
+                show={showModal}
+                onHide={closeModal}
+                title={modalTitle}
+                body={modalBody}  
+                primaryButtonLabel="Close"
+                onPrimaryButtonClick={closeModal}
+            />
+        )}
         </Form>
 
     );

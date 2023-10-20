@@ -5,7 +5,8 @@ import { ApplicationStatus, Course, MarkerApplication } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router';
 import { Box, Button, MenuItem} from '@mui/material';
-
+import ModalPopUp from './ModalPopUp';
+// import { Document, Page } from 'react-pdf';
 
 function AllApplicationsView() {
     const [data, setData] = useState([]);
@@ -13,6 +14,11 @@ function AllApplicationsView() {
     const { user } = useAuthenticator((context) => [context.user]);
     const navigate = useNavigate();
     const [columns, setColumns] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+
+    function closeModal() {
+        setShowModal(false);
+      }
 
     const handleRowClick = (row) => {
         navigate(`/all-applications/${row.original.course.replace(/\s+/g, '-')}`);
@@ -158,6 +164,18 @@ function AllApplicationsView() {
     return (
 
         <div className='student-table'>
+
+            {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title="Error"
+                    body="Error fetching data."
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
+
             <MaterialReactTable 
                 columns = {columns}
                 data = {data}
@@ -168,6 +186,7 @@ function AllApplicationsView() {
                     },
                     sx: { cursor: 'pointer' },
                 })}
+
             />
         </div>
     );

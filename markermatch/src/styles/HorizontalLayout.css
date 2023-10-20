@@ -7,7 +7,7 @@
 .courses {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
+
 }
 
 .grid-container {
@@ -17,7 +17,13 @@
     width:100%;
     align-items: center;
 }
+#spacer{
+    margin-top:5vh;
+}
 
+#spacer2{
+    margin-top:3vh;
+}
 .search-bar {
     padding: 1.8vh;
     width: 90%;
@@ -25,7 +31,17 @@
     border-radius: 24px;
     margin: 0;
 }
+.form-check-input {
+    position: static!important;
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+}
 
+.courseCard{
+    width:50%;
+    height:50%;
+    border:1px solid black;
+}
 .shopping-cart {
     width: 80%;
 

@@ -1,6 +1,9 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { Cart } from '../models';
 import { Course } from '../models';
+import React, { useState } from 'react';
+import ModalPopUp from '../components/ModalPopUp';
+
 
 export async function getCourseData() {
   
@@ -24,8 +27,10 @@ export function filterCourses(allCourses, term) {
     return filteredCourses;
 }
 
-export async function addToCart(courseId, userId, callBack) { 
+export async function AddToCart(courseId, userId, callBack) {
 
+  console.log(courseId, userId)
+  const message = ''
   if (userId === undefined) {
     callBack("/auth", { replace: true });
   } else {
@@ -35,7 +40,7 @@ export async function addToCart(courseId, userId, callBack) {
         userId: userId,
         selectedCourses: courseId
       }))
-      alert("Added " + courseId + " to cart!");
+      return "Added " + courseId + " to cart!";
     }else {
       let flag = false;
       const list = models[0].selectedCourses.split(",")
@@ -52,9 +57,9 @@ export async function addToCart(courseId, userId, callBack) {
             updated.selectedCourses = updatedCourses
           })
         );
-        alert("Added " + courseId + " to cart!");
+        return "Added " + courseId + " to cart!";
       } else {
-        alert(courseId + " already in cart!");
+        return courseId + " already in cart!";
       }
     }
   }

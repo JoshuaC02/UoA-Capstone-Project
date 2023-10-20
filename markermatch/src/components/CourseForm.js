@@ -9,8 +9,16 @@ import ReactCardFlip from "react-card-flip";
 import Card from 'react-bootstrap/Card';
 import { Storage } from 'aws-amplify';
 import Collapse from 'react-bootstrap/Collapse';
+import ModalPopUp from './ModalPopUp';
 
 function CourseForm() {
+    const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+
+    function closeModal() {
+        setShowModal(false);
+      }
     const [isFlipped, setIsFlipped] = useState(false);
     const [previewFile, setPreviewFile] = useState(null);
     const [uploadFile, setUploadFile] = useState(null);
@@ -69,7 +77,12 @@ function CourseForm() {
 
         /* only recognise these ones lol */
         if (!(fileType === 'jpeg' || fileType === 'jpg' || fileType === 'png' || fileType === 'webp')) {
-            alert('Invalid media type.')
+            const title = 'Error';
+            const body = `Invalid media type.`;
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
             return
         }
 
@@ -103,18 +116,25 @@ function CourseForm() {
             try {
                 await handleFileUpload();
             }
-            catch (error) {
-                alert('Failed to upload thumbnail')
+            catch (error){
+                const title = 'Error';
+                const body = `Failed to upload thumbnail`;
+
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
             }
-        }
-
-
-
+        }  
 
 
         for (const key in formData) {
             if (formData[key] === '' && key !== 'thumbnailId') {
-                alert(`Please fill in all fields (no empty fields are allowed).`);
+                const title = 'Error';
+                const body = `Please fill in all fields (no empty fields are allowed).`;
+
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
                 return;
             }
 
@@ -154,10 +174,20 @@ function CourseForm() {
                     markersAssigned: 0
                 })
             );
-            alert('Course successfully added.');
+            const title = 'Course added';
+            const body = `Course added successfully.`;
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         } catch (error) {
             console.error('Error adding course:', error);
-            alert('An error has occurred, please refer to console.');
+            const title = 'Error';
+            const body = 'An error has occurred, please refer to console.';
+
+            setModalTitle(title);
+            setModalBody(body);
+            setShowModal(true);
         }
     };
 
@@ -446,10 +476,17 @@ function CourseForm() {
                 <Button variant="primary" type="submit">Submit</Button>
             </Form>
             </div>
-        </div>
-
-
-
+            {showModal && (
+            <ModalPopUp
+                show={showModal}
+                onHide={closeModal}
+                title={modalTitle}
+                body={modalBody}  
+                primaryButtonLabel="Close"
+                onPrimaryButtonClick={closeModal}
+            />
+        )}
+        </div >
     );
 }
 

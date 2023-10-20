@@ -6,12 +6,24 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { json, useLocation } from 'react-router-dom';
 import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
 import emailjs from "@emailjs/browser";
+import ModalPopUp from './ModalPopUp';
+import { BiWindows } from 'react-icons/bi';
+import { Amplify, Auth, Storage } from 'aws-amplify';
+// import { Document, Page } from 'react-pdf';
 
 function ApplicantsView() {
-    const [data, setdata] = useState([]);
+    const [data, setData] = useState([]);
     const [rowSelection, setRowSelection] = useState({});
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
+    const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+    
+    function closeModal() {
+        setShowModal(false);
+      }
+
     const selectedCourse = location.pathname.split("/")[2].replace("-", "");
 
     
@@ -21,6 +33,7 @@ function ApplicantsView() {
             header: 'AUID',
             isEditable: true,
         },
+        
         {
             accessorKey: 'fullName',
             header: 'Name',
@@ -28,14 +41,14 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Total Availability h/w',
+            header: 'Total Availability (hours per week)',
         },
         {
             accessorKey: 'hoursAssigned',
             header: 'Hours Assigned',
         },
         {
-            accessorKey: 'prevMakrer',
+            accessorKey: 'prevMarker',
             header: 'Previous Tutor',
         },
         {
@@ -77,48 +90,54 @@ function ApplicantsView() {
             getAllApplicants(selectedCourse).then(fetchApplicants=> {
                 let count = 0;
                 const newRecord = fetchApplicants.map( (record) => {
+            
                     let properties = getJsonData(fetchApplicants[count].courseSpecifics, 0);
+                    let id = record.userId.split(' ');
+
                     count+=1;
+                    console.log(record)
+                    console.log(properties)
                     return {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
                       overseas: record.overseas === true ? 'Yes' : 'No',
-                      prevMakrer: record.currentTutor === true ? 'Yes' : 'No',
+                      prevMarker: properties.previousTutor === 'true' ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
-                      pref: properties[0],
-                      hoursAssigned: properties[1],
-                      status: properties[2],
+                      pref: properties.preference,
+                      hoursAssigned: properties.assignedHours,
+                      status: properties.status,
+                      identityId: id[1]
                     };
                 });
-                setdata(newRecord);
+
+                setData(newRecord);
                 
             });
         } catch (e) {
-            console.log('Error fetching data:', e);
-        }
-    };
+            setShowModal(true);
+            }
+        };
         fetchdata();
     }, [user.username]);
     
-    function getJsonData(jSonData, count, check)
-       {
-            const myData = []    
-            const jsonObject = JSON.parse(jSonData);
-            jsonObject[selectedCourse].forEach(item => {
-                if (item.property === "assignedHours") {
-                    myData.push(item.value + "");
-                }
-                else if (item.property === "status") {
-                    myData.push(item.value + "");
-                }
-                else if(item.property === "preference"){
-                    myData.push(item.value + "")    
-                }
-                });
+    function getJsonData(jSonData, count, check) {
+        const myData = {};
+        const jsonObject = JSON.parse(jSonData);
+    
+        jsonObject[selectedCourse].forEach(item => {
+            if (item.property === "assignedHours" || item.property === "status" || item.property === "preference" || item.property === "previousTutor") {
+                myData[item.property] = item.value + "";
+            }
+        });
+    
+        if (!myData.hasOwnProperty('previousTutor')) {
+            myData['previousTutor'] = 'false';
+        }
+    
+        return myData;
+    }
 
-            return myData
-       }
     const [myHeight, setMaxHeight] = useState(getMaxHeight());
 
 
@@ -172,9 +191,11 @@ function ApplicantsView() {
       
     }
 
-    const sendEmail = async (useremail, username, myStatus) => {
+    const sendEmail = async ({ row }, myStatus) => {
+        const applicant = await getApplicant(row.original.id);     
 
-        console.log(useremail,username)
+        let username = applicant.givenName;
+        let useremail = applicant.preferredEmail;
 
         const serviceId = "service_mroqh3a"
 
@@ -194,8 +215,8 @@ function ApplicantsView() {
         } catch (error) {
           console.log(error);
         } 
-
         window.location.reload();
+
 
       };
 
@@ -229,30 +250,34 @@ function ApplicantsView() {
                 try {
                     const updatedData = [...data];
                     updatedData[row.index].hoursAssigned = updatedValue;
-                    setdata(updatedData);
-                } catch {
-                    console.log("opss")
+                    setData(updatedData);
+                } catch (e) {
+                    console.log(e)
                 }
             }
             
         }
 
         else if (check === 1) {
-
             
             const applicant = await getApplicant(row.original.id);        
-            sendEmail(applicant.preferredEmail, applicant.givenName, myStatus);
-            console.log(applicant)
+
+            if (row.original.hoursAssigned === "0" && myStatus !== "DECLINED"){
+                return "Invalid";
+            }
+            
+            
             try {
-                await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
-                }));
-                
-                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(applicant.userId));
+     
+                const withoutId = applicant.userId.split(' ')
+
+                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(withoutId[0]));
                 for(const myObject of data){
                     let course = myObject.appliedCourses;
                     course = course.replace(" ","");
                     if(course === selectedCourse){
+
+
                         const [assignedHours, status] = updateApplicationStatus(applicant);
                         await DataStore.save(ApplicationStatus.copyOf(myObject, updated => {
                             if(status === "DECLINED"){
@@ -265,14 +290,65 @@ function ApplicantsView() {
                         }));
                     }
                 }
+
+
+                await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
+                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
+                }));
+                
+                
             } catch(e) {
                 alert(e);
             }
+            
+
         }
     };
+
+    const downloadTranscript = async ({ row }) => {
+
+        const result = await Storage.get('transcript.pdf', {
+            level: 'protected',
+            identityId: row.original.identityId
+          });
+        console.log(result)
+        const link = document.createElement('a');
+        link.href = result;
+        link.download = row.original.id + 'transcript.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    }
+
+    const downloadCV = async ({ row }) => {
+        const result = await Storage.get('cv.pdf', {
+            level: 'protected',
+            identityId: row.original.identityId
+          });
+
+        const link = document.createElement('a');
+        link.href = result;
+        link.download = row.original.id + 'cv.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
       
 return (
         <div className="student-table">
+            {showModal && (
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title="Error"
+                    body="Error fetching data."
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
+
             <h1>All Courses &gt; Application for {selectedCourse}</h1>
             <MaterialReactTable
                 columns={columns}
@@ -293,23 +369,55 @@ return (
                 renderBottomToolbarCustomActions={({ table }) => {
                     const handleAccepted = async () => {
                         table.getSelectedRowModel().flatRows.map(async (row) => {
-                            await updateCell({ row }, 1, "ACCEPTED");
-                            await updateCell({ row }, 1, "ACCEPTED").then(()=>{
-                                window.location.reload();
-                            });                       
+                            let val = await updateCell({ row }, 1, "ACCEPTED");
+                            val = await updateCell({ row }, 1, "ACCEPTED");
+
+                            if (val === "Invalid"){
+                                alert("Please assign hours to this student before accepting their application.");
+                            } else{
+                                await sendEmail({ row }, "ACCEPTED");
+                            }
+                            
                          });
                     };
+                    const handleDownloadTranscript = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await downloadTranscript({ row });
+                        });
+                    }
 
+                    const handleDownloadCV = async () => {
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await downloadCV({ row });
+                        });
+                    }
                     const handleDeclined = async () => {
                         table.getSelectedRowModel().flatRows.map(async (row) => {
                             await updateCell({ row }, 1, "DECLINED");
-                            await updateCell({ row }, 1, "DECLINED").then(()=>{
-                                window.location.reload();
-                            });
+                            await updateCell({ row }, 1, "DECLINED");
+                            await sendEmail({ row }, "DECLINED");
                         });
                     };
                     return (
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <Button
+                                color="success"
+                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleDownloadTranscript}
+                                variant="contained"
+                            >
+                                DOWNLOAD TRANSCRIPT
+                            </Button>
+
+                            <Button
+                                color="success"
+                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleDownloadCV}
+                                variant="contained"
+                            >
+                                DOWNLOAD CV
+                            </Button>
+
                             <Button
                                 color="success"
                                   disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
@@ -330,6 +438,7 @@ return (
                     );
                 }}
             />
+
         </div>
     );
 }
