@@ -6,7 +6,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router';
 import { Box, Button, MenuItem} from '@mui/material';
 import ModalPopUp from './ModalPopUp';
-
+import { Document, Page } from 'react-pdf';
 
 function AllApplicationsView() {
     const [data, setData] = useState([]);
@@ -20,7 +20,7 @@ function AllApplicationsView() {
       }
 
     const handleRowClick = (row) => {
-        navigate(`/all-applicantions/${row.original.course.replace(/\s+/g, '-')}`);
+        navigate(`/all-applications/${row.original.course.replace(/\s+/g, '-')}`);
       };
     const columns = useMemo(() => [
         {

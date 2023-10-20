@@ -9,6 +9,7 @@ import emailjs from "@emailjs/browser";
 import ModalPopUp from './ModalPopUp';
 import { BiWindows } from 'react-icons/bi';
 import { Amplify, Auth, Storage } from 'aws-amplify';
+import { Document, Page } from 'react-pdf';
 
 function ApplicantsView() {
     const [data, setData] = useState([]);
@@ -16,7 +17,9 @@ function ApplicantsView() {
     const { user } = useAuthenticator((context) => [context.user]);
     const location = useLocation();
     const [showModal, setShowModal] = useState(false);
-
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalBody, setModalBody] = useState('');
+    
     function closeModal() {
         setShowModal(false);
       }
@@ -38,7 +41,7 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Total Availability hours per week',
+            header: 'Total Availability (hours per week)',
         },
         {
             accessorKey: 'hoursAssigned',
@@ -92,17 +95,18 @@ function ApplicantsView() {
                     let id = record.userId.split(' ');
 
                     count+=1;
-
+                    console.log(record)
+                    console.log(properties)
                     return {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
                       overseas: record.overseas === true ? 'Yes' : 'No',
-                      prevMarker: record.currentTutor === true ? 'Yes' : 'No',
+                      prevMarker: properties.previousTutor === 'true' ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
-                      pref: properties[0],
-                      hoursAssigned: properties[1],
-                      status: properties[2],
+                      pref: properties.preference,
+                      hoursAssigned: properties.assignedHours,
+                      status: properties.status,
                       identityId: id[1]
                     };
                 });
@@ -117,25 +121,23 @@ function ApplicantsView() {
         fetchdata();
     }, [user.username]);
     
-    function getJsonData(jSonData, count, check)
-       {    
+    function getJsonData(jSonData, count, check) {
+        const myData = {};
+        const jsonObject = JSON.parse(jSonData);
+    
+        jsonObject[selectedCourse].forEach(item => {
+            if (item.property === "assignedHours" || item.property === "status" || item.property === "preference" || item.property === "previousTutor") {
+                myData[item.property] = item.value + "";
+            }
+        });
+    
+        if (!myData.hasOwnProperty('previousTutor')) {
+            myData['previousTutor'] = 'false';
+        }
+    
+        return myData;
+    }
 
-            const myData = []    
-            const jsonObject = JSON.parse(jSonData);
-            jsonObject[selectedCourse].forEach(item => {
-                if (item.property === "assignedHours") {
-                    myData.push(item.value + "");
-                }
-                else if (item.property === "status") {
-                    myData.push(item.value + "");
-                }
-                else if(item.property === "preference"){
-                    myData.push(item.value + "")    
-                }
-                });
-
-            return myData
-       }
     const [myHeight, setMaxHeight] = useState(getMaxHeight());
 
 
@@ -266,11 +268,10 @@ function ApplicantsView() {
             
             
             try {
-                await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
-                }));
-                
-                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(applicant.userId));
+     
+                const withoutId = applicant.userId.split(' ')
+
+                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(withoutId[0]));
                 for(const myObject of data){
                     let course = myObject.appliedCourses;
                     course = course.replace(" ","");
@@ -289,6 +290,13 @@ function ApplicantsView() {
                         }));
                     }
                 }
+
+
+                await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
+                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
+                }));
+                
+                
             } catch(e) {
                 alert(e);
             }
@@ -303,7 +311,7 @@ function ApplicantsView() {
             level: 'protected',
             identityId: row.original.identityId
           });
-
+        console.log(result)
         const link = document.createElement('a');
         link.href = result;
         link.download = row.original.id + 'transcript.pdf';
@@ -326,6 +334,7 @@ function ApplicantsView() {
         link.click();
         document.body.removeChild(link);
     }
+
       
 return (
         <div className="student-table">
@@ -429,6 +438,7 @@ return (
                     );
                 }}
             />
+
         </div>
     );
 }
