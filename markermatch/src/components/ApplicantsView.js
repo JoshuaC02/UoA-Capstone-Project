@@ -268,11 +268,10 @@ function ApplicantsView() {
             
             
             try {
-                await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
-                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
-                }));
-                
-                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(applicant.userId));
+     
+                const withoutId = applicant.userId.split(' ')
+
+                const data = await DataStore.query(ApplicationStatus, (a) => a.userId.eq(withoutId[0]));
                 for(const myObject of data){
                     let course = myObject.appliedCourses;
                     course = course.replace(" ","");
@@ -291,6 +290,13 @@ function ApplicantsView() {
                         }));
                     }
                 }
+
+
+                await DataStore.save(MarkerApplication.copyOf(applicant, updated => {
+                    updated.courseSpecifics = updateCourseSpecifics(applicant, row.original.hoursAssigned, myStatus, 1);
+                }));
+                
+                
             } catch(e) {
                 alert(e);
             }
