@@ -41,7 +41,7 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Total Availability hours per week',
+            header: 'Total Availability (hours per week)',
         },
         {
             accessorKey: 'hoursAssigned',
@@ -95,17 +95,18 @@ function ApplicantsView() {
                     let id = record.userId.split(' ');
 
                     count+=1;
-
+                    console.log(record)
+                    console.log(properties)
                     return {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
                       overseas: record.overseas === true ? 'Yes' : 'No',
-                      prevMarker: record.currentTutor === true ? 'Yes' : 'No',
+                      prevMarker: properties.previousTutor === 'true' ? 'Yes' : 'No',
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
-                      pref: properties[0],
-                      hoursAssigned: properties[1],
-                      status: properties[2],
+                      pref: properties.preference,
+                      hoursAssigned: properties.assignedHours,
+                      status: properties.status,
                       identityId: id[1]
                     };
                 });
@@ -120,25 +121,23 @@ function ApplicantsView() {
         fetchdata();
     }, [user.username]);
     
-    function getJsonData(jSonData, count, check)
-       {    
+    function getJsonData(jSonData, count, check) {
+        const myData = {};
+        const jsonObject = JSON.parse(jSonData);
+    
+        jsonObject[selectedCourse].forEach(item => {
+            if (item.property === "assignedHours" || item.property === "status" || item.property === "preference" || item.property === "previousTutor") {
+                myData[item.property] = item.value + "";
+            }
+        });
+    
+        if (!myData.hasOwnProperty('previousTutor')) {
+            myData['previousTutor'] = 'false';
+        }
+    
+        return myData;
+    }
 
-            const myData = []    
-            const jsonObject = JSON.parse(jSonData);
-            jsonObject[selectedCourse].forEach(item => {
-                if (item.property === "assignedHours") {
-                    myData.push(item.value + "");
-                }
-                else if (item.property === "status") {
-                    myData.push(item.value + "");
-                }
-                else if(item.property === "preference"){
-                    myData.push(item.value + "")    
-                }
-                });
-
-            return myData
-       }
     const [myHeight, setMaxHeight] = useState(getMaxHeight());
 
 
