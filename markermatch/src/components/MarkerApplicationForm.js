@@ -304,7 +304,7 @@ function MarkerApplicationForm() {
                 setModalTitle(title);
                 setModalBody(body);
                 setShowModal(true);
-                return; // Stop the submission
+                return;
               }
         
         const reform = {};
@@ -385,6 +385,22 @@ function MarkerApplicationForm() {
         }
       };
     const handleNext = () => {
+        if (!validateStep1() && step === 1) {
+                const title = 'Error';
+                const body = 'Please complete all required fields in the CV section.';
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
+                return;
+              }
+        else if(!validateStep2() && step === 2) {
+                const title = 'Error';
+                const body = 'Please complete all required fields in the details section.';
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
+                return;
+              }
         setStep(step + 1);
       };
     
