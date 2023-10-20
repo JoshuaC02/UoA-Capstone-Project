@@ -31,6 +31,7 @@ export declare type MarkerApplicationUpdateFormInputValues = {
     overseas?: boolean;
     courseSpecifics?: string;
     preferredMarker?: boolean;
+    bucketVal?: string;
 };
 export declare type MarkerApplicationUpdateFormValidationValues = {
     givenName?: ValidationFunction<string>;
@@ -50,6 +51,7 @@ export declare type MarkerApplicationUpdateFormValidationValues = {
     overseas?: ValidationFunction<boolean>;
     courseSpecifics?: ValidationFunction<string>;
     preferredMarker?: ValidationFunction<boolean>;
+    bucketVal?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MarkerApplicationUpdateFormOverridesProps = {
@@ -71,6 +73,7 @@ export declare type MarkerApplicationUpdateFormOverridesProps = {
     overseas?: PrimitiveOverrideProps<SwitchFieldProps>;
     courseSpecifics?: PrimitiveOverrideProps<TextFieldProps>;
     preferredMarker?: PrimitiveOverrideProps<SwitchFieldProps>;
+    bucketVal?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MarkerApplicationUpdateFormProps = React.PropsWithChildren<{
     overrides?: MarkerApplicationUpdateFormOverridesProps | undefined | null;

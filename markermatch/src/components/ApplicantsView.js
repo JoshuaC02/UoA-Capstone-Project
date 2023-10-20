@@ -1,15 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
 import { DataStore } from '@aws-amplify/datastore';
-import { ApplicationStatus, MarkerApplication } from '../models';
+import { ApplicationStatus, MarkerApplication, Course } from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { json, useLocation } from 'react-router-dom';
 import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
 import emailjs from "@emailjs/browser";
 import ModalPopUp from './ModalPopUp';
-import { BiWindows } from 'react-icons/bi';
+import { BiWindows, AiOutlineDownload } from 'react-icons/bi';
 import { Amplify, Auth, Storage } from 'aws-amplify';
-import { Document, Page } from 'react-pdf';
+import { Dataset } from '@mui/icons-material';
+import { createTheme, ThemeProvider  } from '@mui/material/styles';
 
 function ApplicantsView() {
     const [data, setData] = useState([]);
@@ -19,6 +20,14 @@ function ApplicantsView() {
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [modalBody, setModalBody] = useState('');
+
+    const theme = createTheme({
+        palette: {
+          or: {
+            main: "#D8F0F0",
+          },
+        },
+      });
     
     function closeModal() {
         setShowModal(false);
@@ -41,7 +50,7 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Total Availability (hours per week)',
+            header: 'Available (h/sem)',
         },
         {
             accessorKey: 'hoursAssigned',
@@ -87,6 +96,7 @@ function ApplicantsView() {
         const fetchdata = async () => {
         try 
         {
+            const courseInfo = await getCourse(selectedCourse);
             getAllApplicants(selectedCourse).then(fetchApplicants=> {
                 let count = 0;
                 const newRecord = fetchApplicants.map( (record) => {
@@ -105,7 +115,8 @@ function ApplicantsView() {
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
                       pref: properties.preference,
-                      hoursAssigned: properties.assignedHours,
+                      hoursAssigned: properties.assignedHours === null || properties.assignedHours === '0' ? 
+                      Math.ceil(parseInt(courseInfo[0].totalHours) / fetchApplicants.length) : properties.assignedHours,
                       status: properties.status,
                       identityId: id[1]
                     };
@@ -154,6 +165,9 @@ function ApplicantsView() {
         return marker[0];
     }
 
+    async function getCourse(selectedCourse){
+        return await DataStore.query(Course, (c) => c.courseCode.eq(selectedCourse.slice(-3)));
+    }
 
     function getMaxHeight() {
         const viewportHeight = window.innerHeight;
@@ -239,6 +253,18 @@ function ApplicantsView() {
         }
         return [assignedHours, status];
       
+    }
+    const updateCells = async ({ row }, updatedValue) => {
+        if(!isNaN(updatedValue) && parseInt(updatedValue) >= 0) {
+            try {
+                const updatedData = [...data];
+                updatedData[row.index].hoursAssigned = updatedValue;
+                setData(updatedData);
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        
     }
     const updateCell = async ({ row }, check, myStatus) => {
         
@@ -350,6 +376,7 @@ return (
             )}
 
             <h1>All Courses &gt; Application for {selectedCourse}</h1>
+            <ThemeProvider theme={theme}>
             <MaterialReactTable
                 columns={columns}
                 data={data}
@@ -360,8 +387,14 @@ return (
                 isEditable={(column) => column.isEditable}
                 enableRowActions
                 renderRowActionMenuItems={({ row }) => [
-                    <MenuItem key="edit" onClick={() => updateCell({ row }, 0, "")}>
-                        Assign Hours
+                    <MenuItem id="m-1"key="edit" onClick={() => updateCell({ row }, 0, "")}>
+                        <p class="action-edit"><i class="fa fa-plus"></i> Assign Hours</p>
+                    </MenuItem>,
+                    <MenuItem id="m-2" key="edit" onClick={() => downloadTranscript({ row })}>
+                        <p class="action-edit"><i className="fa fa-download"></i> Transcript </p>
+                    </MenuItem>,
+                    <MenuItem id="m-3" key="edit" onClick={() => downloadCV({ row })}>
+                        <p class="action-edit"><i className="fa fa-download"></i> CV </p>
                     </MenuItem>,
                 ]}
                 onEditingRowSave={updateCell}
@@ -380,17 +413,6 @@ return (
                             
                          });
                     };
-                    const handleDownloadTranscript = async () => {
-                        table.getSelectedRowModel().flatRows.map(async (row) => {
-                            await downloadTranscript({ row });
-                        });
-                    }
-
-                    const handleDownloadCV = async () => {
-                        table.getSelectedRowModel().flatRows.map(async (row) => {
-                            await downloadCV({ row });
-                        });
-                    }
                     const handleDeclined = async () => {
                         table.getSelectedRowModel().flatRows.map(async (row) => {
                             await updateCell({ row }, 1, "DECLINED");
@@ -398,26 +420,15 @@ return (
                             await sendEmail({ row }, "DECLINED");
                         });
                     };
+                    const handleEdit = async () => {
+                        const updatedValue = window.prompt('Assign Hours to all selected applicants');
+                        table.getSelectedRowModel().flatRows.map(async (row) => {
+                            await updateCells({ row }, updatedValue)
+                        });
+                    };
+
                     return (
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <Button
-                                color="success"
-                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                                onClick={handleDownloadTranscript}
-                                variant="contained"
-                            >
-                                DOWNLOAD TRANSCRIPT
-                            </Button>
-
-                            <Button
-                                color="success"
-                                  disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
-                                onClick={handleDownloadCV}
-                                variant="contained"
-                            >
-                                DOWNLOAD CV
-                            </Button>
-
                             <Button
                                 color="success"
                                   disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
@@ -434,10 +445,19 @@ return (
                             >
                                 DECLINE
                             </Button>
+                            <Button
+                                color="or"
+                                disabled={!table.getIsAllRowsSelected() && !table.getIsSomeRowsSelected()}
+                                onClick={handleEdit}
+                                variant="contained"
+                            >
+                                <p style={{ margin: '0px', padding: '0px' }}><i class="fa fa-plus"> </i> Assign Hours</p>
+                            </Button>
                         </div>
                     );
                 }}
             />
+            </ThemeProvider>
 
         </div>
     );

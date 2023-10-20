@@ -191,9 +191,7 @@ function ShoppingCart() {
                       </>
                     ) : (<><h2>No Courses in Cart</h2><a href="/home"><h4>Return Home</h4></a></>) }
                 </div>
-
-                {courses.length != 0 ? (<div id="checkout-button"><button onClick={handleCartSubmission}>Checkout!</button></div>) : (null)}
-                
+                {courses.length != 0 ? (<div id="checkout-button" onClick={handleCartSubmission}> <p>Checkout!</p></div>) : (null)}
             </div>
 
             {showModal && (

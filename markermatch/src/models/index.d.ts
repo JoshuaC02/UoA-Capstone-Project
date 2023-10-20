@@ -161,6 +161,7 @@ type EagerMarkerApplication = {
   readonly overseas?: boolean | null;
   readonly courseSpecifics?: string | null;
   readonly preferredMarker?: boolean | null;
+  readonly bucketVal?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -188,6 +189,7 @@ type LazyMarkerApplication = {
   readonly overseas?: boolean | null;
   readonly courseSpecifics?: string | null;
   readonly preferredMarker?: boolean | null;
+  readonly bucketVal?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

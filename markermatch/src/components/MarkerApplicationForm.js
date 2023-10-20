@@ -554,7 +554,7 @@ function MarkerApplicationForm() {
                                     </Form.Group>
 
                                     <Form.Group as={Col} className="d-flex align-items-center">
-                                        <Form.Label className="w-100">What is the maximum number of hours you can work per week?</Form.Label>
+                                        <Form.Label className="w-100">What is the maximum number of hours you can work per semester?</Form.Label>
                                         <Form.Control
                                             name="maxHours"
                                             value={formData.maxHours}
@@ -655,7 +655,7 @@ function MarkerApplicationForm() {
                             <div>
 
                                 <Row>
-                                    <div className="grid-container">
+                                    <div className="grid-container-c">
                                         <div className="courses">
                                             {outCourses.map(course => (
                                                 <ApplicationCard key={course.id} course={course} user={user} />

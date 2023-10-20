@@ -295,7 +295,7 @@ function CourseEdit({ course, userType }) {
 
                         <Row className="mb-3">
                             <Form.Group as={Col} className="d-flex align-items-center">
-                                <Form.Label>Number of marking hours per week</Form.Label>
+                                <Form.Label>Number of marking hours per semester</Form.Label>
                                 <Form.Control
                                     name="totalHours"
                                     value={formData.totalHours}
