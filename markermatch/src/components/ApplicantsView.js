@@ -9,7 +9,7 @@ import emailjs from "@emailjs/browser";
 import ModalPopUp from './ModalPopUp';
 import { BiWindows } from 'react-icons/bi';
 import { Amplify, Auth, Storage } from 'aws-amplify';
-import { Document, Page } from 'react-pdf';
+
 
 function ApplicantsView() {
     const [data, setData] = useState([]);
