@@ -74,10 +74,38 @@
 }
 
 #checkout-button {
-    width: 50%;
-    
+    width: 150px;
     border: 1px solid black;
-    padding: 2vh;
+    padding: 5px;
     text-align: center;
-    border-radius: 2vh;
+
+    border-radius: 7px;
+    background-color: #61ffef;
+    align-self: flex-start;
+    margin-left: 180px;
+    border: 1px solid black;
+    cursor: pointer; 
+}
+
+#checkout-button:hover {
+    background-color: #2cfbe6;
+}
+
+#checkout-button p {
+    margin: 0px;
+    padding: 0px;
+    font-size: 20px;
+}
+
+.card-body{
+    height: 100px;
+}
+.courses-c {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.card-text{
+    max-height: 265px;
+    overflow-y: auto;
 }
