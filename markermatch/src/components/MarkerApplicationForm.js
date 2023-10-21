@@ -716,7 +716,7 @@ const handlePreferenceChange = (e) => {
                             <div>
 
                                 <Row>
-                                    <div className="grid-container-c">
+                                    <div className="grid-container">
                                         <div className="courses">
                                             {outCourses.map(course => (
                                                 <ApplicationCard key={course.id} course={course} user={user} />
