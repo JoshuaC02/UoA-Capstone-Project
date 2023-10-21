@@ -115,8 +115,7 @@ function ApplicantsView() {
                       qualification: record.underPostGrad,
                       availability: record.maxHours,
                       pref: properties.preference,
-                      hoursAssigned: properties.assignedHours === null || properties.assignedHours === '0' ? 
-                      Math.ceil(parseInt(courseInfo[0].totalHours) / fetchApplicants.length) : properties.assignedHours,
+                      hoursAssigned: properties.assignedHours,
                       status: properties.status,
                       identityId: id[1]
                     };

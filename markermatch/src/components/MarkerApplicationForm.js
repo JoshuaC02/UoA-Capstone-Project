@@ -26,11 +26,19 @@ function MarkerApplicationForm() {
     const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
+
+    const [showLastModal, setShowLastModal] = useState(false);
+
     const [modalTitle, setModalTitle] = useState('');
     const [modalBody, setModalBody] = useState('');
 
     function closeModal() {
         setShowModal(false);
+    }
+
+    function closeLastModal() {
+        setShowLastModal(false);
+        window.location.href = "/application-status";
     }
 
     let identityId = '';
@@ -195,6 +203,8 @@ function MarkerApplicationForm() {
         fetchCourses();
     }, []);
 
+
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === 'number') {
@@ -354,7 +364,9 @@ const handlePreferenceChange = (e) => {
 
             setModalTitle(title);
             setModalBody(body);
-            setShowModal(true);
+            setShowLastModal(true);
+            
+
 
         } catch (error) {
             console.error('Error submitting application:', error);
@@ -738,6 +750,17 @@ const handlePreferenceChange = (e) => {
                         body={modalBody}
                         primaryButtonLabel="Close"
                         onPrimaryButtonClick={closeModal}
+                    />
+                )}
+
+                {showLastModal && (
+                    <ModalPopUp
+                        show={showLastModal}
+                        onHide={closeLastModal}
+                        title={modalTitle}
+                        body={modalBody}
+                        primaryButtonLabel="Close"
+                        onPrimaryButtonClick={closeLastModal}
                     />
                 )}
             </div>
