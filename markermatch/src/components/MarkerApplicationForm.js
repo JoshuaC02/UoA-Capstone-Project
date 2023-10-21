@@ -224,17 +224,42 @@ function MarkerApplicationForm() {
     }, []);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prevData => ({
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'number') {
+        const numericValue = parseInt(value, 10);
+        const nonNegativeValue = Math.max(numericValue, 0);
+        setFormData((prevData) => ({
             ...prevData,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: nonNegativeValue,
         }));
-    };
-
-    const handlePreferenceChange = async (e) => { 
-        const { name, value } = e.target;
-        formData.courseSpecifics[name] = parseInt(value);
+    } else if (type === 'checkbox') {
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: checked,
+        }));
+    } else {
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
     }
+};
+
+const handlePreferenceChange = (e) => {
+    const { name, value } = e.target;
+    const numericValue = parseInt(value, 10);
+    const nonNegativeValue = Math.max(numericValue, 0);
+    formData.courseSpecifics[name] = nonNegativeValue;
+    setFormData((prevData) => ({
+        ...prevData,
+        courseSpecifics: {
+            ...prevData.courseSpecifics,
+            [name]: nonNegativeValue,
+        },
+    }));
+};
+
 
     const handleGradeChange = async (e) => {
         const { name, value } = e.target;
@@ -297,7 +322,6 @@ function MarkerApplicationForm() {
 
         const handleSubmit = async (e) => {
             e.preventDefault();
-
             if (!validateStep1() || !validateStep2()) {
                 const title = 'Error';
                 const body = 'Please complete all required fields in step 1 and step 2 before submitting.';
@@ -306,7 +330,6 @@ function MarkerApplicationForm() {
                 setShowModal(true);
                 return;
               }
-        
         const reform = {};
         for (const key in formData.courseSpecifics) {
             const [course, property] = key.split('_');
@@ -385,6 +408,7 @@ function MarkerApplicationForm() {
         }
       };
     const handleNext = () => {
+        
         if (!validateStep1() && step === 1) {
                 const title = 'Error';
                 const body = 'Please complete all required fields in the CV section.';
