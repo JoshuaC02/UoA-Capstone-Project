@@ -74,26 +74,26 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 
 ### Marker Form Application - Applicant View:
-![Form Page Stage 1 - Documents](./src/images/form1.png) 
-![Form Page Stage 2 - Personal Details](./src/images/form2.png)
+![Form Page Stage 1 - Documents](./markermatch/src/images/form1.png) 
+![Form Page Stage 2 - Personal Details](./markermatch/markermatch/src/images/form2.png)
 ![Form Page Stage 3 - Courses](./src/images/form3.png) 
 
 ### Add Courses Page - Marker Coordinator View:
-![Add Courses Page](./src/images/addCourses.png)
+![Add Courses Page](./markermatch/images/addCourses.png)
 
 ### Edit Courses Page - Marker/Course Coordinator View:
-![Edit Courses Page - Edit not open](./src/images/edit.png)
-![Edit Courses Page - Edit opened](./src/images/editOpened.png)
+![Edit Courses Page - Edit not open](./markermatch/images/edit.png)
+![Edit Courses Page - Edit opened](./markermatch/images/editOpened.png)
 
 All Applications Page - Marker Coordinator View:
-![All Applications Page](./src/images/allApplications.png)
+![All Applications Page](./markermatch/src/images/allApplications.png)
 
 
 Specific Course Page - Marker Coordinator View:
-![Applications By Course Page](./src/images/applicationByCourse.png)
+![Applications By Course Page](./markermatch/src/images/applicationByCourse.png)
 
 Manage User - Marker Coordinator View:
-![Manager User Page](./src/images/manageUser.png)
+![Manager User Page](./markermatch/src/images/manageUser.png)
 
 ## Future Plan (Ideas for future releases)
 
