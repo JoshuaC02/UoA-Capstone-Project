@@ -141,7 +141,7 @@ function ShoppingCart() {
             level: 'protected',
             identityId: identityId
           });
-            console.log(result)
+
             const fetchedCourses = await getUserSelectedCourses();
 
             setCourses(fetchedCourses);

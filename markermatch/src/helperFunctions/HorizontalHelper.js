@@ -1,5 +1,5 @@
 import { DataStore } from '@aws-amplify/datastore';
-import { Cart } from '../models';
+import { Cart, ApplicationStatus} from '../models';
 import { Course } from '../models';
 import React, { useState } from 'react';
 import ModalPopUp from '../components/ModalPopUp';
@@ -29,7 +29,15 @@ export function filterCourses(allCourses, term) {
 
 export async function AddToCart(courseId, userId, callBack) {
 
-  console.log(courseId, userId)
+
+  const checkAlreadyApplied = await DataStore.query(ApplicationStatus, (c) => c.userId.eq(userId));
+
+  const containsCourse = checkAlreadyApplied.some(item => item.appliedCourses === courseId);
+  
+  if(containsCourse){
+    return "You've already applied for this course!"
+  }
+
   const message = ''
   if (userId === undefined) {
     callBack("/auth", { replace: true });

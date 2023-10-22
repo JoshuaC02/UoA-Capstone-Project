@@ -48,7 +48,7 @@ function CourseData() {
     response.then(response => {
       message = response;
 
-      console.log(message)
+
       const title = 'Course';
       setModalTitle(title);
       setModalBody(message);
@@ -76,12 +76,11 @@ function CourseData() {
     if (isCourseCo || isMarkerCo) {
       teachingTeam = true;
     }
-    console.log(teachingTeam)
+
   
 
     const [isFlipped, setIsFlipped] = useState(false);
-    let appStatus = "No"
-    // if (course.appOpen) { appStatus = "Yes" }
+
     return (
       <>
         <div className="p-2" key={course.id}>

@@ -105,8 +105,7 @@ function ApplicantsView() {
                     let id = record.userId.split(' ');
 
                     count+=1;
-                    console.log(record)
-                    console.log(properties)
+
                     return {
                       id: record.auid,
                       fullName: record.givenName + ' ' + record.familyName,
@@ -337,7 +336,7 @@ function ApplicantsView() {
             level: 'protected',
             identityId: row.original.identityId
           });
-        console.log(result)
+
         const link = document.createElement('a');
         link.href = result;
         link.download = row.original.id + 'transcript.pdf';

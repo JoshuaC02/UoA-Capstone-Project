@@ -49,7 +49,7 @@ function CourseEdit({ course, userType }) {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        console.log(name, checked)
+
 
         setFormData(prevData => ({
             ...prevData,

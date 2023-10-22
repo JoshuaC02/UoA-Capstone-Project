@@ -152,7 +152,7 @@ function MarkerApplicationForm() {
             [name]: checked
           }
         }));
-        console.log(formData.courseSpecifics)
+
       }
 
     async function getUserSelectedCourses() {

@@ -105,13 +105,13 @@ function CourseForm() {
         } catch (error) {
             console.log("Error uploading thumbnail: ", error);
         }
-        console.log(formData)
+
 
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log(formData)
+
         if (uploadFile !== null) {
             try {
                 await handleFileUpload();
@@ -143,9 +143,9 @@ function CourseForm() {
         
 
         try {
-            console.log(`${formData.faculty} ${formData.courseCode}`)
+
             const courses = await DataStore.query(Course, (c) => c.name.eq(`${formData.faculty} ${formData.courseCode}`))
-            console.log(courses)
+
             if (courses.length > 0){
                 alert('Error, a course with this name already exists.')
                 return;
