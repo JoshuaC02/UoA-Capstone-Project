@@ -58,15 +58,17 @@ function CourseData() {
   }
 
   const CourseCard = ({ course, user }) => {
+    console.log(course)
+    console.log(course.appOpen)
     const [isFlipped, setIsFlipped] = useState(false);
     let appStatus = "No"
-    if (course.appOpen) { appStatus = "Yes" }
+    // if (course.appOpen) { appStatus = "Yes" }
     return (
       <>
       <div className="p-2" key={course.id}>
         <ReactCardFlip isFlipped={isFlipped}>
-          <Card style={{ height:"400px", width:"250px" }} key="front">
-            <Card.Img style={{ width: "248px", height: "248px" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
+          <Card style={{ height:"52vh", width:"34vh" }} key="front">
+            <Card.Img style={{ width: "100%", height: "65%" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
             <Card.Body>
               <Card.Title style={{ fontWeight:"bolder" }}>{course.name}</Card.Title>
               <Card.Subtitle style={{ fontStyle:"italic" }}>
@@ -75,12 +77,21 @@ function CourseData() {
               <Card.Text style={{ textOverflow:"ellipsis", whiteSpace:"nowrap", overflow:"hidden"}}>
                 {course.description}
               </Card.Text>
-              <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
-              <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>Add to Cart</Button>
+                <Button variant="secondary" onClick={() => setIsFlipped((prev) => !prev)}>See More</Button>{' '}
+
+                {course.appOpen ? (
+                  <Button variant="primary" style={{ backgroundColor: "#005DFF" }} onClick={() => addCourseToCart(course.name, user?.username)}>
+                    Add to Cart
+                  </Button>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Closed
+                  </Button>
+)}
             </Card.Body>
           </Card>
 
-          <Card style={{ height:'400px', width: '250px'}} key="back">
+          <Card style={{ height:"52vh", width:"34vh"}} key="back">
             <Card.Body>
               <Card.Text>
                 Minimum Grade: {course.minGrade}
@@ -91,7 +102,7 @@ function CourseData() {
               <Card.Text>
                 Taking Applications: {course.appOpen ? 'Yes' : 'No'}
               </Card.Text>
-              <Card.Text style={{ height:"199px", overflowY: "auto"}}>
+              <Card.Text style={{ minHeight:"20vh", overflowY: "auto"}}>
                 Description: <br />
                 {course.summary}
               </Card.Text>
