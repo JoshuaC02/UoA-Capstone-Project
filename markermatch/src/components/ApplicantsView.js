@@ -50,7 +50,7 @@ function ApplicantsView() {
         },
         {
             accessorKey: 'availability',
-            header: 'Available (h/sem)',
+            header: 'Available (hours/sem)',
         },
         {
             accessorKey: 'hoursAssigned',
@@ -458,7 +458,8 @@ return (
                 }}
             />
             </ThemeProvider>
-
+            <br></br>
+                <h6 style={{textAlign:"center"}}>Tip: Click the "..." under actions to download a students transcript, CV, or to assign hours.</h6>
         </div>
     );
 }

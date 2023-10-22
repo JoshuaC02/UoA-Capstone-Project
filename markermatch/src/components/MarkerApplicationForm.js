@@ -26,11 +26,19 @@ function MarkerApplicationForm() {
     const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
+
+    const [showLastModal, setShowLastModal] = useState(false);
+
     const [modalTitle, setModalTitle] = useState('');
     const [modalBody, setModalBody] = useState('');
 
     function closeModal() {
         setShowModal(false);
+    }
+
+    function closeLastModal() {
+        setShowLastModal(false);
+        window.location.href = "/application-status";
     }
 
     let identityId = '';
@@ -195,10 +203,19 @@ function MarkerApplicationForm() {
         fetchCourses();
     }, []);
 
+
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
 
-        if (type === 'radio') {
+        if (type === 'number') {
+        const numericValue = parseInt(value, 10);
+        const nonNegativeValue = Math.max(numericValue, 0);
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: nonNegativeValue,
+        }));
+        }else if (type === 'radio') {
             setFormData(prevData => ({
                 ...prevData,
                 [name]: value === "Yes"
@@ -216,10 +233,20 @@ function MarkerApplicationForm() {
         }
     };
 
-    const handlePreferenceChange = async (e) => {
-        const { name, value } = e.target;
-        formData.courseSpecifics[name] = parseInt(value);
-    }
+const handlePreferenceChange = (e) => {
+    const { name, value } = e.target;
+    const numericValue = parseInt(value, 10);
+    const nonNegativeValue = Math.max(numericValue, 0);
+    formData.courseSpecifics[name] = nonNegativeValue;
+    setFormData((prevData) => ({
+        ...prevData,
+        courseSpecifics: {
+            ...prevData.courseSpecifics,
+            [name]: nonNegativeValue,
+        },
+    }));
+};
+
 
     const handleGradeChange = async (e) => {
         const { name, value } = e.target;
@@ -276,8 +303,16 @@ function MarkerApplicationForm() {
     }
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            if (!validateStep1() || !validateStep2()) {
+                const title = 'Error';
+                const body = 'Please complete all required fields in step 1 and step 2 before submitting.';
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
+                return;
+              }
         const reform = {};
         for (const key in formData.courseSpecifics) {
             const [course, property] = key.split('_');
@@ -330,7 +365,9 @@ function MarkerApplicationForm() {
 
             setModalTitle(title);
             setModalBody(body);
-            setShowModal(true);
+            setShowLastModal(true);
+            
+
 
         } catch (error) {
             console.error('Error submitting application:', error);
@@ -342,7 +379,27 @@ function MarkerApplicationForm() {
             setShowModal(true);
         }
     };
+    const [step1Valid, setStep1Valid] = useState(false);
+    const [step2Valid, setStep2Valid] = useState(false);
+    
+    const validateStep1 = () => {
+        const isStep1Valid = formData.transcriptId !== '' && formData.cvId !== '';
+        return isStep1Valid;
+      };
 
+    const validateStep2 = () => {
+        const isStep2Valid = (
+          formData.givenName !== '' &&
+          formData.familyName !== '' &&
+          formData.auid !== '' &&
+          formData.upi !== '' &&
+          formData.preferredEmail !== '' &&
+          formData.degree !== '' &&
+          formData.yearsOfStudy !== '' &&
+          formData.maxHours !== ''
+        );
+        return isStep2Valid;
+      };
     const [step, setStep] = useState(1);
 
     const nextPageNumber = (pageNumber) => {
@@ -356,6 +413,23 @@ function MarkerApplicationForm() {
         }
     };
     const handleNext = () => {
+        
+        if (!validateStep1() && step === 1) {
+                const title = 'Error';
+                const body = 'Please complete all required fields in the CV section.';
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
+                return;
+              }
+        else if(validateStep2() !== true && step === 2) {
+                const title = 'Error';
+                const body = 'Please complete all required fields in the details section.';
+                setModalTitle(title);
+                setModalBody(body);
+                setShowModal(true);
+                return;
+              }
         setStep(step + 1);
     };
 
@@ -677,6 +751,17 @@ function MarkerApplicationForm() {
                         body={modalBody}
                         primaryButtonLabel="Close"
                         onPrimaryButtonClick={closeModal}
+                    />
+                )}
+
+                {showLastModal && (
+                    <ModalPopUp
+                        show={showLastModal}
+                        onHide={closeLastModal}
+                        title={modalTitle}
+                        body={modalBody}
+                        primaryButtonLabel="Close"
+                        onPrimaryButtonClick={closeLastModal}
                     />
                 )}
             </div>

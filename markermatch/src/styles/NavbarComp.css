@@ -4,6 +4,12 @@
     padding-right: 20px;
     width: 100%;
 }
+.my-navbar a{
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+
+}
 
 .my-navbar a{
     text-decoration: none;
@@ -36,6 +42,9 @@
     padding-top: 5px;
     font-weight: bold;
     font-size: 20px;
+}
+.sign:hover{
+    font-size: 20.5px;
 }
 
 .sign:hover{

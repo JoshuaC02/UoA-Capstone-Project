@@ -11,6 +11,8 @@ import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import ModalPopUp from './ModalPopUp';
 import { Amplify, Auth, Storage } from 'aws-amplify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import { Document, Page,pdfjs } from 'react-pdf'; 
 
@@ -179,19 +181,25 @@ function ShoppingCart() {
     return (
         <>
             <div className="grid-container">
-                <div className="shopping-cart">
-                  {courses.length != 0 ? (
-                      <>
+                {courses.length !== 0 ? (
+                    <div className="shopping-cart">
                         <div className="courses">
-                          {courses.map(course => (
-                              <CourseCardCart course={course} user={user}/>
-                          ))}
+                            {courses.map(course => (
+                                <CourseCardCart course={course} user={user} />
+                            ))}
                         </div>
-                        
-                      </>
-                    ) : (<><h2>No Courses in Cart</h2><a href="/home"><h4>Return Home</h4></a></>) }
-                </div>
-                {courses.length != 0 ? (<div id="checkout-button" onClick={handleCartSubmission}> <p>Checkout!</p></div>) : (null)}
+                    </div>
+                ) : (
+                    <div className="cart-ad">
+                        <h2>No Courses in Cart</h2>
+                        <a href="/home"><h4>Return Home</h4></a>
+                    </div>
+                )}
+                {courses.length != 0 ? (
+                  <div id="checkout-button" onClick={handleCartSubmission}> 
+                    <FontAwesomeIcon icon={faShoppingCart} /> <p>Checkout!</p>
+                  </div>
+                ) : (null)}
             </div>
 
             {showModal && (
