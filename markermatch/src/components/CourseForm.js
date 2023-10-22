@@ -170,7 +170,7 @@ function CourseForm() {
                     directorEmail: formData.directorEmail,
                     name: `${formData.faculty} ${formData.courseCode}`,
                     thumbnailId: formData.thumbnailId,
-                    markersNeeded: formData.markersNeeded,
+                    markersNeeded: parseInt(formData.markersNeeded),
                     markersAssigned: 0
                 })
             );
@@ -387,7 +387,7 @@ function CourseForm() {
                             <Form.Group as={Col} className="d-flex align-items-center">
                                 <Form.Label>How many markers would be needed for this course?</Form.Label>
                                 <Form.Control
-                                    name="enrolledStudents"
+                                    name="markersNeeded"
                                     value={formData.markersNeeded}
                                     onChange={handleChange}
                                     type="number"
@@ -470,7 +470,7 @@ function CourseForm() {
                 <Row className="mb-3">
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Please submit a thumbnail:</Form.Label>
-                        <Form.Control type="file" onChange={handleFilePreview} />
+                        <Form.Control type="file" accept="image/*" onChange={handleFilePreview} />
                     </Form.Group>
                 </Row>
                 <Button variant="primary" type="submit">Submit</Button>
