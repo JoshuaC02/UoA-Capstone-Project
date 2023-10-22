@@ -11,7 +11,10 @@ import Card from 'react-bootstrap/Card';
 import ReactCardFlip from "react-card-flip";
 import ModalPopUp from './ModalPopUp';
 import { Amplify, Auth, Storage } from 'aws-amplify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
+import { Document, Page,pdfjs } from 'react-pdf'; 
 
 function ShoppingCart() {
     const [courses, setCourses] = useState([]);
@@ -164,24 +167,39 @@ function ShoppingCart() {
     }
 
 
+    pdfjs.GlobalWorkerOptions.workerSrc =  
+    `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`; 
+     const [numPages, setNumPages] = useState(null); 
+      const [pageNumber, setPageNumber] = useState(1); 
+  
+    function onDocumentLoadSuccess({ numPages }) { 
+    setNumPages(numPages); 
+    setPageNumber(1); 
+  } 
 
   const url = "https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/protected/ap-southeast-2%3A010b82c3-6034-4e9a-a441-ec1482f8e3d6/transcript.pdf?x-amz-content-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&x-amz-user-agent=aws-amplify%2F5.3.11+storage%2F2+framework%2F1&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAVECRHT7AOO3KDEAO%2F20231019%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20231019T082439Z&X-Amz-SignedHeaders=host&X-Amz-Expires=900&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLXNvdXRoZWFzdC0yIkgwRgIhAPHT1kasyOjmlUhTekCAVJIXNh%2FvVYsgiwOgBzAqvoOrAiEA8dLuSxk9On4kdGXZi%2FKc6zocJQ3kjIvHNPnIARx4Szkq6wQIuv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARABGgwzNTIzNTc2ODcyMzIiDOvpJ8F0W3pjbanWtSq%2FBNijM97v0Ttg94krAShuBjxL%2BmljPz62%2BxgqnvVl80wRalxksSnRhOfCanlARSrx11OXT7tjAAsPsANS2dosokXbqsCHn%2BRHSKUkfSev7JokmbGa%2BjQsNuTHQWk%2FDEURd51GwxWXGgkvHptQObVPWaZV00QtiFGGoaImthTUw%2FCo%2F%2BNQqJ0NaQlnxmJ7rc0fxcqd1CKbNeq67Vt1Ir9KWiXV%2B72YLlUkdyAssyYcbCarotcLyzvqyb1mmnlNhcs4nQ7nU0z29b%2FQu54X4lRXqRv%2FqL3bRlmyL61BA2LlLdqTl50AHMpLajF8frE%2Fjh0yr7TLLPxSQwxjclkPjbn4Oc%2BndVB04A%2BZ6zsuH3Pl0p6g6kCxTAJibxVApdUcZmR4rm6XsWx%2BMuj6KNuJUWQR5QjvqiSFMa%2F2sVumHG5iJTtvi0YQbxNDbh0rHOzpYZH5m4Klz1looh1fIgwoGZOsdxx0Jxmka%2BFiEWYvW4Py%2BaJlQa%2Bi7ZcLVuAe98H%2BecI%2FQTGINh2ouSctBaPsfkBsO2xBmjWkiHhvf9t2o5xtllliz3laL1BJb0l8gsCzCRqbilPHVqbrN9pOqwMqaVe0%2FT1IoZARJjFTcTjisfHeExZ0LPHWA5kkSvgwJKYtPDZYxHExJrHbc93c74tceyeiiTMAQ4XQQTASqkMmeCSQRZ9SoerNXp9R0o7S9gbQxKxZtK9VcUKBUru1kJ%2FFrPQrZckP6ALU5Ct86avXeERbCsQMJukkncwp3K85OTlfvNB4MMbPw6kGOoQCoxdiDjUJ2tKSYFglsRn%2BEf3yB6QlsrFvSF6Y%2FxU%2F%2Bm2V4CFH32zrL3kVg7kSLWH10Oy0YtLv%2FKME1gqmk70eJYHMAt%2BwJ4yccO%2F1sLIfp2lygplyO35HKMOdfQPjcCWzIcpJPzk155876brZyXPieUf89r7tbi457a9bwHGGh%2FZK67lAuRHf7nD2ADrVvVOD82mtDmAhc1C%2BZdCKnse23Yp32bkJ%2BN2%2FMU%2BC%2Fhqddmhuc5Mreumnt8EczRP1JljjfgE6lvtozB60lf9XlbvKLPrrS%2BYE8cjphmUdDJCn%2FIIaIZZIAcRkByHDA87PxnjKjnLt3RcXYQawK5M%2FJtXUM8gzT%2F0%3D&X-Amz-Signature=4360f956f0d1523149ef17cc4b65183f5a2722489d14cb501981230eb5d97968"
     return (
         <>
             <div className="grid-container">
-                <div className="shopping-cart">
-                  {courses.length != 0 ? (
-                      <>
+                {courses.length !== 0 ? (
+                    <div className="shopping-cart">
                         <div className="courses">
-                          {courses.map(course => (
-                              <CourseCardCart course={course} user={user}/>
-                          ))}
+                            {courses.map(course => (
+                                <CourseCardCart course={course} user={user} />
+                            ))}
                         </div>
-                        
-                      </>
-                    ) : (<><h2>No Courses in Cart</h2><a href="/home"><h4>Return Home</h4></a></>) }
-                </div>
-                {courses.length != 0 ? (<div id="checkout-button" onClick={handleCartSubmission}> <p>Checkout!</p></div>) : (null)}
+                    </div>
+                ) : (
+                    <div className="cart-ad">
+                        <h2>No Courses in Cart</h2>
+                        <a href="/home"><h4>Return Home</h4></a>
+                    </div>
+                )}
+                {courses.length != 0 ? (
+                  <div id="checkout-button" onClick={handleCartSubmission}> 
+                    <FontAwesomeIcon icon={faShoppingCart} /> <p>Checkout!</p>
+                  </div>
+                ) : (null)}
             </div>
 
             {showModal && (

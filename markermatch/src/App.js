@@ -42,8 +42,8 @@ function App() {
           <Route path="/auth" element={<Authentication />} />
           <Route path="/cart" element={<RequireAuthUser><Cart /></RequireAuthUser>} />
           <Route path="/application-status" element={<RequireAuthUser><Statuspage/></RequireAuthUser>}  />
-          <Route path="/all-applications/:id" element={<RequireAuthCourseAndMarkCo><ApplicantsPage/></RequireAuthCourseAndMarkCo>} />
-          <Route path="/all-applications" element={<RequireAuthCourseAndMarkCo><AllApplicationsPage/></RequireAuthCourseAndMarkCo>} />
+          <Route path="/all-applications/:id" element={<RequireAuthMarkerCoord><ApplicantsPage/></RequireAuthMarkerCoord>} />
+          <Route path="/all-applications" element={<RequireAuthMarkerCoord><AllApplicationsPage/></RequireAuthMarkerCoord>} />
           <Route path="/edit-courses" element={<RequireAuthCourseAndMarkCo><EditCourses/></RequireAuthCourseAndMarkCo>} />
           <Route path="/addcourses" element={<RequireAuthMarkerCoord><AddCourses /></RequireAuthMarkerCoord>} />
           <Route path="/notauthorised" element={<NoAuth/>} />

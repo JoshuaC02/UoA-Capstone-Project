@@ -207,6 +207,7 @@ function MarkerApplicationForm() {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+
         if (type === 'number') {
         const numericValue = parseInt(value, 10);
         const nonNegativeValue = Math.max(numericValue, 0);
@@ -728,7 +729,7 @@ const handlePreferenceChange = (e) => {
                             <div>
 
                                 <Row>
-                                    <div className="grid-container">
+                                    <div className="grid-container-c">
                                         <div className="courses">
                                             {outCourses.map(course => (
                                                 <ApplicationCard key={course.id} course={course} user={user} />

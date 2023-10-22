@@ -24,6 +24,10 @@
 #spacer2{
     margin-top:3vh;
 }
+.shopping-cart{
+    display: flex;
+    justify-content: center;
+}
 .search-bar {
     padding: 1.8vh;
     width: 90%;
@@ -72,19 +76,24 @@
 #remove-button {
     border-radius: 1vh;
 }
-
+.cart-ad{
+    margin-right: auto;
+}
 #checkout-button {
-    width: 150px;
-    border: 1px solid black;
+    position: absolute;
+    width: 125px;
+    border: none;
     padding: 5px;
     text-align: center;
-
     border-radius: 7px;
-    background-color: #61ffef;
-    align-self: flex-start;
-    margin-left: 180px;
     border: 1px solid black;
     cursor: pointer; 
+    align-self: end;
+    margin: 10px 10px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #checkout-button:hover {

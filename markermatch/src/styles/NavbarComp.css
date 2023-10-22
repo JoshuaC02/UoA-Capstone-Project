@@ -2,9 +2,15 @@
 .my-navbar {
     background-color: #ededed;
     padding-right: 20px;
-    border-bottom: 1px solid black;
     width: 100%;
 }
+.my-navbar a{
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+
+}
+
 .my-navbar a{
     text-decoration: none;
     cursor: pointer;
@@ -41,9 +47,13 @@
     font-size: 20.5px;
 }
 
+.sign:hover{
+    font-size: 20.5px;
+}
+
 .adjust-user-size{
     font-size: 23px;
-  }
+}
 
 #logo{
     width: 180px;

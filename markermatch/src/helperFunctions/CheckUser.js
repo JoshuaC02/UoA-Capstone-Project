@@ -19,24 +19,26 @@ export function getSideLinks(user){
       icon: "columns",
       path: "/application-status",
       label: "Application Status",
+      show: !isMarkerCo && !isCourseCo
+
     },
     {
-      icon: "edit",
+      icon: "plus",
       path: "/addcourses",
       label: "Add Courses",
       show: isMarkerCo,
     },
     {
-      icon: "edit",
+      icon: "book",
       path: "/edit-courses",
       label: "Edit Courses",
       show: isMarkerCo || isCourseCo,
     },
     {
-      icon: "edit",
+      icon: "table",
       path: "/all-applications",
       label: "All Applications",
-      show: isMarkerCo || isCourseCo,
+      show: isMarkerCo
     },
     {
       icon: "edit",
@@ -45,9 +47,11 @@ export function getSideLinks(user){
       show: isMarkerCo,
     },
     {
-      icon: "edit",
+      icon: "shopping-cart",
       path: "/cart",
       label: "Cart",
+      show: !isMarkerCo && !isCourseCo
+
     },
   ];
   return pathRoutes;
