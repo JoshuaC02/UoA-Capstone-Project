@@ -50,6 +50,24 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 * Alternatively, the entire project has been hosted at https://markermatchcapstonelambda12.web.app/, with all dependencies installed and settings configured (the website is the exact copy of the copy on GitHub).
 
+## Logins required to access project:
+Logins:
+* Marker coordinator
+Email: jcol984@aucklanduni.ac.nz
+Password: Test123!
+
+* Course coordinator
+Email: mtom415@aucklanduni.ac.nz
+Password: Test123!
+
+* Marker Applicants
+Email: blin125@aucklanduni.ac.nz
+Password: Test123!
+
+Email: nwu939@aucklanduni.ac.nz
+Password: Test321!
+
+
 ### Here is an example of the dependencies used in the development of this project. For a full list, please check the package.json file in the project folder.
 * @aws-amplify/ui-react: ^5.3.0,
 * @aws-sdk/client-cognito-identity-provider: ^3.427.0,
