@@ -43,11 +43,14 @@ function CourseEdit({ course, userType }) {
         description: course.description,
         summary: course.summary,
         thumbnailId: course.thumbnailId,
-        markersAssigned: course.markersAssigned
+        markersAssigned: course.markersAssigned,
+        appOpen: course.appOpen
     });
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+        console.log(name, checked)
+
         setFormData(prevData => ({
             ...prevData,
             [name]: type === 'checkbox' ? checked : value
@@ -98,8 +101,9 @@ function CourseEdit({ course, userType }) {
                         updated.summary = formData.summary;
                         updated.thumbnailId = formData.thumbnailId;
                         updated.name = `${formData.faculty} ${formData.courseCode}`;
-                        updated.markersNeeded = formData.markersNeeded;
+                        updated.markersNeeded = parseInt(formData.markersNeeded);
                         updated.markersAssigned = formData.markersAssigned;
+                        updated.appOpen = formData.appOpen;
                     })
                 );
             }
@@ -272,7 +276,7 @@ function CourseEdit({ course, userType }) {
                             <Form.Group as={Col} className="d-flex align-items-center">
                                 <Form.Label>How many markers would be needed for this course?</Form.Label>
                                 <Form.Control
-                                    name="enrolledStudents"
+                                    name="markersNeeded"
                                     value={formData.markersNeeded}
                                     onChange={handleChange}
                                     type="number"
@@ -349,7 +353,22 @@ function CourseEdit({ course, userType }) {
                     />
                 </Form.Group>
             </Row>
+            <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Label>Please unselect to stop taking applications.</Form.Label>
+                        <Form.Check
+                            type="switch"
+                            id="custom-switch-2"
+                            label=""
+                            checked={formData.appOpen}
+                            onChange={(e) => {
+                                handleChange(e);
+                            }}
 
+                            name="appOpen"
+                        />
+                    </Form.Group>
+            </Row>
             <Button variant="primary" type="submit">Confirm Changes</Button>
             {showModal && (
             <ModalPopUp

@@ -42,26 +42,26 @@ function EditCourses() {
                 <div className="content-container">
                     <Sidebar />
                     <div className="container" style={{ height: "100%", overflow: "auto" }}>
-                        <div className="row" style={{paddingTop: "2vh"}}>
+                        <div className="row" style={{ paddingTop: "2vh" }}>
                             <div className="col">
-                                
+
 
                                 {type !== "CourseCoordinators" ? (
                                     <>
-                                    <h1>All courses</h1>
-                                    <div className="mb-4">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Search courses"
-                                            value={searchTerm}
-                                            onChange={(e) => setSearchTerm(e.target.value)}
-                                        />
-                                    </div>
+                                        <h1>All courses</h1>
+                                        <div className="mb-4">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Search courses"
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                            />
+                                        </div>
                                     </>
-                                ):(
+                                ) : (
                                     <>
-                                    <h1>Current courses you coordinate</h1>
+                                        <h1>Current courses you coordinate</h1>
                                     </>
                                 )}
 
@@ -81,7 +81,7 @@ function EditCourses() {
                                     .map(course => (
                                         <div key={course.id}>
                                             {editingCourse === course.id ? (
-                                                <CourseEdit course={course} userType = {type} />
+                                                <CourseEdit course={course} userType={type} />
                                             ) : (
                                                 <div className="mb-3">
                                                     <div className="card">
@@ -106,11 +106,13 @@ function EditCourses() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="mb-3 text-center">
-                                            <div>
-                                                <p>No courses found, please refine your search term.</p>
+                                        filteredCourses.length === 0 && (
+                                            <div className="mb-3 text-center">
+                                                <div>
+                                                    <p>No courses found, please refine your search term.</p>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )
                                     )
                                 )}
                             </div>
