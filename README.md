@@ -75,15 +75,15 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 ### Marker Form Application - Applicant View:
 ![Form Page Stage 1 - Documents](./markermatch/src/images/form1.png) 
-![Form Page Stage 2 - Personal Details](./markermatch/markermatch/src/images/form2.png)
-![Form Page Stage 3 - Courses](./src/images/form3.png) 
+![Form Page Stage 2 - Personal Details](./markermatch/src/images/form2.png)
+![Form Page Stage 3 - Courses](./markermatch/src/images/form3.png) 
 
 ### Add Courses Page - Marker Coordinator View:
-![Add Courses Page](./markermatch/images/addCourses.png)
+![Add Courses Page](./markermatch/src/images/addCourses.png)
 
 ### Edit Courses Page - Marker/Course Coordinator View:
-![Edit Courses Page - Edit not open](./markermatch/images/edit.png)
-![Edit Courses Page - Edit opened](./markermatch/images/editOpened.png)
+![Edit Courses Page - Edit not open](./markermatch/src/images/edit.png)
+![Edit Courses Page - Edit opened](./markermatch/src/images/editOpened.png)
 
 All Applications Page - Marker Coordinator View:
 ![All Applications Page](./markermatch/src/images/allApplications.png)
