@@ -58,7 +58,7 @@ function MarkerApplicationForm() {
         return (
             <div className="p-2" key={course.id}>
                 <ReactCardFlip isFlipped={isFlipped}>
-                    <Card style={{ height: "52vh", width: "35vh" }} key="front">
+                    <Card style={{ height: "52vh", width: "35vh", overflowY:"auto" }} key="front">
                        <Card.Body>
                             <Card.Title style={{ fontWeight: "bolder" }}>{course.name}</Card.Title>
                             <Card.Subtitle style={{ fontStyle: "italic" }}>

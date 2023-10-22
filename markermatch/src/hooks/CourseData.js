@@ -85,7 +85,7 @@ function CourseData() {
       <>
         <div className="p-2" key={course.id}>
           <ReactCardFlip isFlipped={isFlipped}>
-            <Card style={{ height: "52vh", width: "34vh" }} key="front">
+            <Card style={{ height: "60vh", width: "38vh" }} key="front">
               <Card.Img style={{ width: "100%", height: "65%" }} variant="top" src={course.thumbnailId ? `https://capstone-project-team-12-storage-951c1da6205613-staging.s3.ap-southeast-2.amazonaws.com/public/${course.thumbnailId}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Computer_science_education.png/238px-Computer_science_education.png"} />
               <Card.Body>
                 <Card.Title style={{ fontWeight: "bolder" }}>{course.name}</Card.Title>
@@ -109,7 +109,7 @@ function CourseData() {
               </Card.Body>
             </Card>
 
-            <Card style={{ height: "52vh", width: "34vh" }} key="back">
+            <Card style={{ height: "60vh", width: "38vh" }} key="back">
               <Card.Body>
                 <Card.Text>
                   Minimum Grade: {course.minGrade}

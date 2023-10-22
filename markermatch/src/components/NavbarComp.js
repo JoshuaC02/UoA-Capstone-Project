@@ -21,6 +21,7 @@ function NavbarComp() {
     } else {
       navigate('/', { replace: true });
     }
+    
   }
 
   return (
