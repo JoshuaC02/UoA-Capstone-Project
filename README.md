@@ -85,14 +85,14 @@ Our team used various ways of communicating. One of the main methods of keeping 
 ![Edit Courses Page - Edit not open](./markermatch/src/images/edit.png)
 ![Edit Courses Page - Edit opened](./markermatch/src/images/editOpened.png)
 
-All Applications Page - Marker Coordinator View:
+### All Applications Page - Marker Coordinator View:
 ![All Applications Page](./markermatch/src/images/allApplications.png)
 
 
-Specific Course Page - Marker Coordinator View:
+### Specific Course Page - Marker Coordinator View:
 ![Applications By Course Page](./markermatch/src/images/applicationByCourse.png)
 
-Manage User - Marker Coordinator View:
+### Manage User - Marker Coordinator View:
 ![Manager User Page](./markermatch/src/images/manageUser.png)
 
 ## Future Plan (Ideas for future releases)
