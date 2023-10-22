@@ -13,7 +13,7 @@
 
 ## Project Description
 
-MarkerMatch is a web application designed to streamline the process of gathering markers for the computer science department at the University of Auckland. It unites students, course coordinators and marker coordinators into one platform. Students can see a catalogue of courses which they can apply to become markers for. Course coordinators can edit the course requirements (of courses for which they are responsible); and marker coordinators have no restrictions. They can see each application, as well as, being able to add, remove and edit each course in the system.
+MarkerMatch is a web application designed to streamline the process of gathering markers for the computer science department at the University of Auckland. It unites students, course coordinators, and marker coordinators into one platform. Students can see a catalog of courses that they can apply to become markers for. Course coordinators can edit the course requirements (of courses they are responsible for); marker coordinators have no restrictions. They can see each application as well as be able to add, remove, and edit each course in the system.
 
 ## Planning
 
@@ -42,7 +42,7 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 * Clone repository to local machine
 `git clone https://github.com/uoa-compsci399-s2-2023/capstone-project-team-12.git`
-* open command line, navigate to local repository (makesure you are under `markermatch` )
+* open the command line, navigate to the local repository (make sure you are under `markermatch` )
 * run `npm install`
 * run `amplify pull --appId d2bpa4axdi2900 --envName staging`. Ensure you sign in to an account with team 12 privileges on AWS
 * run `npm start`
@@ -101,5 +101,5 @@ Our team used various ways of communicating. One of the main methods of keeping 
 * Add another view to the table of applicants. Currently, the marker coordinator can see all courses and all the applicants per course. However, the client may want to see all applicants, not just by course.
 * Add a filter for courses on the Home page
 * A feature to view more information about the applicant in a modal
-* Develop a PDF-reader to auto-complete form fields from user transcript and/or CV.
+* Develop a PDF reader to auto-complete form fields from user transcript and/or CV.
 * Develop a Hungarian matching algorithm to identify the best applicants
