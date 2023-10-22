@@ -416,7 +416,7 @@ function ApplicantsView() {
                             <p className="action-edit"><i className="fa fa-download"></i> CV </p>
                         </MenuItem>,
                         <MenuItem id="m-3" key="user" onClick={() => handleShowUserModal(row.original.id)}>
-                            <p className="action-edit"><i className="fa fa-download"></i> User Info </p>
+                            <p className="action-edit"><i className="fa fa-eye"></i> User Info </p>
                         </MenuItem>,
 
                     ]}
