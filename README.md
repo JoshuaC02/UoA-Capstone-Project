@@ -1,5 +1,5 @@
 # MarkerMatch
-![MarkerMatch Logo](./src/images/logoExample.png)
+![MarkerMatch Logo](./markermatch/src/images/logoExample.png)
 
 ### Deployed at: https://markermatchcapstonelambda12.web.app/home 
 
