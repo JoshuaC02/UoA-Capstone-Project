@@ -16,7 +16,7 @@ function CourseEdit({ course, userType }) {
 
     function closeModal() {
         setShowModal(false);
-      }
+    }
 
     const userBool = userType !== "MarkerCoordinator"
     const [isFlipped, setIsFlipped] = useState(false);
@@ -200,8 +200,8 @@ function CourseEdit({ course, userType }) {
                         disabled={userBool}
                         onChange={handleChange}
                     >
-                        <option value="Semester 1">Semester 1</option>
-                        <option value="Semester 2">Semester 2</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
                     </Form.Select>
                 </Form.Group>
 
@@ -250,86 +250,86 @@ function CourseEdit({ course, userType }) {
             </Row>
 
             <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Label>Do you require markers for this course? ⠀⠀⠀⠀⠀⠀⠀⠀⠀</Form.Label>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch-1"
-                            label=""
-                            checked={formData.requireMarkers}
-                            onChange={(e) => {
-                                handleChange(e);
-                                setRequiredMarkers(e.target.checked);
+                <Form.Group as={Col}>
+                    <Form.Label>Do you require markers for this course? ⠀⠀⠀⠀⠀⠀⠀⠀⠀</Form.Label>
+                    <Form.Check
+                        type="switch"
+                        id="custom-switch-1"
+                        label=""
+                        checked={formData.requireMarkers}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setRequiredMarkers(e.target.checked);
 
-                            }}
-                            disabled={userBool}
-                            aria-controls="collapse-text"
-                            aria-expanded={requiredMarkers}
-                            name="requireMarkers"
-                        />
-                    </Form.Group>
+                        }}
+                        disabled={userBool}
+                        aria-controls="collapse-text"
+                        aria-expanded={requiredMarkers}
+                        name="requireMarkers"
+                    />
+                </Form.Group>
             </Row>
 
             <Collapse in={requiredMarkers}>
-                    <div id="collapse-text" style={{ padding: 0 }}>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} className="d-flex align-items-center">
-                                <Form.Label>How many markers would be needed for this course?</Form.Label>
-                                <Form.Control
-                                    name="markersNeeded"
-                                    value={formData.markersNeeded}
-                                    onChange={handleChange}
-                                    type="number"
-                                />
-                            </Form.Group>
+                <div id="collapse-text" style={{ padding: 0 }}>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>How many markers would be needed for this course?</Form.Label>
+                            <Form.Control
+                                name="markersNeeded"
+                                value={formData.markersNeeded}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                            <Form.Group as={Col} className="d-flex align-items-center">
-                                <Form.Label>Would you like to preassign markers if available?⠀⠀⠀</Form.Label>
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch-2"
-                                    label=""
-                                    checked={formData.preassignMarkers}
-                                    disabled={userBool}
-                                    onChange={handleChange}
-                                    name="preassignMarkers"
-                                />
-                            </Form.Group>
-                        </Row>
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Would you like to preassign markers if available?⠀⠀⠀</Form.Label>
+                            <Form.Check
+                                type="switch"
+                                id="custom-switch-2"
+                                label=""
+                                checked={formData.preassignMarkers}
+                                disabled={userBool}
+                                onChange={handleChange}
+                                name="preassignMarkers"
+                            />
+                        </Form.Group>
+                    </Row>
 
-                        <Row className="mb-3">
-                            <Form.Group as={Col} className="d-flex align-items-center">
-                                <Form.Label>Number of marking hours per semester</Form.Label>
-                                <Form.Control
-                                    name="totalHours"
-                                    value={formData.totalHours}
-                                    onChange={handleChange}
-                                    type="number"
-                                />
-                            </Form.Group>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label>Number of marking hours per semester</Form.Label>
+                            <Form.Control
+                                name="totalHours"
+                                value={formData.totalHours}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                        </Form.Group>
 
-                            <Form.Group as={Col} className="d-flex align-items-center">
-                                <Form.Label className='mx-2'>Applicant minimum grade</Form.Label>
-                                <Form.Select
-                                    name="minGrade"
-                                    aria-label="Default select example"
-                                    value={formData.minGrade}
-                                    disabled={userBool}
-                                    onChange={handleChange}
-                                >
-                                    <option value="A+">A+</option>
-                                    <option value="A">A</option>
-                                    <option value="A-">A-</option>
-                                    <option value="B+">B+</option>
-                                    <option value="B">B</option>
-                                    <option value="B-">B-</option>
-                                </Form.Select>
-                            </Form.Group>
-                        </Row>
-                    </div>
+                        <Form.Group as={Col} className="d-flex align-items-center">
+                            <Form.Label className='mx-2'>Applicant minimum grade</Form.Label>
+                            <Form.Select
+                                name="minGrade"
+                                aria-label="Default select example"
+                                value={formData.minGrade}
+                                disabled={userBool}
+                                onChange={handleChange}
+                            >
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Row>
+                </div>
 
 
-                </Collapse>
+            </Collapse>
 
             <Row className="mb-3">
                 <Form.Group as={Col}>
@@ -354,32 +354,32 @@ function CourseEdit({ course, userType }) {
                 </Form.Group>
             </Row>
             <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Label>Please unselect to stop taking applications.</Form.Label>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch-2"
-                            label=""
-                            checked={formData.appOpen}
-                            onChange={(e) => {
-                                handleChange(e);
-                            }}
+                <Form.Group as={Col}>
+                    <Form.Label>Please unselect to stop taking applications.</Form.Label>
+                    <Form.Check
+                        type="switch"
+                        id="custom-switch-2"
+                        label=""
+                        checked={formData.appOpen}
+                        onChange={(e) => {
+                            handleChange(e);
+                        }}
 
-                            name="appOpen"
-                        />
-                    </Form.Group>
+                        name="appOpen"
+                    />
+                </Form.Group>
             </Row>
             <Button variant="primary" type="submit">Confirm Changes</Button>
             {showModal && (
-            <ModalPopUp
-                show={showModal}
-                onHide={closeModal}
-                title={modalTitle}
-                body={modalBody}  
-                primaryButtonLabel="Close"
-                onPrimaryButtonClick={closeModal}
-            />
-        )}
+                <ModalPopUp
+                    show={showModal}
+                    onHide={closeModal}
+                    title={modalTitle}
+                    body={modalBody}
+                    primaryButtonLabel="Close"
+                    onPrimaryButtonClick={closeModal}
+                />
+            )}
         </Form>
 
     );

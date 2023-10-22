@@ -302,8 +302,8 @@ function CourseForm() {
                             value={formData.semester}
                             onChange={handleChange}
                         >
-                            <option value="Semester 1">Semester 1</option>
-                            <option value="Semester 2">Semester 2</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
                         </Form.Select>
                     </Form.Group>
 
