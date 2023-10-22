@@ -63,14 +63,14 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 ## Application Examples
 ### Home Page - Entry for all users:
-![Home Page](./src/images/home.png)
+![Home Page](./markermatch/src/images/home.png)
 
 ### Application Status page - Applicant view:
-![Application Status Page](./src/images/appStatus.png)
+![Application Status Page](./markermatch/src/images/appStatus.png)
 
 
 ### Cart - Applicant View:
-![Cart Page](./src/images/cart.png)
+![Cart Page](./markermatch/src/images/cart.png)
 
 
 ### Marker Form Application - Applicant View:
