@@ -48,6 +48,8 @@ Our team used various ways of communicating. One of the main methods of keeping 
 * run `amplify pull --appId d2bpa4axdi2900 --envName staging`. Ensure you sign in to an account with team 12 privileges on AWS (The website will not function properly on your local machine in the absence of an AWS account with necessary permissions).
 * run `npm start`
 
+* Alternatively, the entire project has been hosted at https://markermatchcapstonelambda12.web.app/, with all dependencies installed and settings configured (the website is the exact copy of the copy on GitHub).
+
 ### Here is an example of the dependencies used in the development of this project. For a full list, please check the package.json file in the project folder.
 * @aws-amplify/ui-react: ^5.3.0,
 * @aws-sdk/client-cognito-identity-provider: ^3.427.0,
@@ -61,7 +63,7 @@ Our team used various ways of communicating. One of the main methods of keeping 
 * @cdbreact: ^1.5.18,
 * @react: ^18.2.0
 
-# Alternatively, the entire project has been hosted at https://markermatchcapstonelambda12.web.app/, with all dependencies installed and settings configured.
+
 
 ## Application Examples
 ### Home Page - Entry for all users:
