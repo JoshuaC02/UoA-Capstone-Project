@@ -410,16 +410,21 @@ function ApplicantsView() {
                     enableRowActions
                     renderRowActionMenuItems={({ row }) => [
                         <MenuItem id="m-2" key="transcript" onClick={() => downloadTranscript({ row })}>
-                            <p className="action-edit"><i className="fa fa-download"></i> Transcript </p>
+                            <p className="action-edit" style={{ fontFamily: 'Roboto, Halvetica, Arial, sans-serif' }}>
+                            <i className="fa fa-download"></i> Transcript
+                            </p>
                         </MenuItem>,
                         <MenuItem id="m-3" key="cv" onClick={() => downloadCV({ row })}>
-                            <p className="action-edit"><i className="fa fa-download"></i> CV </p>
+                            <p className="action-edit" style={{ fontFamily: 'Roboto, Halvetica, Arial, sans-serif' }}>
+                            <i className="fa fa-download"></i> CV
+                            </p>
                         </MenuItem>,
                         <MenuItem id="m-3" key="user" onClick={() => handleShowUserModal(row.original.id)}>
-                            <p className="action-edit"><i className="fa fa-eye"></i> User Info </p>
+                            <p className="action-edit" style={{ fontFamily: 'Roboto, Halvetica, Arial, sans-serif' }}>
+                            <i className="fa fa-eye"></i> User Info
+                            </p>
                         </MenuItem>,
-
-                    ]}
+                        ]}
                     onEditingRowSave={updateCell}
                     enableRowSelection
                     renderBottomToolbarCustomActions={({ table }) => {
