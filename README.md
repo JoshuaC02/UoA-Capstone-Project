@@ -42,9 +42,10 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 * Clone repository to local machine
 `git clone https://github.com/uoa-compsci399-s2-2023/capstone-project-team-12.git`
-* open the command line, navigate to the local repository (make sure you are under `markermatch` )
+* open the command line, navigate to the local repository (i.e., cd capstone-project-team-12, followed by cd markermatch).
 * run `npm install`
-* run `amplify pull --appId d2bpa4axdi2900 --envName staging`. Ensure you sign in to an account with team 12 privileges on AWS
+* ensure amplify is installed globally on your device (npm install -g @aws-amplify/cli)
+* run `amplify pull --appId d2bpa4axdi2900 --envName staging`. Ensure you sign in to an account with team 12 privileges on AWS (The website will not function properly on your local machine in the absence of an AWS account with necessary permissions).
 * run `npm start`
 
 ### Here is an example of the dependencies used in the development of this project. For a full list, please check the package.json file in the project folder.
@@ -60,6 +61,7 @@ Our team used various ways of communicating. One of the main methods of keeping 
 * @cdbreact: ^1.5.18,
 * @react: ^18.2.0
 
+# Alternatively, the entire project has been hosted at https://markermatchcapstonelambda12.web.app/, with all dependencies installed and settings configured.
 
 ## Application Examples
 ### Home Page - Entry for all users:
