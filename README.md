@@ -54,11 +54,11 @@ Our team used various ways of communicating. One of the main methods of keeping 
 
 ## Logins required to access project:
 Logins:
-* Marker coordinator<br>Email: jcol984@aucklanduni.ac.nz <br>Password: Test123!
+* Marker coordinator<br>Email: jcol984@aucklanduni.ac.nz <br>
 
-* Course coordinator<br>Email: mtom415@aucklanduni.ac.nz <br>Password: Test123!
+* Course coordinator<br>Email: mtom415@aucklanduni.ac.nz <br>
 
-* Marker Applicants<br> Email: blin125@aucklanduni.ac.nz <br>Password: Test123! <br><br>Email: nwu939@aucklanduni.ac.nz <br> Password: Test321!<br>
+* Marker Applicants<br> Email: blin125@aucklanduni.ac.nz <br><br>Email: nwu939@aucklanduni.ac.nz <br>
 
 
 ### Here is an example of the dependencies used in the development of this project. For a full list, please check the package.json file in the project folder.
